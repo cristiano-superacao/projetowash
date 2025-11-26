@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema de Gestão Empresarial - Estoque Certo LTDA">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    
+    <title>Estoque Certo LTDA - Sistema de Gestão</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-warehouse"></i>
+                    <h1>Estoque Certo LTDA</h1>
+                </div>
+                <button id="installBtn" class="install-btn hidden">
+                    <i class="fas fa-download"></i>
+                    Instalar App
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <h2>Sistema de Gestão Empresarial</h2>
+                <p>Gerencie todos os aspectos da sua empresa em um único lugar</p>
+            </section>
+
+            <!-- Navigation Cards -->
+            <section class="modules-grid">
+                <!-- Módulo Operacional -->
+                <div class="module-card" data-module="operacional">
+                    <div class="module-icon blue">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <h3>Operacional</h3>
+                    <p>Calcular capacidade de produção da fábrica</p>
+                    <button class="btn btn-primary" onclick="showModule('operacional')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Módulo Estoque Entrada -->
+                <div class="module-card" data-module="estoque-entrada">
+                    <div class="module-icon green">
+                        <i class="fas fa-box-open"></i>
+                    </div>
+                    <h3>Entrada de Estoque</h3>
+                    <p>Cadastrar novos produtos no estoque</p>
+                    <button class="btn btn-success" onclick="showModule('estoque-entrada')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Módulo Estoque Saída -->
+                <div class="module-card" data-module="estoque-saida">
+                    <div class="module-icon orange">
+                        <i class="fas fa-truck-loading"></i>
+                    </div>
+                    <h3>Saída de Estoque</h3>
+                    <p>Registrar vendas e movimentações</p>
+                    <button class="btn btn-warning" onclick="showModule('estoque-saida')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Módulo Financeiro -->
+                <div class="module-card" data-module="financeiro">
+                    <div class="module-icon purple">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Financeiro</h3>
+                    <p>Calcular custos, lucros e projeções</p>
+                    <button class="btn btn-info" onclick="showModule('financeiro')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Módulo RH -->
+                <div class="module-card" data-module="rh">
+                    <div class="module-icon red">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Recursos Humanos</h3>
+                    <p>Calcular folha de pagamento</p>
+                    <button class="btn btn-danger" onclick="showModule('rh')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Visualizar Estoque -->
+                <div class="module-card" data-module="visualizar">
+                    <div class="module-icon teal">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Visualizar Estoque</h3>
+                    <p>Ver todos os produtos cadastrados</p>
+                    <button class="btn btn-secondary" onclick="showModule('visualizar')">
+                        Acessar <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal Container -->
+    <div id="modalContainer" class="modal-container hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Módulo</h2>
+                <button class="close-btn" onclick="closeModule()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- O conteúdo será inserido dinamicamente pelo JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage"></span>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Processando...</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Estoque Certo LTDA. Todos os direitos reservados.</p>
+            <p>Desenvolvido com <i class="fas fa-heart"></i> para facilitar sua gestão</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/modules.js"></script>
+    <script src="/static/js/pwa.js"></script>
+</body>
+</html>

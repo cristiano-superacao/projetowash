@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Funcao auxiliar para verificar se o usuario esta autenticado
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Funcao para verificar se o usuario eh admin
+    function isAdmin() {
+      return isAuthenticated() && 
+             get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.role == 'admin';
+    }
+    
+    // Regras para colecao de usuarios
+    match /usuarios/{userId} {
+      // Permitir leitura apenas do proprio perfil ou admin
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      
+      // Permitir criacao apenas pelo proprio usuario
+      allow create: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Permitir atualizacao apenas do proprio perfil ou admin
+      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      
+      // Apenas admin pode deletar usuarios
+      allow delete: if isAdmin();
+    }
+    
+    // Regras para estoque - apenas usuarios autenticados
+    match /estoque/{produtoId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+    
+    // Regras para movimentacoes - historico
+    match /movimentacoes/{movId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update, delete: if isAdmin();
+    }
+    
+    // Regras para dados financeiros
+    match /financeiro/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // Regras para folha de pagamento
+    match /folha_pagamento/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+    
+    // Regras para configuracoes do sistema
+    match /configuracoes/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}
