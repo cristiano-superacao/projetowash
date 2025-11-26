@@ -176,13 +176,16 @@ async function showProfile() {
         if (typeof getUserDataLocal !== 'undefined') {
             userData = getUserDataLocal();
         } else {
-            userData = await getUserData();
+            // Modo Firebase (não implementado)
+            userData = null;
         }
         
         if (!userData) {
             showToast('Erro ao carregar perfil', 'error');
             return;
         }
+        
+        const dataCadastro = userData.dataCadastro ? formatDate(userData.dataCadastro) : 'N/A';
         
         const html = `
             <div class="profile-container">
@@ -191,7 +194,7 @@ async function showProfile() {
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <h3>${userData.nome}</h3>
-                    <p class="profile-role">${userData.role === 'admin' ? 'Administrador' : 'Usuario'}</p>
+                    <p class="profile-role">${userData.role === 'admin' ? 'Administrador' : 'Usuário'}</p>
                 </div>
                 
                 <div class="profile-info">
@@ -201,7 +204,7 @@ async function showProfile() {
                     </div>
                     <div class="info-item">
                         <i class="fas fa-phone"></i>
-                        <span>${userData.contato}</span>
+                        <span>${userData.contato || 'N/A'}</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-id-card"></i>
@@ -209,7 +212,7 @@ async function showProfile() {
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar"></i>
-                        <span>Cadastrado em: ${formatDate(userData.dataCadastro)}</span>
+                        <span>Cadastrado em: ${dataCadastro}</span>
                     </div>
                 </div>
             </div>

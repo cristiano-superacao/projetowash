@@ -136,8 +136,6 @@ function hideLoading() {
  * @returns {Promise} Resposta da API
  */
 async function apiRequest(endpoint, options = {}) {
-    showLoading('Enviando requisicao...');
-    
     try {
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: {
@@ -155,10 +153,8 @@ async function apiRequest(endpoint, options = {}) {
         
         return data;
     } catch (error) {
-        showToast(error.message, 'error');
+        console.error('Erro na requisição:', error);
         throw error;
-    } finally {
-        hideLoading();
     }
 }
 

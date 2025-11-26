@@ -168,6 +168,11 @@ async function buscarEstatisticasLocal() {
     };
 }
 
+// Buscar historico completo (para graficos)
+async function buscarHistoricoLocal() {
+    return localMovimentacoes;
+}
+
 // Realizar backup
 async function realizarBackupLocal() {
     const backup = {

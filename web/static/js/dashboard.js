@@ -81,11 +81,22 @@ function loadHistoricoRecente(movimentacoes) {
 // Carregar graficos
 async function loadCharts() {
     try {
-        // Buscar dados
-        const [produtos, movimentacoes] = await Promise.all([
-            listarProdutos(),
-            buscarHistorico()
-        ]);
+        let produtos = [];
+        let movimentacoes = [];
+
+        // Verificar modo local
+        if (typeof listarProdutosLocal !== 'undefined' && typeof buscarHistoricoLocal !== 'undefined') {
+            [produtos, movimentacoes] = await Promise.all([
+                listarProdutosLocal(),
+                buscarHistoricoLocal()
+            ]);
+        } else {
+            // Modo Firebase
+            [produtos, movimentacoes] = await Promise.all([
+                listarProdutos(),
+                buscarHistorico()
+            ]);
+        }
         
         // Grafico de Movimentacoes
         loadChartMovimentacoes(movimentacoes);

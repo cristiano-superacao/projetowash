@@ -1,15 +1,16 @@
 # app.py
 # ============================================================================
-# API WEB - FLASK REST API
+# API WEB - FLASK REST API (VERSÃO CORRIGIDA)
 # ============================================================================
 # Este arquivo cria uma API REST usando Flask para conectar o sistema Python
 # ao site/aplicativo web. Permite acesso via navegador e instalação como PWA.
 # ============================================================================
 
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
 from flask_cors import CORS
 import sys
 import os
+import json
 
 # Adicionar o diretório src ao path para importar os módulos
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -38,15 +39,20 @@ def index():
 @app.route('/manifest.json')
 def manifest():
     """Manifest para PWA"""
-    return app.send_static_file('manifest.json')
+    try:
+        return send_file('web/static/manifest.json', mimetype='application/json')
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
 
 @app.route('/service-worker.js')
 def service_worker():
     """Service Worker para PWA"""
-    response = app.send_static_file('service-worker.js')
-    response.headers['Content-Type'] = 'application/javascript'
-    response.headers['Service-Worker-Allowed'] = '/'
-    return response
+    try:
+        response = send_file('web/static/service-worker.js', mimetype='application/javascript')
+        response.headers['Service-Worker-Allowed'] = '/'
+        return response
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
 
 # ============================================================================
 # API ENDPOINTS - MÓDULO OPERACIONAL
