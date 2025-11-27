@@ -6,21 +6,24 @@
 # Implementa lógica de busca e verificação de saldo disponível.
 # 
 # CONCEITOS DEMONSTRADOS:
-# - Busca em listas
+# - Interação com Banco de Dados (SQLAlchemy)
+# - Busca case-insensitive no banco
 # - Estruturas condicionais complexas (if/elif/else)
-# - Atualização de dados em dicionários
+# - Atualização de dados no banco
 # - Validação de estoque
 # - Tratamento de pedidos parciais
 # ============================================================================
 
-def vender_produto(lista_produtos):
+from src.database import Produto
+
+def vender_produto(db_session):
     """
     Registra vendas e dá baixa no estoque.
     
     Parâmetros:
     -----------
-    lista_produtos : list
-        Lista que contém todos os produtos cadastrados
+    db_session : Session
+        Sessão do banco de dados
     
     Funcionalidades:
     ----------------
@@ -39,7 +42,8 @@ def vender_produto(lista_produtos):
     # ========================================================================
     # PASSO 1: VERIFICAR SE HÁ PRODUTOS CADASTRADOS
     # ========================================================================
-    if len(lista_produtos) == 0:
+    produtos_count = db_session.query(Produto).count()
+    if produtos_count == 0:
         print("\n❌ Erro: Não há produtos cadastrados no estoque!")
         print("   Por favor, cadastre produtos antes de registrar vendas.")
         return
@@ -47,8 +51,9 @@ def vender_produto(lista_produtos):
     # Mostrar produtos disponíveis
     print("\n📦 Produtos disponíveis no estoque:")
     print("-"*50)
-    for i, produto in enumerate(lista_produtos, 1):
-        print(f"{i}. {produto['nome']} - Estoque: {produto['quantidade']} unidades")
+    produtos = db_session.query(Produto).all()
+    for i, produto in enumerate(produtos, 1):
+        print(f"{i}. {produto.nome} - Estoque: {produto.quantidade} unidades")
     print("-"*50)
     
     # ========================================================================
@@ -108,28 +113,20 @@ def vender_produto(lista_produtos):
             continue
         
         # ====================================================================
-        # PASSO 3.2: BUSCAR O PRODUTO NA LISTA PELO NOME
+        # PASSO 3.2: BUSCAR O PRODUTO NO BANCO PELO NOME
         # ====================================================================
-        # Esta variável vai armazenar o produto encontrado (ou None)
-        produto_achado = None
-        
-        # Varre toda a lista procurando pelo nome
-        for produto in lista_produtos:
-            # .lower() converte para minúsculas, ignorando maiúsculas/minúsculas
-            # Isso permite que "PALETE" = "palete" = "Palete"
-            if produto['nome'].lower() == nome_buscado.lower():
-                produto_achado = produto
-                break  # Para de procurar pois já achou
+        # Busca case-insensitive usando ilike
+        produto_achado = db_session.query(Produto).filter(Produto.nome.ilike(nome_buscado)).first()
         
         # ====================================================================
         # PASSO 3.3: PROCESSAR A VENDA (LÓGICA DE BAIXA NO ESTOQUE)
         # ====================================================================
         if produto_achado:
             # Produto foi encontrado! Agora verifica o estoque
-            saldo_atual = produto_achado['quantidade']
-            valor_unitario = produto_achado['valor']
+            saldo_atual = produto_achado.quantidade
+            valor_unitario = produto_achado.valor
             
-            print(f"\n✅ Produto encontrado: {produto_achado['nome']}")
+            print(f"\n✅ Produto encontrado: {produto_achado.nome}")
             print(f"   Estoque atual: {saldo_atual} unidades")
             print(f"   Valor unitário: R$ {valor_unitario:.2f}")
             
@@ -138,14 +135,14 @@ def vender_produto(lista_produtos):
             # ================================================================
             if saldo_atual >= qtd_desejada:
                 # Tem estoque suficiente para atender o pedido completo
-                produto_achado['quantidade'] -= qtd_desejada
+                produto_achado.quantidade -= qtd_desejada
                 valor_venda = qtd_desejada * valor_unitario
                 valor_total_vendas += valor_venda
                 
                 print(f"\n✅ PEDIDO ATENDIDO COMPLETAMENTE!")
                 print(f"   Quantidade vendida: {qtd_desejada} unidades")
                 print(f"   Valor da venda: R$ {valor_venda:.2f}")
-                print(f"   Estoque restante: {produto_achado['quantidade']} unidades")
+                print(f"   Estoque restante: {produto_achado.quantidade} unidades")
                 
                 pedidos_atendidos_completos += 1
             
@@ -163,7 +160,7 @@ def vender_produto(lista_produtos):
                 valor_total_vendas += valor_venda
                 
                 print(f"   Valor da venda: R$ {valor_venda:.2f}")
-                produto_achado['quantidade'] = 0  # Zera o estoque
+                produto_achado.quantidade = 0  # Zera o estoque
                 print(f"   Estoque restante: 0 unidades (ESGOTADO)")
                 
                 pedidos_atendidos_parciais += 1
@@ -173,9 +170,12 @@ def vender_produto(lista_produtos):
             # ================================================================
             else:
                 # Estoque zerado
-                print(f"\n❌ ERRO: Produto '{produto_achado['nome']}' está ESGOTADO!")
+                print(f"\n❌ ERRO: Produto '{produto_achado.nome}' está ESGOTADO!")
                 print("   Não há unidades disponíveis no momento.")
                 pedidos_nao_atendidos += 1
+            
+            # Salva as alterações no banco
+            db_session.commit()
         
         else:
             # ================================================================
@@ -199,41 +199,41 @@ def vender_produto(lista_produtos):
     print("="*50)
 
 
-def consultar_produto(lista_produtos):
+def consultar_produto(db_session):
     """
     Função auxiliar para consultar um produto específico.
     
     Parâmetros:
     -----------
-    lista_produtos : list
-        Lista contendo todos os produtos cadastrados
+    db_session : Session
+        Sessão do banco de dados
     """
-    
-    if len(lista_produtos) == 0:
+    produtos_count = db_session.query(Produto).count()
+    if produtos_count == 0:
         print("\n⚠️  Estoque vazio! Nenhum produto cadastrado.")
         return
     
     nome = input("\n🔍 Digite o nome do produto a consultar: ").strip()
     
-    for produto in lista_produtos:
-        if produto['nome'].lower() == nome.lower():
-            print("\n" + "="*50)
-            print(f"   INFORMAÇÕES DO PRODUTO")
-            print("="*50)
-            print(f"📌 Nome: {produto['nome']}")
-            print(f"🔢 Código: {produto['codigo']}")
-            print(f"📊 Quantidade em estoque: {produto['quantidade']} unidades")
-            print(f"💰 Valor unitário: R$ {produto['valor']:.2f}")
-            print(f"📍 Local: {produto['local']}")
-            print(f"🏭 Fornecedor: {produto['fornecedor']}")
-            print(f"📅 Data de fabricação: {produto['data']}")
-            
-            valor_total_produto = produto['quantidade'] * produto['valor']
-            print(f"💵 Valor total em estoque: R$ {valor_total_produto:.2f}")
-            print("="*50)
-            return
+    produto = db_session.query(Produto).filter(Produto.nome.ilike(nome)).first()
     
-    print(f"\n❌ Produto '{nome}' não encontrado no sistema.")
+    if produto:
+        print("\n" + "="*50)
+        print(f"   INFORMAÇÕES DO PRODUTO")
+        print("="*50)
+        print(f"📌 Nome: {produto.nome}")
+        print(f"🔢 Código: {produto.codigo}")
+        print(f"📊 Quantidade em estoque: {produto.quantidade} unidades")
+        print(f"💰 Valor unitário: R$ {produto.valor:.2f}")
+        print(f"📍 Local: {produto.local}")
+        print(f"🏭 Fornecedor: {produto.fornecedor}")
+        print(f"📅 Data de fabricação: {produto.data}")
+        
+        valor_total_produto = produto.quantidade * produto.valor
+        print(f"💵 Valor total em estoque: R$ {valor_total_produto:.2f}")
+        print("="*50)
+    else:
+        print(f"\n❌ Produto '{nome}' não encontrado no sistema.")
 
 
 # ============================================================================

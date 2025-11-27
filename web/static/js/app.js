@@ -137,11 +137,18 @@ function hideLoading() {
  */
 async function apiRequest(endpoint, options = {}) {
     try {
+        // Adiciona o header de API Key se estiver definido
+        const headers = {
+            'Content-Type': 'application/json',
+            ...options.headers
+        };
+
+        if (typeof SERVER_API_KEY !== 'undefined' && SERVER_API_KEY) {
+            headers['X-API-KEY'] = SERVER_API_KEY;
+        }
+
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers
-            },
+            headers: headers,
             ...options
         });
         

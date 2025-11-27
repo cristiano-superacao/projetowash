@@ -14,19 +14,78 @@
 # - Formatação de relatórios
 # ============================================================================
 
+# ============================================================================
+# FUNÇÕES DE CÁLCULO (LÓGICA PURA)
+# ============================================================================
+
+def calcular_inss(salario_bruto):
+    """Calcula o desconto do INSS baseado na tabela progressiva de 2025"""
+    if salario_bruto <= 1412.00:
+        return salario_bruto * 0.075
+    elif salario_bruto <= 2666.68:
+        return salario_bruto * 0.09
+    elif salario_bruto <= 4000.03:
+        return salario_bruto * 0.12
+    else:
+        desconto = salario_bruto * 0.14
+        return min(desconto, 908.85) # Teto do INSS
+
+def calcular_ir(base_calculo):
+    """Calcula o desconto do IR baseado na tabela progressiva de 2025"""
+    if base_calculo <= 2259.20:
+        return 0.0
+    elif base_calculo <= 2826.65:
+        return (base_calculo * 0.075) - 169.44
+    elif base_calculo <= 3751.05:
+        return (base_calculo * 0.15) - 381.44
+    elif base_calculo <= 4664.68:
+        return (base_calculo * 0.225) - 662.77
+    else:
+        return (base_calculo * 0.275) - 896.00
+
+def processar_funcionario(nome, cargo, horas_extras):
+    """Processa os cálculos completos para um funcionário"""
+    tabela_cargos = {
+        'Operário': {'valor_hora': 15.00, 'paga_he': True},
+        'Supervisor': {'valor_hora': 40.00, 'paga_he': True},
+        'Gerente': {'valor_hora': 60.00, 'paga_he': False},
+        'Diretor': {'valor_hora': 80.00, 'paga_he': False}
+    }
+    
+    dados_cargo = tabela_cargos.get(cargo, tabela_cargos['Operário'])
+    valor_hora = dados_cargo['valor_hora']
+    paga_he = dados_cargo['paga_he']
+    
+    salario_bruto = 160 * valor_hora
+    valor_extras = 0.0
+    
+    if paga_he and horas_extras > 0:
+        valor_extras = horas_extras * (valor_hora * 2)
+        salario_bruto += valor_extras
+        
+    desconto_inss = calcular_inss(salario_bruto)
+    base_ir = salario_bruto - desconto_inss
+    desconto_ir = max(0, calcular_ir(base_ir))
+    salario_liquido = salario_bruto - desconto_inss - desconto_ir
+    
+    return {
+        "nome": nome,
+        "cargo": cargo,
+        "valor_hora": valor_hora,
+        "horas_extras": horas_extras,
+        "bruto": salario_bruto,
+        "extras": valor_extras,
+        "inss": desconto_inss,
+        "ir": desconto_ir,
+        "liquido": salario_liquido
+    }
+
 def calcular_folha_pagamento():
     """
     Calcula a folha de pagamento completa com descontos de INSS e IR.
-    
-    Funcionalidades:
-    ----------------
-    1. Cadastra funcionários com cargo e horas trabalhadas
-    2. Calcula salário base conforme cargo
-    3. Calcula horas extras (quando aplicável)
-    4. Aplica desconto de INSS (progressivo)
-    5. Aplica desconto de IR (progressivo)
-    6. Gera relatório ordenado por nome
+    Modo interativo para console.
     """
+
     
     print("\n" + "="*50)
     print("   MÓDULO 4: RECURSOS HUMANOS - FOLHA DE PAGAMENTO")
@@ -109,136 +168,27 @@ def calcular_folha_pagamento():
             paga_hora_extra = True
         
         # ====================================================================
-        # PASSO 2.3: CALCULAR SALÁRIO BRUTO (BASE: 160 HORAS MENSAIS)
+        # PASSO 2.3: CALCULAR SALÁRIO BRUTO E DESCONTOS (USANDO FUNÇÕES PURAS)
         # ====================================================================
-        # Salário base = 160 horas × Valor por hora
-        salario_bruto = 160 * valor_hora
-        valor_extras = 0.0
-        horas_extras = 0.0
         
-        # Verificar se o cargo tem direito a hora extra
-        if paga_hora_extra:
-            try:
-                horas_extras = float(input(f"⏰ Quantas horas extras {nome} fez este mês? "))
-                
-                if horas_extras < 0:
-                    print("⚠️  Horas extras não podem ser negativas! Usando 0.")
-                    horas_extras = 0
-                
-                # Hora extra vale o DOBRO (100% a mais)
-                valor_extras = horas_extras * (valor_hora * 2)
-                salario_bruto += valor_extras
-                
-            except ValueError:
-                print("⚠️  Valor inválido! Assumindo 0 horas extras.")
-                horas_extras = 0
-        else:
-            print(f"ℹ️  {cargo} não recebe horas extras conforme política da empresa.")
+        # Processar dados usando a função refatorada
+        resultado = processar_funcionario(nome, cargo, horas_extras)
+        
+        # Extrair valores para exibição
+        salario_bruto = resultado['bruto']
+        desconto_inss = resultado['inss']
+        desconto_ir = resultado['ir']
+        salario_liquido = resultado['liquido']
+        valor_extras = resultado['extras']
+        valor_hora = resultado['valor_hora']
         
         print(f"\n💰 Salário bruto (antes dos descontos): R$ {salario_bruto:.2f}")
-        
-        # ====================================================================
-        # PASSO 2.4: CALCULAR DESCONTO DO INSS (PROGRESSIVO)
-        # ====================================================================
-        # Tabela INSS 2025 (simplificada):
-        # Até R$ 1.412,00        → 7,5%
-        # De R$ 1.412,01 a R$ 2.666,68  → 9%
-        # De R$ 2.666,69 a R$ 4.000,03  → 12%
-        # Acima de R$ 4.000,04   → 14% (limitado ao teto)
-        
-        desconto_inss = 0
-        
-        if salario_bruto <= 1412.00:
-            desconto_inss = salario_bruto * 0.075
-            aliquota_inss = "7,5%"
-            
-        elif salario_bruto <= 2666.68:
-            desconto_inss = salario_bruto * 0.09
-            aliquota_inss = "9%"
-            
-        elif salario_bruto <= 4000.03:
-            desconto_inss = salario_bruto * 0.12
-            aliquota_inss = "12%"
-            
-        else:
-            desconto_inss = salario_bruto * 0.14
-            aliquota_inss = "14%"
-            
-            # Limitando ao teto do INSS (valor máximo de desconto)
-            teto_inss = 908.85
-            if desconto_inss > teto_inss:
-                desconto_inss = teto_inss
-                aliquota_inss = "14% (teto)"
-        
-        print(f"📊 INSS ({aliquota_inss}): R$ {desconto_inss:.2f}")
-        
-        # ====================================================================
-        # PASSO 2.5: CALCULAR DESCONTO DO IMPOSTO DE RENDA (IRPF)
-        # ====================================================================
-        # Base de cálculo = Salário Bruto - INSS
-        base_ir = salario_bruto - desconto_inss
-        
-        # Tabela IR 2025 (simplificada):
-        # Até R$ 2.259,20        → Isento (0%)
-        # De R$ 2.259,21 a R$ 2.826,65  → 7,5% (- R$ 169,44)
-        # De R$ 2.826,66 a R$ 3.751,05  → 15% (- R$ 381,44)
-        # De R$ 3.751,06 a R$ 4.664,68  → 22,5% (- R$ 662,77)
-        # Acima de R$ 4.664,68   → 27,5% (- R$ 896,00)
-        
-        desconto_ir = 0
-        aliquota_ir = "Isento"
-        
-        if base_ir <= 2259.20:
-            desconto_ir = 0
-            aliquota_ir = "Isento"
-            
-        elif base_ir <= 2826.65:
-            desconto_ir = (base_ir * 0.075) - 169.44
-            aliquota_ir = "7,5%"
-            
-        elif base_ir <= 3751.05:
-            desconto_ir = (base_ir * 0.15) - 381.44
-            aliquota_ir = "15%"
-            
-        elif base_ir <= 4664.68:
-            desconto_ir = (base_ir * 0.225) - 662.77
-            aliquota_ir = "22,5%"
-            
-        else:
-            desconto_ir = (base_ir * 0.275) - 896.00
-            aliquota_ir = "27,5%"
-        
-        # Garantir que o IR não seja negativo
-        if desconto_ir < 0:
-            desconto_ir = 0
-        
-        print(f"📊 IR ({aliquota_ir}): R$ {desconto_ir:.2f}")
-        
-        # ====================================================================
-        # PASSO 2.6: CALCULAR SALÁRIO LÍQUIDO
-        # ====================================================================
-        # Salário Líquido = Salário Bruto - INSS - IR
-        salario_liquido = salario_bruto - desconto_inss - desconto_ir
-        
+        print(f"📊 INSS: R$ {desconto_inss:.2f}")
+        print(f"📊 IR: R$ {desconto_ir:.2f}")
         print(f"\n✅ Salário líquido (a receber): R$ {salario_liquido:.2f}")
         
-        # ====================================================================
-        # PASSO 2.7: SALVAR OS DADOS NO DICIONÁRIO
-        # ====================================================================
-        funcionario = {
-            "nome": nome,
-            "cargo": cargo,
-            "valor_hora": valor_hora,
-            "horas_extras": horas_extras,
-            "bruto": salario_bruto,
-            "extras": valor_extras,
-            "inss": desconto_inss,
-            "ir": desconto_ir,
-            "liquido": salario_liquido
-        }
-        
         # Adiciona o funcionário à lista
-        lista_funcionarios.append(funcionario)
+        lista_funcionarios.append(resultado)
         print("\n✅ Funcionário cadastrado com sucesso!")
     
     # ========================================================================

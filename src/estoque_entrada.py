@@ -3,32 +3,32 @@
 # MÓDULO 2: ESTOQUE - ENTRADA DE PRODUTOS
 # ============================================================================
 # Este módulo é responsável por cadastrar novos produtos no estoque.
-# Utiliza LISTAS e DICIONÁRIOS para armazenar os dados.
+# Utiliza BANCO DE DADOS (SQLAlchemy) para armazenar os dados.
 # 
 # CONCEITOS DEMONSTRADOS:
-# - Estrutura de dados: Lista (list)
-# - Estrutura de dados: Dicionário (dict)
+# - Interação com Banco de Dados
 # - Laços de repetição (for)
 # - Estruturas condicionais (if/else)
-# - Busca em listas
 # - Validação e tratamento de duplicidade
 # ============================================================================
 
-def cadastrar_produto(lista_produtos):
+from src.database import Produto
+
+def cadastrar_produto(db_session):
     """
-    Cadastra novos produtos na lista de estoque.
+    Cadastra novos produtos no banco de dados.
     
     Parâmetros:
     -----------
-    lista_produtos : list
-        Lista que contém todos os produtos cadastrados (passada por referência)
+    db_session : Session
+        Sessão do banco de dados SQLAlchemy
     
     Funcionalidades:
     ----------------
     1. Permite cadastrar múltiplos produtos em sequência
-    2. Verifica duplicidade pelo código do produto
+    2. Verifica duplicidade pelo código do produto no banco
     3. Se o produto já existe, apenas atualiza a quantidade (soma)
-    4. Se é novo, solicita todas as informações e adiciona à lista
+    4. Se é novo, solicita todas as informações e adiciona ao banco
     """
     
     print("\n" + "="*50)
@@ -81,24 +81,21 @@ def cadastrar_produto(lista_produtos):
         # ====================================================================
         # PASSO 2.2: VERIFICAR SE O PRODUTO JÁ EXISTE (EVITAR DUPLICIDADE)
         # ====================================================================
-        # Esta variável controla se encontramos o produto na lista
-        produto_encontrado = False
+        # Busca no banco de dados pelo código
+        produto_existente = db_session.query(Produto).filter_by(codigo=codigo).first()
         
-        # Varre a lista inteira procurando se o código já existe
-        for produto in lista_produtos:
-            # Compara o código do produto atual com o código digitado
-            if produto['codigo'] == codigo:
-                # PRODUTO JÁ EXISTE: Apenas soma a quantidade (fusão/atualização)
-                produto['quantidade'] += quantidade_nova
-                print(f"\n✅ Produto '{produto['nome']}' já existe no estoque!")
-                print(f"   Quantidade atualizada: {produto['quantidade']} unidades")
-                produto_encontrado = True
-                break  # Para de procurar pois já achou
+        if produto_existente:
+            # PRODUTO JÁ EXISTE: Apenas soma a quantidade (fusão/atualização)
+            produto_existente.quantidade += quantidade_nova
+            db_session.commit() # Salva a alteração
+            
+            print(f"\n✅ Produto '{produto_existente.nome}' já existe no estoque!")
+            print(f"   Quantidade atualizada: {produto_existente.quantidade} unidades")
         
         # ====================================================================
         # PASSO 2.3: SE NÃO ACHOU, CADASTRAR NOVO PRODUTO
         # ====================================================================
-        if not produto_encontrado:
+        else:
             # Solicita os dados completos do novo produto
             print("\n🆕 Produto novo! Coletando informações adicionais...")
             
@@ -118,23 +115,21 @@ def cadastrar_produto(lista_produtos):
                 valor = 0.0
             
             # ================================================================
-            # CRIAR O DICIONÁRIO DO PRODUTO
+            # CRIAR O OBJETO DO PRODUTO
             # ================================================================
-            # Um dicionário armazena pares chave:valor
-            # É como uma ficha com várias informações sobre o produto
-            novo_produto = {
-                "codigo": codigo,           # Código único do produto
-                "nome": nome,               # Nome/descrição
-                "quantidade": quantidade_nova,  # Quantidade em estoque
-                "data": data,               # Data de fabricação
-                "fornecedor": fornecedor,   # Quem forneceu
-                "local": local,             # Onde está guardado
-                "valor": valor              # Preço unitário
-            }
+            novo_produto = Produto(
+                codigo=codigo,
+                nome=nome,
+                quantidade=quantidade_nova,
+                data=data,
+                fornecedor=fornecedor,
+                local=local,
+                valor=valor
+            )
             
-            # Adiciona o dicionário na lista principal
-            # O método .append() adiciona ao final da lista
-            lista_produtos.append(novo_produto)
+            # Adiciona ao banco de dados
+            db_session.add(novo_produto)
+            db_session.commit()
             
             print("\n✅ Produto cadastrado com sucesso!")
             print(f"   Código: {codigo}")
@@ -145,47 +140,44 @@ def cadastrar_produto(lista_produtos):
     # ========================================================================
     # PASSO 3: EXIBIR RESUMO DO ESTOQUE
     # ========================================================================
-    print("\n" + "="*50)
-    print(f"   RESUMO DO ESTOQUE")
-    print("="*50)
-    print(f"📦 Total de produtos diferentes: {len(lista_produtos)}")
-    
-    # Calcular quantidade total de itens
-    total_itens = sum(produto['quantidade'] for produto in lista_produtos)
-    print(f"📊 Total de itens em estoque: {total_itens} unidades")
-    
-    # Calcular valor total do estoque
-    valor_total = sum(produto['quantidade'] * produto['valor'] for produto in lista_produtos)
-    print(f"💰 Valor total do estoque: R$ {valor_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print("="*50)
+    listar_estoque(db_session)
 
 
-def listar_estoque(lista_produtos):
+def listar_estoque(db_session):
     """
     Função auxiliar para listar todos os produtos em estoque.
     
     Parâmetros:
     -----------
-    lista_produtos : list
-        Lista contendo todos os produtos cadastrados
+    db_session : Session
+        Sessão do banco de dados
     """
+    produtos = db_session.query(Produto).all()
     
-    if len(lista_produtos) == 0:
+    if not produtos:
         print("\n⚠️  Estoque vazio! Nenhum produto cadastrado.")
         return
     
     print("\n" + "="*50)
     print("   LISTA COMPLETA DE PRODUTOS")
     print("="*50)
+    print(f"📦 Total de produtos diferentes: {len(produtos)}")
     
-    for i, produto in enumerate(lista_produtos, 1):
-        print(f"\n{i}. {produto['nome']}")
-        print(f"   Código: {produto['codigo']}")
-        print(f"   Quantidade: {produto['quantidade']} unidades")
-        print(f"   Valor: R$ {produto['valor']:.2f}")
-        print(f"   Local: {produto['local']}")
-        print(f"   Fornecedor: {produto['fornecedor']}")
-        print(f"   Data: {produto['data']}")
+    total_itens = sum(p.quantidade for p in produtos)
+    print(f"📊 Total de itens em estoque: {total_itens} unidades")
+    
+    valor_total = sum(p.quantidade * p.valor for p in produtos)
+    print(f"💰 Valor total do estoque: R$ {valor_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print("="*50)
+    
+    for i, produto in enumerate(produtos, 1):
+        print(f"\n{i}. {produto.nome}")
+        print(f"   Código: {produto.codigo}")
+        print(f"   Quantidade: {produto.quantidade} unidades")
+        print(f"   Valor: R$ {produto.valor:.2f}")
+        print(f"   Local: {produto.local}")
+        print(f"   Fornecedor: {produto.fornecedor}")
+        print(f"   Data: {produto.data}")
     
     print("="*50)
 

@@ -13,18 +13,50 @@
 # - Projeções financeiras
 # ============================================================================
 
+# ============================================================================
+# FUNÇÕES DE CÁLCULO (LÓGICA PURA)
+# ============================================================================
+
+def calcular_metricas_financeiras(agua, luz, impostos, salarios, total_pallets=1000):
+    """Realiza todos os cálculos financeiros e retorna um dicionário com os resultados"""
+    custo_total = agua + luz + impostos + salarios
+    custo_por_pallet = custo_total / total_pallets if total_pallets > 0 else 0
+    
+    margem_lucro = 0.50
+    preco_venda = custo_por_pallet * (1 + margem_lucro)
+    lucro_por_unidade = preco_venda - custo_por_pallet
+    
+    receita_mensal = preco_venda * total_pallets
+    lucro_mensal = lucro_por_unidade * total_pallets
+    
+    receita_anual = receita_mensal * 12
+    lucro_anual = lucro_mensal * 12
+    
+    margem_lucro_real = (lucro_mensal / receita_mensal * 100) if receita_mensal > 0 else 0
+    ponto_equilibrio = custo_total / lucro_por_unidade if lucro_por_unidade > 0 else 0
+    roi = (lucro_mensal / custo_total * 100) if custo_total > 0 else 0
+    
+    return {
+        "custo_total": custo_total,
+        "custo_por_pallet": custo_por_pallet,
+        "preco_venda": preco_venda,
+        "lucro_por_unidade": lucro_por_unidade,
+        "receita_mensal": receita_mensal,
+        "lucro_mensal": lucro_mensal,
+        "receita_anual": receita_anual,
+        "lucro_anual": lucro_anual,
+        "margem_lucro_real": margem_lucro_real,
+        "ponto_equilibrio": ponto_equilibrio,
+        "roi": roi,
+        "margem_lucro_alvo": margem_lucro
+    }
+
 def calcular_lucros():
     """
     Calcula custos operacionais, define preço de venda e projeta lucros.
-    
-    Funcionalidades:
-    ----------------
-    1. Coleta despesas mensais (água, luz, impostos, salários)
-    2. Calcula custo total operacional
-    3. Calcula custo unitário por pallet
-    4. Define preço de venda com margem de 50%
-    5. Projeta lucro mensal e anual
+    Modo interativo para console.
     """
+
     
     print("\n" + "="*50)
     print("   MÓDULO 3: FINANCEIRO - CUSTOS E LUCROS")
@@ -52,10 +84,26 @@ def calcular_lucros():
         return
     
     # ========================================================================
-    # PASSO 2: CALCULAR O CUSTO TOTAL MENSAL
+    # PASSO 2: CALCULAR O CUSTO TOTAL E MÉTRICAS (USANDO FUNÇÃO PURA)
     # ========================================================================
-    # Soma todas as despesas para obter o custo operacional total
-    custo_total = agua + luz + impostos + salarios
+    total_pallets = 1000
+    print(f"\n📦 Volume de movimentação mensal: {total_pallets} pallets")
+    
+    dados = calcular_metricas_financeiras(agua, luz, impostos, salarios, total_pallets)
+    
+    # Extrair dados para exibição
+    custo_total = dados['custo_total']
+    custo_por_pallet = dados['custo_por_pallet']
+    preco_venda = dados['preco_venda']
+    lucro_por_unidade = dados['lucro_por_unidade']
+    receita_mensal = dados['receita_mensal']
+    lucro_mensal = dados['lucro_mensal']
+    receita_anual = dados['receita_anual']
+    lucro_anual = dados['lucro_anual']
+    margem_lucro_real = dados['margem_lucro_real']
+    ponto_equilibrio = dados['ponto_equilibrio']
+    roi = dados['roi']
+    margem_lucro = dados['margem_lucro_alvo']
     
     print("\n" + "-"*50)
     print("📊 ANÁLISE DE CUSTOS")
@@ -67,27 +115,7 @@ def calcular_lucros():
     print("-"*50)
     print(f"💵 CUSTO TOTAL:   R$ {custo_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     
-    # ========================================================================
-    # PASSO 3: CALCULAR CUSTO UNITÁRIO POR PALLET
-    # ========================================================================
-    # Cenário: A empresa movimenta 1000 pallets por mês
-    total_pallets = 1000
-    
-    print(f"\n📦 Volume de movimentação mensal: {total_pallets} pallets")
-    
-    # Custo unitário = Custo Total / Quantidade de Pallets
-    # Representa quanto custa para a empresa movimentar 1 pallet
-    custo_por_pallet = custo_total / total_pallets
-    
     print(f"📊 Custo real por pallet: R$ {custo_por_pallet:.2f}")
-    
-    # ========================================================================
-    # PASSO 4: DEFINIR PREÇO DE VENDA (MARGEM DE LUCRO 50%)
-    # ========================================================================
-    # Para lucrar 50% sobre o custo, multiplicamos por 1.5
-    # Exemplo: Se custa R$ 100, vender por R$ 150 = 50% de lucro
-    margem_lucro = 0.50  # 50%
-    preco_venda = custo_por_pallet * (1 + margem_lucro)
     
     print("\n" + "-"*50)
     print("💹 PRECIFICAÇÃO")
@@ -96,39 +124,10 @@ def calcular_lucros():
     print(f"💰 Preço de venda sugerido: R$ {preco_venda:.2f} por pallet")
     
     # ========================================================================
-    # PASSO 5: CALCULAR LUCROS (BRUTO E LÍQUIDO)
+    # PASSO 5: EXIBIR RELATÓRIO FINANCEIRO COMPLETO
     # ========================================================================
+    # (Cálculos já realizados pela função pura)
     
-    # Lucro por unidade = Preço de Venda - Custo
-    lucro_por_unidade = preco_venda - custo_por_pallet
-    
-    # Receita Total = Preço de Venda × Quantidade
-    receita_mensal = preco_venda * total_pallets
-    
-    # Lucro Mensal = Lucro por Unidade × Quantidade
-    lucro_mensal = lucro_por_unidade * total_pallets
-    
-    # Projeção Anual (12 meses)
-    receita_anual = receita_mensal * 12
-    lucro_anual = lucro_mensal * 12
-    
-    # ========================================================================
-    # PASSO 6: CALCULAR INDICADORES FINANCEIROS
-    # ========================================================================
-    
-    # Margem de Lucro Real = (Lucro / Receita) × 100
-    margem_lucro_real = (lucro_mensal / receita_mensal) * 100
-    
-    # Ponto de Equilíbrio = Custo Total / Lucro por Unidade
-    # Representa quantos pallets precisam ser vendidos para cobrir os custos
-    ponto_equilibrio = custo_total / lucro_por_unidade
-    
-    # ROI (Retorno sobre Investimento) = (Lucro / Custo) × 100
-    roi = (lucro_mensal / custo_total) * 100
-    
-    # ========================================================================
-    # PASSO 7: EXIBIR RELATÓRIO FINANCEIRO COMPLETO
-    # ========================================================================
     print("\n" + "="*50)
     print("   RELATÓRIO FINANCEIRO DETALHADO")
     print("="*50)

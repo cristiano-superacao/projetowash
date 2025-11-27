@@ -12,16 +12,38 @@
 # - Formatação de saída de dados
 # ============================================================================
 
+# ============================================================================
+# FUNÇÕES DE CÁLCULO (LÓGICA PURA)
+# ============================================================================
+
+def calcular_metricas_capacidade(turnos):
+    """Calcula as métricas de capacidade baseada nos turnos"""
+    capacidade_por_turno = 1666
+    capacidade_diaria = capacidade_por_turno * turnos
+    capacidade_mensal = capacidade_diaria * 30
+    capacidade_anual = capacidade_mensal * 12
+    
+    capacidade_maxima_diaria = capacidade_por_turno * 3
+    diferenca = capacidade_maxima_diaria - capacidade_diaria
+    percentual_uso = (capacidade_diaria / capacidade_maxima_diaria) * 100
+    
+    return {
+        "turnos": turnos,
+        "capacidade_por_turno": capacidade_por_turno,
+        "capacidade_diaria": capacidade_diaria,
+        "capacidade_mensal": capacidade_mensal,
+        "capacidade_anual": capacidade_anual,
+        "capacidade_maxima_diaria": capacidade_maxima_diaria,
+        "diferenca": diferenca,
+        "percentual_uso": percentual_uso
+    }
+
 def calcular_capacidade():
     """
     Calcula a capacidade de produção da fábrica baseada nos turnos ativos.
-    
-    A função realiza os seguintes cálculos:
-    1. Capacidade diária (turnos × capacidade por turno)
-    2. Capacidade mensal (capacidade diária × 30 dias)
-    3. Capacidade anual (capacidade mensal × 12 meses)
-    4. Diferença para a capacidade máxima (3 turnos)
+    Modo interativo para console.
     """
+
     
     print("\n" + "="*50)
     print("   MÓDULO 1: OPERACIONAL - CAPACIDADE DE PRODUÇÃO")
@@ -54,27 +76,17 @@ def calcular_capacidade():
         return
         
     # ========================================================================
-    # PASSO 3: REALIZAR OS CÁLCULOS DE CAPACIDADE
+    # PASSO 3: REALIZAR OS CÁLCULOS DE CAPACIDADE (USANDO FUNÇÃO PURA)
     # ========================================================================
     
-    # Capacidade Diária = Turnos Ativos × Capacidade por Turno
-    capacidade_diaria = capacidade_por_turno * turnos
+    dados = calcular_metricas_capacidade(turnos)
     
-    # Capacidade Mensal = Capacidade Diária × 30 dias
-    capacidade_mensal = capacidade_diaria * 30
-    
-    # Capacidade Anual = Capacidade Mensal × 12 meses
-    capacidade_anual = capacidade_mensal * 12
-    
-    # ========================================================================
-    # PASSO 4: CALCULAR A DIFERENÇA PARA A CAPACIDADE MÁXIMA
-    # ========================================================================
-    # A capacidade máxima seria com 3 turnos funcionando
-    capacidade_maxima_diaria = capacidade_por_turno * 3
-    diferenca = capacidade_maxima_diaria - capacidade_diaria
-    
-    # Calcular a porcentagem de uso da capacidade
-    percentual_uso = (capacidade_diaria / capacidade_maxima_diaria) * 100
+    capacidade_diaria = dados['capacidade_diaria']
+    capacidade_mensal = dados['capacidade_mensal']
+    capacidade_anual = dados['capacidade_anual']
+    percentual_uso = dados['percentual_uso']
+    diferenca = dados['diferenca']
+    capacidade_maxima_diaria = dados['capacidade_maxima_diaria']
     
     # ========================================================================
     # PASSO 5: EXIBIR RELATÓRIO COMPLETO
