@@ -17,7 +17,7 @@ from functools import wraps
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # Importar módulos refatorados e banco de dados
-from database import init_db, get_db, Produto, SessionLocal
+from database import init_db, get_db, Produto, Funcionario, SessionLocal
 from operacional import calcular_metricas_capacidade
 from financeiro import calcular_metricas_financeiras
 from rh import processar_funcionario
@@ -355,6 +355,73 @@ def calcular_rh_api():
         
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+
+# ============================================================================
+# API ENDPOINTS - MÓDULO RH (CRUD)
+# ============================================================================
+
+@app.route('/api/rh/funcionarios', methods=['GET'])
+def listar_funcionarios():
+    """Retorna todos os funcionários cadastrados"""
+    db = SessionLocal()
+    try:
+        funcionarios = db.query(Funcionario).all()
+        lista_funcionarios = [f.to_dict() for f in funcionarios]
+        return jsonify({'success': True, 'data': lista_funcionarios})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        db.close()
+
+@app.route('/api/rh/funcionarios', methods=['POST'])
+@require_api_key
+def cadastrar_funcionario():
+    """Cadastra um novo funcionário"""
+    db = SessionLocal()
+    try:
+        data = request.get_json()
+        nome = data.get('nome', '').strip()
+        cargo = data.get('cargo', '').strip()
+        admissao = data.get('admissao', '')
+
+        if not nome or not cargo:
+            return jsonify({'success': False, 'error': 'Nome e Cargo são obrigatórios'}), 400
+
+        novo_func = Funcionario(nome=nome, cargo=cargo, admissao=admissao)
+        db.add(novo_func)
+        db.commit()
+        
+        return jsonify({'success': True, 'message': 'Funcionário cadastrado com sucesso', 'data': novo_func.to_dict()})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        db.close()
+
+@app.route('/api/rh/funcionarios/<int:id>', methods=['DELETE'])
+@require_api_key
+def excluir_funcionario(id):
+    """Exclui um funcionário (Requer senha de admin)"""
+    # Simulação de verificação de admin extra
+    admin_pass = request.headers.get('X-Admin-Pass')
+    # Em produção, isso estaria em variavel de ambiente
+    if admin_pass != 'admin123': 
+        return jsonify({'success': False, 'error': 'Acesso negado. Requer senha de administrador.'}), 403
+
+    db = SessionLocal()
+    try:
+        func = db.query(Funcionario).filter(Funcionario.id == id).first()
+        if not func:
+            return jsonify({'success': False, 'error': 'Funcionário não encontrado'}), 404
+            
+        db.delete(func)
+        db.commit()
+        return jsonify({'success': True, 'message': 'Funcionário excluído com sucesso'})
+    except Exception as e:
+        db.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+    finally:
+        db.close()
 
 # ============================================================================
 # INICIALIZAÇÃO DO SERVIDOR

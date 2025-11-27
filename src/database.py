@@ -44,6 +44,24 @@ class Produto(Base):
             "valor": self.valor_unitario
         }
 
+class Funcionario(Base):
+    """Modelo de dados para Funcionários"""
+    __tablename__ = "funcionarios"
+
+    id = Column(Integer, primary_key=True, index=True)
+    nome = Column(String, index=True)
+    cargo = Column(String)
+    admissao = Column(String)
+    
+    def to_dict(self):
+        """Converte o objeto para dicionário"""
+        return {
+            "id": self.id,
+            "nome": self.nome,
+            "cargo": self.cargo,
+            "admissao": self.admissao
+        }
+
 def init_db():
     """Inicializa o banco de dados criando as tabelas"""
     Base.metadata.create_all(bind=engine)

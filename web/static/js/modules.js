@@ -639,25 +639,62 @@ function exibirResultadoFinanceiro(data) {
 }
 
 // ============================================================================
-// MÓDULO RH
+// MÓDULO RH (COM PERSISTÊNCIA E PESQUISA)
 // ============================================================================
+
+let funcionariosCache = []; // Cache local para pesquisa e cálculo
 
 function loadRHModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-users"></i> Folha de Pagamento
+                <i class="fas fa-users"></i> Gestão de RH e Folha de Pagamento
             </div>
             
-            <div id="funcionariosList"></div>
+            <!-- Formulário de Cadastro -->
+            <div class="card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
+                <h5 class="mb-3"><i class="fas fa-user-plus"></i> Novo Funcionário</h5>
+                <form id="formCadastroFuncionario" onsubmit="cadastrarFuncionarioAPI(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo</label>
+                            <input type="text" id="novoNome" required placeholder="Ex: João da Silva">
+                        </div>
+                        <div class="form-group">
+                            <label>Cargo</label>
+                            <select id="novoCargo" required>
+                                <option value="">Selecione...</option>
+                                <option value="Operário">Operário (R$ 15/h)</option>
+                                <option value="Supervisor">Supervisor (R$ 40/h)</option>
+                                <option value="Gerente">Gerente (R$ 60/h)</option>
+                                <option value="Diretor">Diretor (R$ 80/h)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Admissão</label>
+                            <input type="date" id="novoAdmissao">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="fas fa-save"></i> Salvar Funcionário
+                    </button>
+                </form>
+            </div>
+
+            <!-- Barra de Pesquisa -->
+            <div class="form-group">
+                <label><i class="fas fa-search"></i> Pesquisar Funcionário</label>
+                <input type="text" id="searchFuncionario" onkeyup="filtrarFuncionarios()" placeholder="Digite o nome para buscar...">
+            </div>
+            
+            <!-- Lista de Funcionários -->
+            <div id="listaFuncionariosContainer" class="mb-3">
+                <p class="text-center text-muted">Carregando funcionários...</p>
+            </div>
             
             <div class="button-group">
-                <button class="btn btn-primary" onclick="adicionarFuncionario()">
-                    <i class="fas fa-plus"></i> Adicionar Funcionário
-                </button>
-                
-                <button class="btn btn-success" onclick="calcularFolhaPagamento()">
-                    <i class="fas fa-calculator"></i> Calcular Folha
+                <button class="btn btn-primary" onclick="calcularFolhaPagamentoAPI()">
+                    <i class="fas fa-calculator"></i> Calcular Folha (Mês Atual)
                 </button>
             </div>
             
@@ -666,166 +703,175 @@ function loadRHModule(container) {
     `;
     
     container.innerHTML = html;
+    listarFuncionariosAPI();
 }
 
-let funcionariosCounter = 0;
-
-function adicionarFuncionario() {
-    funcionariosCounter++;
-    const list = document.getElementById('funcionariosList');
+async function cadastrarFuncionarioAPI(event) {
+    event.preventDefault();
     
-    const funcionarioHTML = `
-        <div class="card mb-3" id="func${funcionariosCounter}" style="background: #f9fafb;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h5>Funcionário ${funcionariosCounter}</h5>
-                <button class="btn btn-danger btn-sm" onclick="removerFuncionario(${funcionariosCounter})">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Nome Completo</label>
-                    <input type="text" class="func-nome" required placeholder="Ex: João da Silva">
-                </div>
-                
-                <div class="form-group">
-                    <label>Cargo</label>
-                    <select class="func-cargo" required>
-                        <option value="">Selecione...</option>
-                        <option value="Operário">Operário (R$ 15/h - com HE)</option>
-                        <option value="Supervisor">Supervisor (R$ 40/h - com HE)</option>
-                        <option value="Gerente">Gerente (R$ 60/h - sem HE)</option>
-                        <option value="Diretor">Diretor (R$ 80/h - sem HE)</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Horas Extras</label>
-                <input type="number" class="func-he" min="0" value="0" step="0.5" placeholder="Ex: 5">
-            </div>
-        </div>
-    `;
+    const nome = document.getElementById('novoNome').value.trim();
+    const cargo = document.getElementById('novoCargo').value;
+    const admissao = document.getElementById('novoAdmissao').value;
     
-    if (!list.innerHTML.trim()) {
-        list.innerHTML = funcionarioHTML;
-    } else {
-        list.insertAdjacentHTML('beforeend', funcionarioHTML);
-    }
-}
-
-function removerFuncionario(id) {
-    const elemento = document.getElementById(`func${id}`);
-    if (elemento) {
-        elemento.remove();
-    }
-}
-
-async function calcularFolhaPagamento() {
-    const funcionarios = [];
-    const cards = document.querySelectorAll('#funcionariosList > .card');
-    
-    cards.forEach(card => {
-        const nome = card.querySelector('.func-nome').value.trim();
-        const cargo = card.querySelector('.func-cargo').value;
-        const horasExtras = parseFloat(card.querySelector('.func-he').value) || 0;
-        
-        if (nome && cargo) {
-            funcionarios.push({ nome, cargo, horas_extras: horasExtras });
-        }
-    });
-    
-    if (funcionarios.length === 0) {
-        showToast('Adicione pelo menos um funcionário com nome e cargo', 'warning');
+    if (!nome || !cargo) {
+        showToast('Nome e Cargo são obrigatórios', 'warning');
         return;
     }
     
-    showLoading('Calculando folha de pagamento...');
+    showLoading('Salvando funcionário...');
     
     try {
-        // Tabela de cargos
-        const cargos = {
-            'Operário': { valor_hora: 15, paga_he: true },
-            'Supervisor': { valor_hora: 40, paga_he: true },
-            'Gerente': { valor_hora: 60, paga_he: false },
-            'Diretor': { valor_hora: 80, paga_he: false }
+        await apiRequest('/rh/funcionarios', {
+            method: 'POST',
+            body: JSON.stringify({ nome, cargo, admissao })
+        });
+        
+        showToast('Funcionário cadastrado com sucesso!', 'success');
+        document.getElementById('formCadastroFuncionario').reset();
+        listarFuncionariosAPI(); // Recarrega a lista
+        
+    } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        showToast('Erro ao cadastrar funcionário', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+async function listarFuncionariosAPI() {
+    const container = document.getElementById('listaFuncionariosContainer');
+    
+    try {
+        const response = await apiRequest('/rh/funcionarios', { method: 'GET' });
+        funcionariosCache = response.data || [];
+        
+        renderizarListaFuncionarios(funcionariosCache);
+        
+    } catch (error) {
+        console.error('Erro ao listar:', error);
+        container.innerHTML = '<p class="text-danger">Erro ao carregar funcionários.</p>';
+    }
+}
+
+function renderizarListaFuncionarios(lista) {
+    const container = document.getElementById('listaFuncionariosContainer');
+    
+    if (lista.length === 0) {
+        container.innerHTML = '<p class="text-muted text-center">Nenhum funcionário cadastrado.</p>';
+        return;
+    }
+    
+    let html = '';
+    lista.forEach(func => {
+        html += `
+            <div class="card mb-2 func-card" data-id="${func.id}" style="background: #fff; border-left: 4px solid #007bff;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <strong>${func.nome}</strong><br>
+                        <small class="text-muted">${func.cargo} | Adm: ${func.admissao || 'N/A'}</small>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                        <div class="form-group mb-0" style="width: 120px;">
+                            <label style="font-size: 0.8rem; margin-bottom: 0;">Horas Extras</label>
+                            <input type="number" class="func-he-input" data-id="${func.id}" min="0" value="0" step="0.5" style="padding: 4px;">
+                        </div>
+                        
+                        <button class="btn btn-danger btn-sm" onclick="removerFuncionarioAPI(${func.id})" title="Excluir (Admin)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+function filtrarFuncionarios() {
+    const termo = document.getElementById('searchFuncionario').value.toLowerCase();
+    const filtrados = funcionariosCache.filter(f => f.nome.toLowerCase().includes(termo));
+    renderizarListaFuncionarios(filtrados);
+}
+
+async function removerFuncionarioAPI(id) {
+    // Solicitar senha de admin
+    const senha = prompt("🔒 Área Restrita\nDigite a senha de administrador para excluir:");
+    
+    if (!senha) return; // Cancelado
+    
+    showLoading('Excluindo...');
+    
+    try {
+        // Headers personalizados precisam ser passados de forma específica na nossa função apiRequest
+        // Como apiRequest pode não suportar headers extras facilmente, vamos usar fetch direto ou adaptar
+        // Assumindo que apiRequest suporta headers no options
+        
+        const token = localStorage.getItem('api_key');
+        const headers = {
+            'Content-Type': 'application/json',
+            'X-API-KEY': token,
+            'X-Admin-Pass': senha
         };
-        
-        let resultado = [];
-        let totalBruto = 0, totalINSS = 0, totalIR = 0, totalLiquido = 0;
-        
-        funcionarios.forEach(func => {
-            const info = cargos[func.cargo] || cargos['Operário'];
-            const valorHora = info.valor_hora;
-            const horasNormais = 160; // 20 dias × 8 horas
-            
-            let salarioBruto = horasNormais * valorHora;
-            let valorExtras = 0;
-            
-            if (info.paga_he && func.horas_extras > 0) {
-                valorExtras = func.horas_extras * (valorHora * 1.5);
-                salarioBruto += valorExtras;
-            }
-            
-            // INSS (progressivo)
-            let descINSS = 0;
-            if (salarioBruto <= 1412) descINSS = salarioBruto * 0.075;
-            else if (salarioBruto <= 2666.68) descINSS = salarioBruto * 0.09;
-            else if (salarioBruto <= 4000.03) descINSS = salarioBruto * 0.12;
-            else descINSS = Math.min(salarioBruto * 0.14, 908.85);
-            
-            // IR (progressivo)
-            const baseIR = salarioBruto - descINSS;
-            let descIR = 0;
-            if (baseIR > 2259.20) {
-                if (baseIR <= 2826.65) descIR = (baseIR * 0.075) - 169.44;
-                else if (baseIR <= 3751.05) descIR = (baseIR * 0.15) - 381.44;
-                else if (baseIR <= 4664.68) descIR = (baseIR * 0.225) - 662.77;
-                else descIR = (baseIR * 0.275) - 896;
-            }
-            descIR = Math.max(descIR, 0);
-            
-            const salarioLiquido = salarioBruto - descINSS - descIR;
-            
-            resultado.push({
-                nome: func.nome,
-                cargo: func.cargo,
-                valorHora: valorHora,
-                horasExtras: func.horas_extras,
-                valorExtras: valorExtras,
-                salarioBruto: salarioBruto,
-                descINSS: descINSS,
-                descIR: descIR,
-                salarioLiquido: salarioLiquido
-            });
-            
-            totalBruto += salarioBruto;
-            totalINSS += descINSS;
-            totalIR += descIR;
-            totalLiquido += salarioLiquido;
+
+        const response = await fetch(`${API_BASE_URL}/rh/funcionarios/${id}`, {
+            method: 'DELETE',
+            headers: headers
         });
         
-        resultado.sort((a, b) => a.nome.localeCompare(b.nome));
+        const data = await response.json();
         
-        exibirResultadoRH({
-            funcionarios: resultado,
-            totais: {
-                total_funcionarios: resultado.length,
-                total_bruto: totalBruto,
-                total_inss: totalINSS,
-                total_ir: totalIR,
-                total_liquido: totalLiquido,
-                encargos: totalBruto * 0.2765,
-                custo_total: totalLiquido + totalINSS + totalIR + (totalBruto * 0.2765)
-            }
+        if (response.ok && data.success) {
+            showToast('Funcionário excluído com sucesso!', 'success');
+            listarFuncionariosAPI();
+        } else {
+            showToast(data.error || 'Erro ao excluir (Senha incorreta?)', 'error');
+        }
+        
+    } catch (error) {
+        console.error('Erro ao excluir:', error);
+        showToast('Erro de conexão ao excluir', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
+async function calcularFolhaPagamentoAPI() {
+    // Coletar horas extras dos inputs
+    const inputsHE = document.querySelectorAll('.func-he-input');
+    const mapHE = {};
+    inputsHE.forEach(input => {
+        mapHE[input.dataset.id] = parseFloat(input.value) || 0;
+    });
+    
+    // Preparar dados para envio
+    // Usamos o cache para pegar nome e cargo, e o input para HE
+    const funcionariosParaCalculo = funcionariosCache.map(f => ({
+        nome: f.nome,
+        cargo: f.cargo,
+        horas_extras: mapHE[f.id] || 0
+    }));
+    
+    if (funcionariosParaCalculo.length === 0) {
+        showToast('Nenhum funcionário para calcular', 'warning');
+        return;
+    }
+    
+    showLoading('Calculando folha...');
+    
+    try {
+        const response = await apiRequest('/rh/calcular', {
+            method: 'POST',
+            body: JSON.stringify({ funcionarios: funcionariosParaCalculo })
         });
         
-        showToast('✅ Folha calculada com sucesso!', 'success');
+        exibirResultadoRH(response.data);
+        showToast('Folha calculada com sucesso!', 'success');
         
     } catch (error) {
         console.error('Erro ao calcular:', error);
-        showToast('Erro ao calcular folha de pagamento', 'error');
+        showToast('Erro ao calcular folha', 'error');
     } finally {
         hideLoading();
     }
@@ -901,11 +947,11 @@ function exibirResultadoRH(data) {
                     </tr>
                     <tr>
                         <td>Encargos Patronais (27,65%):</td>
-                        <td>${formatCurrency(data.totais.encargos)}</td>
+                        <td>${formatCurrency(data.totais.encargos_patronais)}</td>
                     </tr>
                     <tr style="font-weight: bold; background: #fff3e0;">
                         <td>Custo Total para Empresa:</td>
-                        <td>${formatCurrency(data.totais.custo_total)}</td>
+                        <td>${formatCurrency(data.totais.custo_total_empresa)}</td>
                     </tr>
                 </table>
             </div>
@@ -914,6 +960,9 @@ function exibirResultadoRH(data) {
     
     resultado.innerHTML = html;
     resultado.classList.remove('hidden');
+    
+    // Scroll para o resultado
+    resultado.scrollIntoView({ behavior: 'smooth' });
 }
 
 // ============================================================================
