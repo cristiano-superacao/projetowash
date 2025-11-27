@@ -151,6 +151,22 @@ async function apiRequest(endpoint, options = {}) {
             headers['X-API-KEY'] = SERVER_API_KEY;
         }
 
+        // Adicionar header de Role para RBAC (Segurança)
+        const user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : (typeof currentUser !== 'undefined' ? currentUser : null);
+        const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
+        
+        if (user || isUserAdmin) {
+            let role = 'user';
+            if (isUserAdmin) {
+                role = 'admin';
+            } else if (user && ['Gerente', 'Diretor', 'Supervisor', 'RH', 'Estoque'].includes(user.cargo)) {
+                // Cargos de gestão ou específicos assumem papel de manager para suas áreas
+                // Na implementação real, o backend validaria se o manager tem permissão para a área específica
+                role = 'manager';
+            }
+            headers['X-User-Role'] = role;
+        }
+
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
             headers: headers,
             ...options

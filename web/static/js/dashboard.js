@@ -25,8 +25,8 @@ async function loadDashboard() {
         // Carregar historico
         loadHistoricoRecente(stats.movimentacoes);
         
-        // Carregar graficos
-        await loadCharts();
+        // Carregar graficos e verificar estoque baixo
+        await loadChartsAndAlerts();
         
         hideLoading();
         
@@ -78,8 +78,8 @@ function loadHistoricoRecente(movimentacoes) {
     container.innerHTML = html;
 }
 
-// Carregar graficos
-async function loadCharts() {
+// Carregar graficos e alertas
+async function loadChartsAndAlerts() {
     try {
         let produtos = [];
         let movimentacoes = [];
@@ -98,6 +98,9 @@ async function loadCharts() {
             ]);
         }
         
+        // Verificar estoque baixo
+        checkLowStock(produtos);
+
         // Grafico de Movimentacoes
         loadChartMovimentacoes(movimentacoes);
         
@@ -106,6 +109,35 @@ async function loadCharts() {
         
     } catch (error) {
         console.error('Erro ao carregar graficos:', error);
+    }
+}
+
+// Verificar estoque baixo
+function checkLowStock(produtos) {
+    const container = document.getElementById('stockAlerts');
+    const threshold = 10; // Limite para alerta
+    
+    const lowStockItems = produtos.filter(p => p.quantidade <= threshold);
+    
+    if (lowStockItems.length > 0) {
+        const itemsHtml = lowStockItems.map(p => `
+            <li>
+                <strong>${p.nome}</strong>: Restam apenas <span class="badge-danger">${p.quantidade}</span> unidades
+            </li>
+        `).join('');
+        
+        container.innerHTML = `
+            <div class="alert alert-warning" style="display: block; margin-bottom: 20px;">
+                <h4><i class="fas fa-exclamation-triangle"></i> Alerta de Estoque Baixo</h4>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    ${itemsHtml}
+                </ul>
+            </div>
+        `;
+        container.classList.remove('hidden');
+    } else {
+        container.classList.add('hidden');
+        container.innerHTML = '';
     }
 }
 

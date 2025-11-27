@@ -643,6 +643,7 @@ function exibirResultadoFinanceiro(data) {
 // ============================================================================
 
 let funcionariosCache = []; // Cache local para pesquisa e cálculo
+let lastCalculatedFolha = null; // Cache para exportação PDF
 
 function loadRHModule(container) {
     const html = `
@@ -878,6 +879,7 @@ async function calcularFolhaPagamentoAPI() {
 }
 
 function exibirResultadoRH(data) {
+    lastCalculatedFolha = data; // Salvar para exportação
     const resultado = document.getElementById('resultadoRH');
     
     let tabelaHTML = '';
@@ -899,7 +901,12 @@ function exibirResultadoRH(data) {
     
     const html = `
         <div class="card">
-            <h4><i class="fas fa-file-invoice"></i> Folha de Pagamento</h4>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h4 style="margin: 0;"><i class="fas fa-file-invoice"></i> Folha de Pagamento</h4>
+                <button class="btn btn-danger btn-sm" onclick="exportarFolhaPDF()">
+                    <i class="fas fa-file-pdf"></i> Exportar PDF
+                </button>
+            </div>
             
             <div class="table-container">
                 <table>
@@ -1007,7 +1014,12 @@ async function loadVisualizarModule(container) {
             
             const html = `
                 <div class="card">
-                    <h4><i class="fas fa-warehouse"></i> Estoque Completo</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h4 style="margin: 0;"><i class="fas fa-warehouse"></i> Estoque Completo</h4>
+                        <button class="btn btn-danger btn-sm" onclick="exportarEstoquePDF()">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </div>
                     
                     <div class="stats-row">
                         <div class="stat-item">
@@ -1060,6 +1072,147 @@ async function loadVisualizarModule(container) {
         console.error('Erro ao carregar estoque:', error);
         showToast('Erro ao carregar estoque', 'error');
         container.innerHTML = `<div class="card alert alert-error"><p>Erro ao carregar estoque</p></div>`;
+    } finally {
+        hideLoading();
+    }
+}
+
+// ============================================================================
+// FUNÇÕES DE EXPORTAÇÃO PDF
+// ============================================================================
+
+async function exportarFolhaPDF() {
+    if (!lastCalculatedFolha) {
+        showToast('Nenhuma folha calculada para exportar', 'warning');
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Cabeçalho
+    doc.setFontSize(18);
+    doc.text('Estoque Certo LTDA', 14, 22);
+    doc.setFontSize(14);
+    doc.text('Relatório de Folha de Pagamento', 14, 32);
+    doc.setFontSize(10);
+    doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
+    
+    // Tabela de Funcionários
+    const tableColumn = ["Nome", "Cargo", "Valor/h", "HE", "Bruto", "INSS", "IR", "Líquido"];
+    const tableRows = [];
+
+    lastCalculatedFolha.funcionarios.forEach(func => {
+        const row = [
+            func.nome,
+            func.cargo,
+            formatCurrency(func.valorHora),
+            func.horasExtras || '-',
+            formatCurrency(func.salarioBruto),
+            formatCurrency(func.descINSS),
+            formatCurrency(func.descIR),
+            formatCurrency(func.salarioLiquido)
+        ];
+        tableRows.push(row);
+    });
+
+    doc.autoTable({
+        head: [tableColumn],
+        body: tableRows,
+        startY: 50,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [41, 128, 185] }
+    });
+    
+    // Totais
+    const finalY = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(12);
+    doc.text('Resumo Financeiro:', 14, finalY);
+    
+    const totais = lastCalculatedFolha.totais;
+    doc.setFontSize(10);
+    doc.text(`Total Bruto: ${formatCurrency(totais.total_bruto)}`, 14, finalY + 10);
+    doc.text(`Total Líquido: ${formatCurrency(totais.total_liquido)}`, 14, finalY + 16);
+    doc.text(`Encargos Patronais: ${formatCurrency(totais.encargos_patronais)}`, 14, finalY + 22);
+    doc.text(`Custo Total Empresa: ${formatCurrency(totais.custo_total_empresa)}`, 14, finalY + 28);
+    
+    doc.save('folha_pagamento.pdf');
+    showToast('PDF gerado com sucesso!', 'success');
+}
+
+async function exportarEstoquePDF() {
+    showLoading('Gerando PDF...');
+    
+    try {
+        let produtos = [];
+        if (typeof listarProdutosLocal !== 'undefined') {
+            produtos = await listarProdutosLocal();
+        } else {
+            const response = await apiRequest('/estoque/produtos', { method: 'GET' });
+            produtos = response.data.produtos || [];
+        }
+        
+        if (produtos.length === 0) {
+            showToast('Estoque vazio', 'warning');
+            return;
+        }
+
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // Cabeçalho
+        doc.setFontSize(18);
+        doc.text('Estoque Certo LTDA', 14, 22);
+        doc.setFontSize(14);
+        doc.text('Relatório de Estoque', 14, 32);
+        doc.setFontSize(10);
+        doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
+        
+        // Tabela
+        const tableColumn = ["Cód", "Produto", "Qtd", "Valor Unit.", "Total", "Local"];
+        const tableRows = [];
+        
+        let valorTotalEstoque = 0;
+        let totalItens = 0;
+
+        produtos.forEach(prod => {
+            const total = prod.quantidade * prod.valor;
+            valorTotalEstoque += total;
+            totalItens += prod.quantidade;
+            
+            const row = [
+                prod.codigo,
+                prod.nome,
+                prod.quantidade,
+                formatCurrency(prod.valor),
+                formatCurrency(total),
+                prod.local
+            ];
+            tableRows.push(row);
+        });
+
+        doc.autoTable({
+            head: [tableColumn],
+            body: tableRows,
+            startY: 50,
+            theme: 'striped',
+            styles: { fontSize: 9 },
+            headStyles: { fillColor: [39, 174, 96] }
+        });
+        
+        // Totais
+        const finalY = doc.lastAutoTable.finalY + 10;
+        doc.setFontSize(10);
+        doc.text(`Total de Itens: ${totalItens}`, 14, finalY);
+        doc.text(`Valor Total em Estoque: ${formatCurrency(valorTotalEstoque)}`, 14, finalY + 6);
+        
+        doc.save('relatorio_estoque.pdf');
+        showToast('PDF gerado com sucesso!', 'success');
+        
+    } catch (error) {
+        console.error('Erro ao gerar PDF:', error);
+        showToast('Erro ao gerar PDF', 'error');
     } finally {
         hideLoading();
     }

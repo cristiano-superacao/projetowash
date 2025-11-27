@@ -47,6 +47,35 @@ def require_api_key(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Middleware de Controle de Acesso Baseado em Função (RBAC)
+def require_role(required_role):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            # Simulação: Em produção, isso viria de um token JWT ou sessão segura
+            # Aqui, confiamos no header X-User-Role enviado pelo frontend (apenas para demonstração)
+            user_role = request.headers.get('X-User-Role', 'user')
+            
+            # Hierarquia de roles simples
+            roles_hierarchy = {
+                'admin': 3,
+                'manager': 2,
+                'user': 1
+            }
+            
+            user_level = roles_hierarchy.get(user_role, 0)
+            required_level = roles_hierarchy.get(required_role, 1)
+            
+            if user_level < required_level:
+                return jsonify({
+                    'success': False, 
+                    'error': f'Acesso negado. Requer privilégios de {required_role} ou superior.'
+                }), 403
+                
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
 # ============================================================================
 # ROTAS WEB (PÁGINAS HTML)
 # ============================================================================
@@ -141,6 +170,7 @@ def listar_produtos():
 
 @app.route('/api/estoque/entrada', methods=['POST'])
 @require_api_key
+@require_role('manager')
 def cadastrar_produto_api():
     """Cadastra ou atualiza produto no banco de dados"""
     db = SessionLocal()
@@ -375,6 +405,7 @@ def listar_funcionarios():
 
 @app.route('/api/rh/funcionarios', methods=['POST'])
 @require_api_key
+@require_role('manager')
 def cadastrar_funcionario():
     """Cadastra um novo funcionário"""
     db = SessionLocal()
@@ -400,14 +431,9 @@ def cadastrar_funcionario():
 
 @app.route('/api/rh/funcionarios/<int:id>', methods=['DELETE'])
 @require_api_key
+@require_role('admin')
 def excluir_funcionario(id):
-    """Exclui um funcionário (Requer senha de admin)"""
-    # Simulação de verificação de admin extra
-    admin_pass = request.headers.get('X-Admin-Pass')
-    # Em produção, isso estaria em variavel de ambiente
-    if admin_pass != 'admin123': 
-        return jsonify({'success': False, 'error': 'Acesso negado. Requer senha de administrador.'}), 403
-
+    """Exclui um funcionário (Requer admin)"""
     db = SessionLocal()
     try:
         func = db.query(Funcionario).filter(Funcionario.id == id).first()
