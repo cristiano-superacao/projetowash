@@ -264,7 +264,11 @@ function showApp() {
     const userName = typeof localCurrentUser !== 'undefined' 
         ? localCurrentUser.nome 
         : (currentUser?.displayName || 'Usuario');
-    document.getElementById('userName').textContent = userName;
+    
+    const userDisplayElement = document.getElementById('userEmail');
+    if (userDisplayElement) {
+        userDisplayElement.textContent = userName;
+    }
     
     // Mostrar/ocultar botoes admin
     const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : isAdmin;

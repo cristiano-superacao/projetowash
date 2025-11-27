@@ -421,7 +421,7 @@
         // Injeta a API Key do backend para uso nas requisições
         // Se estiver rodando estático (Netlify), a variável não será substituída, então tratamos isso.
         const RAW_API_KEY = "{{ api_key }}";
-        const SERVER_API_KEY = RAW_API_KEY.includes("{{") ? "" : RAW_API_KEY;
+        const SERVER_API_KEY = RAW_API_KEY.includes("{" + "{") ? "" : RAW_API_KEY;
     </script>
 
     <!-- JavaScript -->

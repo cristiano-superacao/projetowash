@@ -245,7 +245,8 @@ function loadChartTopProdutos(produtos) {
 
 // Atualizar dashboard periodicamente
 setInterval(() => {
-    if (currentUser && !document.getElementById('appContainer').classList.contains('hidden')) {
+    const user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : (typeof currentUser !== 'undefined' ? currentUser : null);
+    if (user && !document.getElementById('appContainer').classList.contains('hidden')) {
         loadDashboard();
     }
 }, 60000); // Atualizar a cada 1 minuto
