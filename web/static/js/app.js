@@ -260,10 +260,12 @@ function showApp() {
     document.getElementById('authContainer').classList.add('hidden');
     document.getElementById('appContainer').classList.remove('hidden');
     
-    // Atualizar nome do usuario no header
-    const userName = typeof localCurrentUser !== 'undefined' 
-        ? localCurrentUser.nome 
-        : (currentUser?.displayName || 'Usuario');
+    // Obter usuario atual
+    const user = typeof localCurrentUser !== 'undefined' 
+        ? localCurrentUser 
+        : (typeof currentUser !== 'undefined' ? currentUser : null);
+        
+    const userName = user ? (user.nome || user.displayName || 'Usuario') : 'Usuario';
     
     const userDisplayElement = document.getElementById('userEmail');
     if (userDisplayElement) {
@@ -271,13 +273,68 @@ function showApp() {
     }
     
     // Mostrar/ocultar botoes admin
-    const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : isAdmin;
+    const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
     const adminButtons = document.querySelectorAll('.admin-only');
     adminButtons.forEach(btn => {
         if (isUserAdmin) {
             btn.classList.remove('hidden');
         } else {
             btn.classList.add('hidden');
+        }
+    });
+
+    // Filtrar modulos por cargo
+    filterModulesByRole(user, isUserAdmin);
+}
+
+/**
+ * Filtrar modulos baseado no cargo do usuario
+ */
+function filterModulesByRole(user, isAdmin) {
+    const modules = document.querySelectorAll('.module-card');
+    
+    // Se for admin, mostra tudo (exceto o que ja foi tratado pela classe admin-only)
+    if (isAdmin) {
+        modules.forEach(module => {
+            if (!module.classList.contains('admin-only')) {
+                module.classList.remove('hidden');
+            }
+        });
+        return;
+    }
+    
+    const cargo = user && user.cargo ? user.cargo : '';
+    
+    modules.forEach(module => {
+        // Pular modulos admin-only (ja tratados)
+        if (module.classList.contains('admin-only')) return;
+        
+        const moduleName = module.getAttribute('data-module');
+        let shouldShow = false;
+        
+        switch(cargo) {
+            case 'Financeiro':
+                if (moduleName === 'financeiro') shouldShow = true;
+                break;
+            case 'Estoque':
+                if (['estoque-entrada', 'estoque-saida', 'visualizar'].includes(moduleName)) shouldShow = true;
+                break;
+            case 'RH':
+                if (moduleName === 'rh') shouldShow = true;
+                break;
+            case 'Administrativo':
+                if (moduleName === 'operacional') shouldShow = true;
+                break;
+            default:
+                // Se nao tiver cargo definido, talvez mostrar apenas visualizar ou nada?
+                // Por seguranca, vamos ocultar tudo se nao tiver cargo definido
+                shouldShow = false;
+        }
+        
+        if (shouldShow) {
+            module.classList.remove('hidden');
+        } else {
+            module.classList.add('hidden');
         }
     });
 }

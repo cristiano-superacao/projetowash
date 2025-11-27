@@ -61,12 +61,13 @@ async function handleRegister(event) {
     const nome = document.getElementById('regNome').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const contato = document.getElementById('regContato').value.trim();
+    const cargo = document.getElementById('regCargo').value;
     const loginUsuario = document.getElementById('regLogin').value.trim();
     const password = document.getElementById('regPassword').value;
     const passwordConfirm = document.getElementById('regPasswordConfirm').value;
     
     // Validacoes
-    if (!nome || !email || !contato || !loginUsuario || !password || !passwordConfirm) {
+    if (!nome || !email || !contato || !cargo || !loginUsuario || !password || !passwordConfirm) {
         showToast('Preencha todos os campos', 'error');
         return;
     }
@@ -86,17 +87,18 @@ async function handleRegister(event) {
     try {
         // Tentar modo local primeiro
         if (typeof cadastrarUsuarioLocal !== 'undefined') {
-            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password);
+            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, cargo);
             showToast('Conta criada com sucesso! Faca login.', 'success');
         } else {
             // Modo Firebase
-            await cadastrarUsuario(nome, email, contato, loginUsuario, password);
+            await cadastrarUsuario(nome, email, contato, loginUsuario, password, cargo);
         }
         
         // Limpar formulario
         document.getElementById('regNome').value = '';
         document.getElementById('regEmail').value = '';
         document.getElementById('regContato').value = '';
+        document.getElementById('regCargo').value = '';
         document.getElementById('regLogin').value = '';
         document.getElementById('regPassword').value = '';
         document.getElementById('regPasswordConfirm').value = '';
@@ -194,13 +196,17 @@ async function showProfile() {
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <h3>${userData.nome}</h3>
-                    <p class="profile-role">${userData.role === 'admin' ? 'Administrador' : 'Usuário'}</p>
+                    <p class="profile-role">${userData.role === 'admin' ? 'Administrador' : (userData.cargo || 'Usuário')}</p>
                 </div>
                 
                 <div class="profile-info">
                     <div class="info-item">
                         <i class="fas fa-envelope"></i>
                         <span>${userData.email}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>${userData.cargo || 'N/A'}</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-phone"></i>

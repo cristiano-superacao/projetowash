@@ -74,7 +74,7 @@ async function loginLocal(email, password) {
 }
 
 // Cadastro local
-async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha) {
+async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, cargo) {
     // Verificar se email ja existe
     if (localUsers.find(u => u.email === email)) {
         throw new Error('Este email ja esta cadastrado');
@@ -92,7 +92,8 @@ async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha) 
         contato: contato,
         loginUsuario: loginUsuario,
         senha: senha,
-        role: 'user',
+        role: 'user', // Role tecnica (admin ou user)
+        cargo: cargo || 'N/A', // Cargo funcional (Financeiro, RH, etc)
         ativo: true,
         dataCadastro: new Date().toISOString()
     };
