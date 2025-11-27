@@ -190,6 +190,22 @@
                     </div>
                     
                     <div class="header-actions">
+                        <!-- Navigation Buttons -->
+                        <div class="header-nav">
+                            <button class="nav-btn module-nav-btn" data-module="estoque-entrada" onclick="showModule('estoque-entrada')" title="Entrada de Estoque">
+                                <i class="fas fa-box-open"></i>
+                                <span class="nav-text">Entrada</span>
+                            </button>
+                            <button class="nav-btn module-nav-btn" data-module="estoque-saida" onclick="showModule('estoque-saida')" title="Saída de Estoque">
+                                <i class="fas fa-truck-loading"></i>
+                                <span class="nav-text">Saída</span>
+                            </button>
+                            <button class="nav-btn module-nav-btn" data-module="visualizar" onclick="showModule('visualizar')" title="Visualizar Estoque">
+                                <i class="fas fa-eye"></i>
+                                <span class="nav-text">Visualizar</span>
+                            </button>
+                        </div>
+
                         <button id="installBtn" class="install-btn hidden">
                             <i class="fas fa-download"></i>
                             Instalar App

@@ -307,7 +307,8 @@ function showApp() {
  * Filtrar modulos baseado no cargo do usuario
  */
 function filterModulesByRole(user, isAdmin) {
-    const modules = document.querySelectorAll('.module-card');
+    // Selecionar cards e botoes de navegacao
+    const modules = document.querySelectorAll('.module-card, .module-nav-btn');
     
     // Se for admin, mostra tudo (exceto o que ja foi tratado pela classe admin-only)
     if (isAdmin) {
