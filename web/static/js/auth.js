@@ -44,6 +44,37 @@ function switchRegisterTab(type) {
     document.getElementById('regType').value = type;
 }
 
+// Handler de login
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        showToast('Preencha email e senha', 'error');
+        return;
+    }
+    
+    showLoading('Entrando...');
+    
+    try {
+        // Tentar modo local primeiro
+        if (typeof loginLocal !== 'undefined') {
+            await loginLocal(email, password);
+        } else {
+            // Modo Firebase
+            await login(email, password);
+        }
+        
+    } catch (error) {
+        console.error('Erro no login:', error);
+        showToast(error.message || 'Erro ao entrar', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
 // Handler de cadastro
 async function handleRegister(event) {
     event.preventDefault();

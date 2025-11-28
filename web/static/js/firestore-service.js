@@ -291,7 +291,6 @@ async function buscarEstatisticas() {
             movimentacoes: []
         };
     }
-    try {ction buscarEstatisticas() {
     try {
         const [produtos, movimentacoes] = await Promise.all([
             listarProdutos(),

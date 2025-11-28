@@ -69,8 +69,8 @@ function saveLocalCurrentUser() {
 }
 
 // Login local
-async function loginLocal(email, password) {
-    const user = localUsers.find(u => u.email === email && u.senha === password);
+async function loginLocal(emailOrLogin, password) {
+    const user = localUsers.find(u => (u.email === emailOrLogin || u.loginUsuario === emailOrLogin) && u.senha === password);
     
     if (!user) {
         throw new Error('Usuario ou senha incorretos');
