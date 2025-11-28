@@ -26,9 +26,7 @@
   ],
   "author": "Estoque Certo LTDA",
   "license": "MIT",
-  "dependencies": {
-    "pg": "^8.11.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "netlify-cli": "^17.0.0",
     "firebase-tools": "^13.0.0"

@@ -363,13 +363,7 @@ function loadChartEficiencia() {
 
 // Atualizar dashboard periodicamente
 setInterval(() => {
-    let user = null;
-    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
-        user = typeof currentUser !== 'undefined' ? currentUser : null;
-    } else {
-        user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : null;
-    }
-
+    const user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : (typeof currentUser !== 'undefined' ? currentUser : null);
     if (user && !document.getElementById('appContainer').classList.contains('hidden')) {
         loadDashboard();
     }

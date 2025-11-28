@@ -4,12 +4,6 @@
   publish = "web"
   functions = "netlify/functions"
 
-# Redirecionar API para Netlify Functions
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
 # Redirecionar todas as rotas para index.html (SPA)
 [[redirects]]
   from = "/*"
