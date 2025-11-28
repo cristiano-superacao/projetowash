@@ -145,7 +145,7 @@
                         <label for="regCargo">
                             <i class="fas fa-briefcase"></i> Cargo / Departamento
                         </label>
-                        <select id="regCargo" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                        <select id="regCargo" class="form-control form-select">
                             <option value="">Selecione...</option>
                             <option value="Financeiro">Financeiro</option>
                             <option value="Estoque">Estoque</option>
@@ -484,8 +484,8 @@
         <div id="modalContainer" class="modal-container hidden">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 id="modalTitle">Modulo</h2>
-                    <button class="close-btn" onclick="closeModule()">
+                    <h2 id="moduleTitle">Módulo</h2>
+                    <button class="close-btn" onclick="closeModule()" aria-label="Fechar módulo">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>

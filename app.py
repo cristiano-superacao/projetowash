@@ -10,20 +10,19 @@ from flask import Flask, render_template, request, jsonify, send_file
 from flask_cors import CORS
 import sys
 import os
-import json
 from functools import wraps
 
 # Adicionar o diretório src ao path para importar os módulos
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # Importar módulos refatorados e banco de dados
-from database import init_db, get_db, Produto, Funcionario, SessionLocal
+from database import init_db, Produto, Funcionario, SessionLocal
 from operacional import calcular_metricas_capacidade
 from financeiro import calcular_metricas_financeiras
 from rh import processar_funcionario
 
 # Criar a aplicação Flask
-app = Flask(__name__, 
+app = Flask(__name__,
             template_folder='web/templates',
             static_folder='web/static')
 
@@ -37,11 +36,13 @@ init_db()
 def require_api_key(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Em produção, use variáveis de ambiente. Para demo, aceita sem chave ou chave padrão.
+        # Em produção, use variáveis de ambiente.
+        # Para demo, aceita sem chave ou chave padrão.
         api_key = request.headers.get('X-API-KEY')
         env_key = os.getenv('API_KEY')
-        
-        # Se houver uma chave configurada no ambiente, exige que ela seja enviada
+
+        # Se houver uma chave configurada no ambiente,
+        # exige que ela seja enviada
         if env_key and api_key != env_key:
             return jsonify({'error': 'Acesso não autorizado'}), 401
         return f(*args, **kwargs)
@@ -52,8 +53,9 @@ def require_role(required_role):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            # Simulação: Em produção, isso viria de um token JWT ou sessão segura
-            # Aqui, confiamos no header X-User-Role enviado pelo frontend (apenas para demonstração)
+            # Simulação: Em produção, isso viria de um token JWT
+            # ou sessão segura. Aqui, confiamos no header X-User-Role
+            # enviado pelo frontend (apenas para demonstração)
             user_role = request.headers.get('X-User-Role', 'user')
             
             # Hierarquia de roles simples
@@ -68,8 +70,11 @@ def require_role(required_role):
             
             if user_level < required_level:
                 return jsonify({
-                    'success': False, 
-                    'error': f'Acesso negado. Requer privilégios de {required_role} ou superior.'
+                    'success': False,
+                    'error': (
+                        f'Acesso negado. Requer privilégios de '
+                        f'{required_role} ou superior.'
+                    )
                 }), 403
                 
             return f(*args, **kwargs)
@@ -91,7 +96,10 @@ def index():
 def manifest():
     """Manifest para PWA"""
     try:
-        return send_file('web/static/manifest.json', mimetype='application/json')
+        return send_file(
+            'web/static/manifest.json',
+            mimetype='application/json'
+        )
     except Exception as e:
         return jsonify({'error': str(e)}), 404
 
@@ -99,7 +107,10 @@ def manifest():
 def service_worker():
     """Service Worker para PWA"""
     try:
-        response = send_file('web/static/service-worker.js', mimetype='application/javascript')
+        response = send_file(
+            'web/static/service-worker.js',
+            mimetype='application/javascript'
+        )
         response.headers['Service-Worker-Allowed'] = '/'
         return response
     except Exception as e:
