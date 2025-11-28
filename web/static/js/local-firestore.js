@@ -31,19 +31,25 @@ function saveLocalData() {
 
 // Listar produtos
 async function listarProdutosLocal() {
+    if (localCurrentUser && localCurrentUser.companyId) {
+        return localEstoque.filter(p => p.companyId === localCurrentUser.companyId);
+    }
     return localEstoque;
 }
 
 // Cadastrar produto
 async function cadastrarProdutoFirestoreLocal(codigo, nome, quantidade, data, fornecedor, local, valor) {
-    // Verificar duplicata
-    const existente = localEstoque.find(p => p.codigo === codigo);
+    // Verificar duplicata (no contexto da empresa)
+    const existente = localEstoque.find(p => p.codigo === codigo && 
+        (localCurrentUser ? p.companyId === localCurrentUser.companyId : true));
+        
     if (existente) {
         throw new Error('Ja existe um produto com este codigo');
     }
     
     const produto = {
         id: 'prod-' + Date.now(),
+        companyId: localCurrentUser ? localCurrentUser.companyId : 'comp-default',
         codigo,
         nome,
         quantidade,
@@ -60,6 +66,7 @@ async function cadastrarProdutoFirestoreLocal(codigo, nome, quantidade, data, fo
     // Registrar movimentacao
     localMovimentacoes.push({
         id: 'mov-' + Date.now(),
+        companyId: localCurrentUser ? localCurrentUser.companyId : 'comp-default',
         tipo: 'entrada',
         subtipo: 'compra',
         produtoId: produto.id,
@@ -93,6 +100,7 @@ async function registrarSaidaProdutoLocal(produtoId, quantidadeSaida, valorVenda
     // Registrar movimentacao
     localMovimentacoes.push({
         id: 'mov-' + Date.now(),
+        companyId: localCurrentUser ? localCurrentUser.companyId : 'comp-default',
         tipo: 'saida',
         subtipo: 'venda',
         produtoId: produto.id,
@@ -113,6 +121,7 @@ async function registrarSaidaProdutoLocal(produtoId, quantidadeSaida, valorVenda
 async function salvarCalculoFinanceiroLocal(dados) {
     const calculo = {
         id: 'fin-' + Date.now(),
+        companyId: localCurrentUser ? localCurrentUser.companyId : 'comp-default',
         ...dados,
         usuarioId: localCurrentUser?.uid || 'sistema',
         usuarioNome: localCurrentUser?.nome || 'Sistema',
@@ -128,6 +137,7 @@ async function salvarCalculoFinanceiroLocal(dados) {
 async function salvarFolhaPagamentoLocal(dados) {
     const folha = {
         id: 'folha-' + Date.now(),
+        companyId: localCurrentUser ? localCurrentUser.companyId : 'comp-default',
         ...dados,
         usuarioId: localCurrentUser?.uid || 'sistema',
         usuarioNome: localCurrentUser?.nome || 'Sistema',
@@ -144,14 +154,18 @@ async function buscarEstatisticasLocal() {
     const hoje = new Date();
     const seteDiasAtras = new Date(hoje.getTime() - 7 * 24 * 60 * 60 * 1000);
     
+    // Filtrar por empresa
+    const estoqueFiltrado = localCurrentUser ? localEstoque.filter(p => p.companyId === localCurrentUser.companyId) : localEstoque;
+    const movimentacoesFiltradas = localCurrentUser ? localMovimentacoes.filter(m => m.companyId === localCurrentUser.companyId) : localMovimentacoes;
+    
     // Total de produtos
-    const totalProdutos = localEstoque.length;
+    const totalProdutos = estoqueFiltrado.length;
     
     // Valor total em estoque
-    const valorTotal = localEstoque.reduce((sum, p) => sum + (p.quantidade * p.valor), 0);
+    const valorTotal = estoqueFiltrado.reduce((sum, p) => sum + (p.quantidade * p.valor), 0);
     
     // Movimentacoes dos ultimos 7 dias
-    const movimentacoesRecentes = localMovimentacoes.filter(m => {
+    const movimentacoesRecentes = movimentacoesFiltradas.filter(m => {
         const data = new Date(m.timestamp);
         return data >= seteDiasAtras;
     });
@@ -164,12 +178,15 @@ async function buscarEstatisticasLocal() {
         valorTotal,
         entradasRecentes,
         saidasRecentes,
-        movimentacoes: localMovimentacoes.slice(-10).reverse()
+        movimentacoes: movimentacoesFiltradas.slice(-10).reverse()
     };
 }
 
 // Buscar historico completo (para graficos)
 async function buscarHistoricoLocal() {
+    if (localCurrentUser) {
+        return localMovimentacoes.filter(m => m.companyId === localCurrentUser.companyId);
+    }
     return localMovimentacoes;
 }
 

@@ -6,9 +6,14 @@
 async function listarProdutos() {
     if (typeof db === 'undefined' || !db) return [];
     try {
-        const snapshot = await db.collection('estoque')
-            .orderBy('nome')
-            .get();
+        let query = db.collection('estoque');
+        
+        // Multi-tenancy
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+        
+        const snapshot = await query.orderBy('nome').get();
         
         const produtos = [];
         snapshot.forEach(doc => {
@@ -26,14 +31,19 @@ async function listarProdutos() {
 // Cadastrar produto
 async function cadastrarProdutoFirestore(produto) {
     try {
-        // Verificar se ja existe
-        const query = await db.collection('estoque')
-            .where('codigo', '==', produto.codigo)
-            .get();
+        // Verificar se ja existe (no contexto da empresa)
+        let query = db.collection('estoque')
+            .where('codigo', '==', produto.codigo);
+            
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+            
+        const snapshot = await query.get();
         
-        if (!query.empty) {
+        if (!snapshot.empty) {
             // Atualizar quantidade
-            const doc = query.docs[0];
+            const doc = snapshot.docs[0];
             const produtoExistente = doc.data();
             await doc.ref.update({
                 quantidade: produtoExistente.quantidade + produto.quantidade,
@@ -55,6 +65,7 @@ async function cadastrarProdutoFirestore(produto) {
             // Criar novo
             const docRef = await db.collection('estoque').add({
                 ...produto,
+                companyId: currentUser.companyId,
                 dataCriacao: firebase.firestore.FieldValue.serverTimestamp(),
                 ultimaAtualizacao: firebase.firestore.FieldValue.serverTimestamp(),
                 criadoPor: currentUser.uid
@@ -83,16 +94,20 @@ async function cadastrarProdutoFirestore(produto) {
 async function registrarSaidaProduto(nomeProduto, quantidade) {
     try {
         // Buscar produto
-        const query = await db.collection('estoque')
-            .where('nome', '==', nomeProduto)
-            .limit(1)
-            .get();
+        let query = db.collection('estoque')
+            .where('nome', '==', nomeProduto);
+            
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+            
+        const snapshot = await query.limit(1).get();
         
-        if (query.empty) {
+        if (snapshot.empty) {
             throw new Error('Produto nao encontrado');
         }
         
-        const doc = query.docs[0];
+        const doc = snapshot.docs[0];
         const produto = doc.data();
         
         if (produto.quantidade < quantidade) {
@@ -166,6 +181,7 @@ async function registrarMovimentacao(dados) {
     try {
         await db.collection('movimentacoes').add({
             ...dados,
+            companyId: currentUser.companyId,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
     } catch (error) {
@@ -177,9 +193,13 @@ async function registrarMovimentacao(dados) {
 async function buscarHistorico(filtros = {}) {
     if (typeof db === 'undefined' || !db) return [];
     try {
-        let query = db.collection('movimentacoes')
-            .orderBy('timestamp', 'desc')
-            .limit(100);
+        let query = db.collection('movimentacoes');
+        
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+        
+        query = query.orderBy('timestamp', 'desc').limit(100);
         
         if (filtros.tipo) {
             query = query.where('tipo', '==', filtros.tipo);
@@ -206,6 +226,7 @@ async function salvarCalculoFinanceiro(dados) {
     try {
         const docRef = await db.collection('financeiro').add({
             ...dados,
+            companyId: currentUser.companyId,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             usuarioId: currentUser.uid,
             usuarioNome: currentUser.displayName || currentUser.email
@@ -222,8 +243,13 @@ async function salvarCalculoFinanceiro(dados) {
 // Buscar historico financeiro
 async function buscarHistoricoFinanceiro(limite = 10) {
     try {
-        const snapshot = await db.collection('financeiro')
-            .orderBy('timestamp', 'desc')
+        let query = db.collection('financeiro');
+        
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+        
+        const snapshot = await query.orderBy('timestamp', 'desc')
             .limit(limite)
             .get();
         
@@ -246,6 +272,7 @@ async function salvarFolhaPagamento(dados) {
     try {
         const docRef = await db.collection('folha_pagamento').add({
             ...dados,
+            companyId: currentUser.companyId,
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             usuarioId: currentUser.uid,
             usuarioNome: currentUser.displayName || currentUser.email
@@ -262,8 +289,13 @@ async function salvarFolhaPagamento(dados) {
 // Buscar historico de folhas de pagamento
 async function buscarHistoricoFolha(limite = 10) {
     try {
-        const snapshot = await db.collection('folha_pagamento')
-            .orderBy('timestamp', 'desc')
+        let query = db.collection('folha_pagamento');
+        
+        if (currentUser && currentUser.companyId) {
+            query = query.where('companyId', '==', currentUser.companyId);
+        }
+        
+        const snapshot = await query.orderBy('timestamp', 'desc')
             .limit(limite)
             .get();
         
@@ -341,6 +373,7 @@ async function realizarBackup() {
         
         const backup = {
             data: new Date().toISOString(),
+            companyId: currentUser.companyId,
             produtos,
             movimentacoes,
             financeiro,

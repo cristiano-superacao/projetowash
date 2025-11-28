@@ -145,13 +145,14 @@ async function handleRegister(event) {
     
     try {
         // Tentar modo local primeiro
-        if (typeof cadastrarUsuarioLocal !== 'undefined') {
+        const isFirebaseActive = typeof firebaseInitialized !== 'undefined' && firebaseInitialized;
+        
+        if (typeof cadastrarUsuarioLocal !== 'undefined' && !isFirebaseActive) {
             await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
             showToast('Cadastro realizado com sucesso!', 'success');
         } else {
-            // Modo Firebase (Adaptar conforme necessário)
-            // await cadastrarUsuario(nome, email, contato, loginUsuario, password, extraData);
-            throw new Error('Cadastro online não implementado para este fluxo ainda.');
+            // Modo Firebase
+            await cadastrarUsuario(nome, email, contato, loginUsuario, password, extraData);
         }
         
         // Limpar formulario

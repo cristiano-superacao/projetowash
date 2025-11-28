@@ -1,156 +1,60 @@
-# 🏭 Sistema de Gestão Empresarial - Estoque Certo LTDA
+# Sistema Estoque Certo EV
 
-> Sistema completo de gestão empresarial com interface web responsiva, PWA instalável e integração Firebase/Firestore na nuvem.
+Bem-vindo ao repositório do **Estoque Certo EV**, um sistema de gestão empresarial (ERP) moderno, focado na indústria de veículos elétricos e componentes de alta tecnologia.
 
-[![Deploy Status](https://api.netlify.com/api/v1/badges/YOUR-BADGE-ID/deploy-status)](https://projetowash.netlify.app)
+## 🚀 Visão Geral
 
----
+O sistema foi projetado para ser flexível, funcionando tanto como uma aplicação completa com backend Python (Flask) quanto como uma aplicação web estática (PWA) que pode ser hospedada em serviços como Netlify ou Vercel.
 
-## ✨ Principais Funcionalidades
+### Módulos Principais
+- **Dashboard**: Visão geral com gráficos e indicadores de desempenho (KPIs).
+- **Operacional**: Cálculo de capacidade produtiva e eficiência de turnos.
+- **Estoque**: Controle de entrada e saída com rastreabilidade (Lote/Serial).
+- **Financeiro**: Gestão de custos, precificação e análise de ROI.
+- **RH**: Gestão de funcionários e folha de pagamento automatizada.
 
-| Módulo | Descrição |
-|--------|-----------|
-| 🏭 **Operacional** | Cálculo de capacidade produtiva, análise de turnos e ociosidade |
-| 📦 **Estoque** | Entrada, saída e visualização completa com histórico |
-| 💰 **Financeiro** | Custos, precificação, ROI e ponto de equilíbrio |
-| 👥 **RH** | Folha de pagamento completa com INSS, IR e encargos |
-| 📱 **PWA** | Instalável como app nativo no desktop e mobile |
+## 🛠️ Tecnologias
 
----
+- **Frontend**: HTML5, CSS3 (Design Responsivo), JavaScript (ES6+).
+- **Backend (Opcional)**: Python 3.x, Flask, SQLAlchemy.
+- **Persistência**:
+  - **Modo Local**: LocalStorage (Navegador) - Ideal para demos e testes.
+  - **Modo Nuvem**: Firebase (Firestore/Auth) - Para produção distribuída.
+  - **Modo Híbrido**: Banco de Dados SQL (PostgreSQL/SQLite) via Flask.
 
-## 🚀 Início Rápido
+## 📦 Instalação e Execução
 
-### Instalação
+### Opção 1: Rodar Localmente (Python)
+Ideal para desenvolvimento e acesso a todas as funcionalidades de backend.
 
-```powershell
-# Clonar repositório
-git clone https://github.com/cristiano-superacao/projetowash.git
-cd projetowash
+1. **Pré-requisitos**: Python 3.8+ instalado.
+2. **Instalar dependências**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Executar o servidor**:
+   ```bash
+   python app.py
+   ```
+4. **Acessar**: Abra `http://localhost:5000` no navegador.
 
-# Criar ambiente virtual
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+### Opção 2: Hospedagem Estática (Netlify/Vercel)
+O projeto já está configurado para deploy automático.
 
-# Instalar dependências
-pip install -r requirements.txt
+1. **Configuração**: O arquivo `netlify.toml` define a pasta `web` como diretório de publicação.
+2. **Deploy**: Conecte este repositório ao Netlify. O sistema funcionará automaticamente em **Modo Local** (dados salvos no navegador do usuário).
+3. **Produção**: Para persistência em nuvem sem backend Python, configure as credenciais do Firebase em `web/static/js/firebase-config.js` e descomente as linhas correspondentes em `web/index.html`.
 
-# Executar servidor
-python app.py
-```
+## 🔐 Acesso (Modo Local)
 
-Acesse: **http://localhost:5000**
+O sistema vem pré-configurado com um usuário administrador para testes locais:
 
-### Login Demo
+- **Email**: `admin@local.com`
+- **Senha**: `admin123`
 
-```
-Email: admin@local.com
-Senha: admin123
-```
+## 📱 PWA (Progressive Web App)
 
----
-
-## 🎯 Tecnologias
-
-**Frontend:** HTML5, CSS3, JavaScript ES6+, PWA  
-**Backend:** Python 3.8+, Flask 3.0+  
-**Database:** Firebase/Firestore (cloud) + localStorage (local)  
-**Deploy:** Netlify (auto-deploy via GitHub)
-
----
-
-## 📚 Documentação
-
-📖 **[DOCUMENTACAO_COMPLETA.md](DOCUMENTACAO_COMPLETA.md)** - Guia completo com:
-- Instalação passo a passo
-- Manual detalhado de cada módulo
-- Configuração Firebase/Firestore
-- Deploy automático Netlify
-- Troubleshooting
+Este sistema é instalável! Em dispositivos móveis ou desktop (Chrome/Edge), procure pelo ícone de instalação na barra de endereços para adicionar o **Estoque Certo EV** à sua tela inicial.
 
 ---
-
-## 📂 Estrutura Essencial
-
-```
-projetowash/
-├── app.py                    # ⚙️ Servidor Flask
-├── requirements.txt          # 📦 Dependências Python
-├── netlify.toml             # 🌐 Config deploy
-├── firebase.json            # 🔥 Config Firebase
-├── firestore.rules          # 🔒 Regras Firestore
-│
-├── src/                     # 🐍 Módulos Python
-│   ├── main.py             # Console principal
-│   ├── operacional.py      # Cálculos operacionais
-│   ├── financeiro.py       # Cálculos financeiros
-│   ├── rh.py               # Folha pagamento
-│   └── estoque_*.py        # Gestão estoque
-│
-└── web/                     # 🌐 Aplicação Web
-    ├── index.html          # SPA principal
-    └── static/
-        ├── css/            # Estilos
-        ├── js/             # Scripts e módulos
-        └── icons/          # Ícones PWA
-```
-
----
-
-## 🔥 Firebase (Modo Cloud)
-
-1. Crie projeto no [Firebase Console](https://console.firebase.google.com)
-2. Ative **Firestore** e **Authentication**
-3. Copie credenciais para `web/static/js/firebase-config.js`
-4. Deploy regras: `firebase deploy --only firestore:rules`
-
----
-
-## 🌐 Deploy Automático
-
-**Netlify** já está configurado com `netlify.toml`:
-
-```powershell
-git add .
-git commit -m "atualização"
-git push
-```
-
-✅ Deploy automático em segundos!  
-🌐 Acesse: https://projetowash.netlify.app
-
----
-
-## 📱 Instalar como PWA
-
-1. Abra o sistema no navegador
-2. Clique em **"Instalar App"**
-3. Use como aplicativo nativo!
-
----
-
-## 📄 Licença
-
-MIT License - Livre para uso e modificação.
-
----
-
-## 👨‍💻 Créditos
-
-**Desenvolvido por:** Estoque Certo LTDA  
-**Instituição:** SENAI  
-**Disciplina:** Lógica de Programação  
-**Professor:** Washington Luis Souza Anunciação  
-**Período:** 22-28 de novembro de 2025
-
-### 👥 Equipe
-
-| Nome | Email | Função |
-|------|-------|--------|
-| **Gabriela M. N. Silva** | gabriela.m.silva@ba.estudante.senai.br | Dev Principal / GitHub |
-| **Cristiano Silva Santos** | Cristiano.s.santos@ba.estudante.senai.br | Desenvolvedor |
-| **Joel Macena Costa** | joel.c@ba.estudante.senai.br | Desenvolvedor |
-| **Josilton José A. Santos** | josilton.santos@aluno.senai.br | Desenvolvedor |
-
----
-
-**📖 Consulte [DOCUMENTACAO_COMPLETA.md](DOCUMENTACAO_COMPLETA.md) para guia detalhado!**
+© 2025 Estoque Certo LTDA. Todos os direitos reservados.

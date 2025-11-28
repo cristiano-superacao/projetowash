@@ -147,22 +147,34 @@ function loadEstoqueEntradaModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-box-open"></i> Cadastrar Produto no Estoque
+                <i class="fas fa-box-open"></i> Cadastrar Componente/Veículo
             </div>
             
             <form id="formEstoqueEntrada" onsubmit="cadastrarProduto(event)">
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="codigo"><i class="fas fa-barcode"></i> Código</label>
-                        <input type="number" id="codigo" name="codigo" required min="1" placeholder="Ex: 001">
+                        <label for="codigo"><i class="fas fa-barcode"></i> Código SKU</label>
+                        <input type="number" id="codigo" name="codigo" required min="1" placeholder="Ex: 1001">
                     </div>
                     
                     <div class="form-group">
-                        <label for="nome"><i class="fas fa-tag"></i> Nome do Produto</label>
-                        <input type="text" id="nome" name="nome" required placeholder="Ex: Produto XYZ">
+                        <label for="nome"><i class="fas fa-tag"></i> Nome do Componente</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Ex: Bateria LFP 60kWh">
                     </div>
                 </div>
                 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lote"><i class="fas fa-layer-group"></i> Lote de Produção</label>
+                        <input type="text" id="lote" name="lote" required placeholder="Ex: BAT-2023-X99">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="serial"><i class="fas fa-fingerprint"></i> Número de Série</label>
+                        <input type="text" id="serial" name="serial" required placeholder="Ex: SN-99887766">
+                    </div>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="quantidade"><i class="fas fa-cubes"></i> Quantidade</label>
@@ -177,23 +189,23 @@ function loadEstoqueEntradaModule(container) {
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="fornecedor"><i class="fas fa-truck"></i> Fornecedor</label>
-                        <input type="text" id="fornecedor" name="fornecedor" required placeholder="Nome do fornecedor">
+                        <label for="fornecedor"><i class="fas fa-truck"></i> Fornecedor/Origem</label>
+                        <input type="text" id="fornecedor" name="fornecedor" required placeholder="Ex: Gigafactory 1">
                     </div>
                     
                     <div class="form-group">
                         <label for="local"><i class="fas fa-map-marker-alt"></i> Local no Armazém</label>
-                        <input type="text" id="local" name="local" required placeholder="Ex: Corredor A, Prateleira 3">
+                        <input type="text" id="local" name="local" required placeholder="Ex: Setor B, Rua 4">
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="valor"><i class="fas fa-dollar-sign"></i> Valor Unitário (R$)</label>
-                    <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 25.50">
+                    <label for="valor"><i class="fas fa-dollar-sign"></i> Custo Unitário (R$)</label>
+                    <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 15000.00">
                 </div>
                 
-                <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save"></i> Cadastrar Produto
+                <button type="submit" class="btn btn-success btn-block">
+                    <i class="fas fa-save"></i> Registrar Entrada
                 </button>
             </form>
         </div>
@@ -208,23 +220,27 @@ async function cadastrarProduto(event) {
     // Validação dos campos
     const codigo = document.getElementById('codigo').value.trim();
     const nome = document.getElementById('nome').value.trim();
+    const lote = document.getElementById('lote').value.trim();
+    const serial = document.getElementById('serial').value.trim();
     const quantidade = document.getElementById('quantidade').value.trim();
     const data = document.getElementById('data').value.trim();
     const fornecedor = document.getElementById('fornecedor').value.trim();
     const local = document.getElementById('local').value.trim();
     const valor = document.getElementById('valor').value.trim();
     
-    if (!codigo || !nome || !quantidade || !data || !fornecedor || !local || !valor) {
+    if (!codigo || !nome || !lote || !serial || !quantidade || !data || !fornecedor || !local || !valor) {
         showToast('Por favor, preencha todos os campos', 'error');
         return;
     }
     
-    showLoading('Cadastrando produto...');
+    showLoading('Cadastrando componente...');
     
     try {
         const formData = {
             codigo: parseInt(codigo),
             nome: nome,
+            lote: lote,
+            serial: serial,
             quantidade: parseInt(quantidade),
             data: data,
             fornecedor: fornecedor,
@@ -234,7 +250,7 @@ async function cadastrarProduto(event) {
         
         await salvarProdutoEstoque(formData);
         
-        showToast('✅ Produto cadastrado com sucesso!', 'success');
+        showToast('✅ Componente registrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
         
     } catch (error) {
@@ -1017,11 +1033,12 @@ async function loadVisualizarModule(container) {
                         <td>${idx + 1}</td>
                         <td>${produto.codigo}</td>
                         <td>${produto.nome}</td>
+                        <td>${produto.lote || '-'}</td>
+                        <td>${produto.serial || '-'}</td>
                         <td>${formatNumber(produto.quantidade)}</td>
                         <td>${formatCurrency(produto.valor)}</td>
                         <td>${formatCurrency(valorTotal)}</td>
                         <td>${produto.local}</td>
-                        <td>${produto.fornecedor}</td>
                     </tr>
                 `;
             });
@@ -1057,11 +1074,12 @@ async function loadVisualizarModule(container) {
                                     <th>#</th>
                                     <th>Código</th>
                                     <th>Nome</th>
-                                    <th>Quantidade</th>
+                                    <th>Lote</th>
+                                    <th>Serial</th>
+                                    <th>Qtd</th>
                                     <th>Valor Unit.</th>
                                     <th>Valor Total</th>
                                     <th>Local</th>
-                                    <th>Fornecedor</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1107,14 +1125,14 @@ async function exportarEstoquePDF() {
         
         // Cabeçalho
         doc.setFontSize(18);
-        doc.text('Estoque Certo LTDA', 14, 22);
+        doc.text('Estoque Certo EV - Relatório de Rastreabilidade', 14, 22);
         doc.setFontSize(14);
-        doc.text('Relatório de Estoque', 14, 32);
+        doc.text('Inventário de Componentes e Veículos', 14, 32);
         doc.setFontSize(10);
         doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
         
         // Tabela
-        const tableColumn = ["Cód", "Produto", "Qtd", "Valor Unit.", "Total", "Local"];
+        const tableColumn = ["Cód", "Produto", "Lote", "Serial", "Qtd", "Valor Unit.", "Total", "Local"];
         const tableRows = [];
         
         let valorTotalEstoque = 0;
@@ -1128,6 +1146,8 @@ async function exportarEstoquePDF() {
             const row = [
                 prod.codigo,
                 prod.nome,
+                prod.lote || '-',
+                prod.serial || '-',
                 prod.quantidade,
                 formatCurrency(prod.valor),
                 formatCurrency(total),
@@ -1141,8 +1161,8 @@ async function exportarEstoquePDF() {
             body: tableRows,
             startY: 50,
             theme: 'striped',
-            styles: { fontSize: 9 },
-            headStyles: { fillColor: [39, 174, 96] }
+            styles: { fontSize: 8 },
+            headStyles: { fillColor: [37, 99, 235] } // Electric Blue
         });
         
         // Totais
@@ -1151,7 +1171,7 @@ async function exportarEstoquePDF() {
         doc.text(`Total de Itens: ${totalItens}`, 14, finalY);
         doc.text(`Valor Total em Estoque: ${formatCurrency(valorTotalEstoque)}`, 14, finalY + 6);
         
-        doc.save('relatorio_estoque.pdf');
+        doc.save('relatorio_estoque_ev.pdf');
         showToast('PDF gerado com sucesso!', 'success');
         
     } catch (error) {

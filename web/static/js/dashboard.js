@@ -2,6 +2,7 @@
 
 let chartMovimentacoes = null;
 let chartTopProdutos = null;
+let chartEficiencia = null;
 
 // Carregar dashboard
 async function loadDashboard() {
@@ -88,6 +89,9 @@ async function loadChartsAndAlerts() {
         
         // Grafico de Top Produtos
         loadChartTopProdutos(produtos);
+
+        // Grafico de Eficiencia (Gauge)
+        loadChartEficiencia();
         
     } catch (error) {
         console.error('Erro ao carregar graficos:', error);
@@ -169,16 +173,18 @@ function loadChartMovimentacoes(movimentacoes) {
                 {
                     label: 'Entradas',
                     data: entradas,
-                    borderColor: '#10b981',
+                    borderColor: '#10b981', // Emerald
                     backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                    tension: 0.4
+                    tension: 0.4,
+                    fill: true
                 },
                 {
                     label: 'Saidas',
                     data: saidas,
-                    borderColor: '#f59e0b',
+                    borderColor: '#f59e0b', // Amber
                     backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                    tension: 0.4
+                    tension: 0.4,
+                    fill: true
                 }
             ]
         },
@@ -187,16 +193,32 @@ function loadChartMovimentacoes(movimentacoes) {
             maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    position: 'bottom'
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
+                    }
                 }
             },
             scales: {
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        color: '#f1f5f9'
+                    },
                     ticks: {
                         stepSize: 1
                     }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
                 }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
             }
         }
     });
@@ -214,11 +236,11 @@ function loadChartTopProdutos(produtos) {
     const labels = top5.map(p => p.nome);
     const data = top5.map(p => p.quantidade);
     const colors = [
-        'rgba(37, 99, 235, 0.8)',
-        'rgba(16, 185, 129, 0.8)',
-        'rgba(245, 158, 11, 0.8)',
-        'rgba(139, 92, 246, 0.8)',
-        'rgba(239, 68, 68, 0.8)'
+        'rgba(37, 99, 235, 0.8)',  // Blue
+        'rgba(6, 182, 212, 0.8)',   // Cyan
+        'rgba(16, 185, 129, 0.8)',  // Emerald
+        'rgba(139, 92, 246, 0.8)',  // Violet
+        'rgba(245, 158, 11, 0.8)'   // Amber
     ];
     
     // Destruir grafico anterior
@@ -234,7 +256,9 @@ function loadChartTopProdutos(produtos) {
             datasets: [{
                 label: 'Quantidade em Estoque',
                 data: data,
-                backgroundColor: colors
+                backgroundColor: colors,
+                borderRadius: 6,
+                borderSkipped: false
             }]
         },
         options: {
@@ -248,12 +272,92 @@ function loadChartTopProdutos(produtos) {
             scales: {
                 y: {
                     beginAtZero: true,
+                    grid: {
+                        color: '#f1f5f9'
+                    },
                     ticks: {
                         stepSize: 1
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
                     }
                 }
             }
         }
+    });
+}
+
+// Grafico de Eficiencia (Gauge)
+function loadChartEficiencia() {
+    const ctx = document.getElementById('chartEficiencia');
+    
+    // Simular eficiencia (85-98%)
+    const eficiencia = Math.floor(Math.random() * (98 - 85 + 1)) + 85;
+    const restante = 100 - eficiencia;
+    
+    if (chartEficiencia) {
+        chartEficiencia.destroy();
+    }
+    
+    chartEficiencia = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Eficiência', 'Perda'],
+            datasets: [{
+                data: [eficiencia, restante],
+                backgroundColor: [
+                    '#10b981', // Emerald (Success)
+                    '#e2e8f0'  // Gray (Empty)
+                ],
+                borderWidth: 0,
+                cutout: '75%',
+                circumference: 180,
+                rotation: 270
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: false
+                }
+            }
+        },
+        plugins: [{
+            id: 'textCenter',
+            beforeDraw: function(chart) {
+                var width = chart.width,
+                    height = chart.height,
+                    ctx = chart.ctx;
+
+                ctx.restore();
+                var fontSize = (height / 114).toFixed(2);
+                ctx.font = "bold " + fontSize + "em sans-serif";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "#0f172a";
+
+                var text = eficiencia + "%",
+                    textX = Math.round((width - ctx.measureText(text).width) / 2),
+                    textY = height / 1.5;
+
+                ctx.fillText(text, textX, textY);
+                
+                ctx.font = "normal " + (fontSize*0.4).toFixed(2) + "em sans-serif";
+                ctx.fillStyle = "#64748b";
+                var label = "OEE",
+                    labelX = Math.round((width - ctx.measureText(label).width) / 2),
+                    labelY = height / 1.2;
+                    
+                ctx.fillText(label, labelX, labelY);
+                ctx.save();
+            }
+        }]
     });
 }
 

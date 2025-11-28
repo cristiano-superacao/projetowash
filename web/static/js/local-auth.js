@@ -10,6 +10,35 @@ function loadLocalUsers() {
     const stored = localStorage.getItem('localUsers');
     if (stored) {
         localUsers = JSON.parse(stored);
+        
+        // Garantir que o admin padrao exista e tenha os campos novos
+        const adminIndex = localUsers.findIndex(u => u.loginUsuario === 'admin');
+        const defaultAdmin = {
+            uid: 'admin-local-001',
+            nome: 'Administrador',
+            email: 'admin@local.com',
+            contato: '(00) 00000-0000',
+            loginUsuario: 'admin',
+            senha: 'admin123',
+            role: 'admin',
+            companyId: 'comp-default',
+            ativo: true,
+            dataCadastro: new Date().toISOString()
+        };
+
+        if (adminIndex === -1) {
+            // Se nao existir, adiciona
+            localUsers.push(defaultAdmin);
+            saveLocalUsers();
+        } else {
+            // Se existir, atualiza campos criticos (como companyId) se estiverem faltando
+            const admin = localUsers[adminIndex];
+            if (!admin.companyId) {
+                admin.companyId = 'comp-default';
+                localUsers[adminIndex] = admin;
+                saveLocalUsers();
+            }
+        }
     } else {
         // Usuario admin padrao
         localUsers = [
@@ -21,6 +50,7 @@ function loadLocalUsers() {
                 loginUsuario: 'admin',
                 senha: 'admin123',
                 role: 'admin',
+                companyId: 'comp-default',
                 ativo: true,
                 dataCadastro: new Date().toISOString()
             },
@@ -32,6 +62,7 @@ function loadLocalUsers() {
                 loginUsuario: 'alice',
                 senha: '123', // Senha padrão simples
                 role: 'admin', // Dando permissão de admin para facilitar testes
+                companyId: 'comp-default',
                 cargo: 'Diretor',
                 ativo: true,
                 dataCadastro: new Date().toISOString()
@@ -44,6 +75,7 @@ function loadLocalUsers() {
                 loginUsuario: 'superacao',
                 senha: '123',
                 role: 'admin',
+                companyId: 'comp-superacao',
                 cargo: 'CEO',
                 ativo: true,
                 dataCadastro: new Date().toISOString()

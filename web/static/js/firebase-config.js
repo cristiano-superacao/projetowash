@@ -44,6 +44,11 @@ if (firebaseInitialized) {
                 if (userDoc.exists) {
                     const userData = userDoc.data();
                     isAdmin = userData.role === 'admin';
+                    // Attach companyId to currentUser for easy access
+                    currentUser.companyId = userData.companyId;
+                    currentUser.role = userData.role;
+                    currentUser.cargo = userData.cargo;
+                    currentUser.allowedModules = userData.allowedModules;
                 }
             } catch (e) {
                 console.error("Erro ao buscar dados do usuário", e);
@@ -113,16 +118,45 @@ async function login(email, password) {
 }
 
 // Funcao de cadastro
-async function cadastrarUsuario(nome, email, contato, loginUsuario, senha) {
+async function cadastrarUsuario(nome, email, contato, loginUsuario, senha, extraData = {}) {
     if (!firebaseInitialized) {
         throw new Error("Firebase não configurado. Use o modo local.");
     }
     try {
         showLoading('Criando conta...');
         
+        // Validar gestor se for funcionario
+        let companyId;
+        let role = extraData.role || 'user';
+        
+        if (role !== 'admin') {
+            // Buscar gestor pelo login para obter o ID da empresa
+            // Nota: Em produção, isso deveria ser feito via Cloud Functions para segurança
+            const managerQuery = await db.collection('usuarios')
+                .where('loginUsuario', '==', extraData.managerLogin)
+                .limit(1)
+                .get();
+                
+            if (managerQuery.empty) {
+                throw new Error('Gestor não encontrado. Verifique o login.');
+            }
+            
+            const managerData = managerQuery.docs[0].data();
+            companyId = managerData.companyId;
+            
+            // Opcional: Verificar senha do gestor (Não recomendado no client-side, mas mantendo a lógica do app)
+            // Aqui não temos como verificar a senha do gestor sem fazer login.
+            // Vamos assumir que se o login existe, permitimos (para este MVP).
+        }
+
         // Criar usuario no Authentication
         const result = await auth.createUserWithEmailAndPassword(email, senha);
         const user = result.user;
+        
+        // Se for admin (nova empresa), o ID da empresa é o próprio UID do usuário
+        if (role === 'admin') {
+            companyId = user.uid;
+        }
         
         // Atualizar display name
         await user.updateProfile({
@@ -135,7 +169,11 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha) {
             email: email,
             contato: contato,
             loginUsuario: loginUsuario,
-            role: 'user',
+            role: role,
+            companyId: companyId,
+            cargo: extraData.cargo || (role === 'admin' ? 'Administrador' : 'Funcionário'),
+            nomeEmpresa: extraData.nomeEmpresa || '',
+            allowedModules: extraData.allowedModules || [],
             dataCadastro: firebase.firestore.FieldValue.serverTimestamp(),
             ativo: true
         });
@@ -153,6 +191,8 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha) {
             message = 'A senha deve ter no minimo 6 caracteres';
         } else if (error.code === 'auth/invalid-email') {
             message = 'Email invalido';
+        } else {
+            message = error.message;
         }
         
         showToast(message, 'error');
