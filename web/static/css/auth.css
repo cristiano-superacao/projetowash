@@ -144,6 +144,84 @@
     margin: 0;
 }
 
+/* Tabs de Cadastro */
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    background: #F6F9F3;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    color: #4A5F4A;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.auth-tab:hover {
+    background: rgba(45, 80, 22, 0.05);
+    color: #2D5016;
+}
+
+.auth-tab.active {
+    background: white;
+    color: #2D5016;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Seção de Autorização do Gestor */
+.manager-auth-section {
+    background: #F6F9F3;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #D9E8D4;
+    margin-bottom: 15px;
+}
+
+.manager-auth-section h4 {
+    font-size: 15px;
+    color: #2D5016;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modules-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.modules-checkbox-grid label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.modules-checkbox-grid input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
 /* App Container */
 .app-container {
     min-height: 100vh;

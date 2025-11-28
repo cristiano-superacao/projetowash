@@ -88,29 +88,52 @@ async function loginLocal(email, password) {
 }
 
 // Cadastro local
-async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, cargo) {
+async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, extraData) {
     // Verificar se email ja existe
     if (localUsers.find(u => u.email === email)) {
-        throw new Error('Este email ja esta cadastrado');
+        throw new Error('Este email já está cadastrado');
     }
     
     // Verificar se login ja existe
     if (localUsers.find(u => u.loginUsuario === loginUsuario)) {
-        throw new Error('Este login ja esta em uso');
+        throw new Error('Este login já está em uso');
     }
     
-    const newUser = {
+    let newUser = {
         uid: 'user-local-' + Date.now(),
         nome: nome,
         email: email,
         contato: contato,
         loginUsuario: loginUsuario,
         senha: senha,
-        role: 'user', // Role tecnica (admin ou user)
-        cargo: cargo || 'N/A', // Cargo funcional (Financeiro, RH, etc)
         ativo: true,
         dataCadastro: new Date().toISOString()
     };
+
+    if (extraData.role === 'admin') {
+        // Cadastro de Empresa
+        newUser.role = 'admin';
+        newUser.cargo = 'Administrador';
+        newUser.nomeEmpresa = extraData.nomeEmpresa;
+        newUser.companyId = 'comp-' + Date.now(); // Gerar ID da empresa
+    } else {
+        // Cadastro de Funcionário
+        // Validar credenciais do gestor
+        const manager = localUsers.find(u => u.loginUsuario === extraData.managerLogin && u.senha === extraData.managerPass);
+        
+        if (!manager) {
+            throw new Error('Credenciais do gestor inválidas. Verifique o login e senha do administrador.');
+        }
+        
+        if (manager.role !== 'admin') {
+            throw new Error('O usuário informado não tem permissão de administrador.');
+        }
+
+        newUser.role = 'user';
+        newUser.cargo = extraData.cargo;
+        newUser.companyId = manager.companyId || 'comp-default'; // Vincular à empresa do gestor
+        newUser.allowedModules = extraData.allowedModules || [];
+    }
     
     localUsers.push(newUser);
     saveLocalUsers();

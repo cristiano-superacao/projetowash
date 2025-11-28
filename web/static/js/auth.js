@@ -12,96 +12,116 @@ function showRegister() {
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('registerForm').classList.remove('hidden');
     document.getElementById('forgotPasswordForm').classList.add('hidden');
+    switchRegisterTab('empresa'); // Default tab
 }
 
-// Mostrar formulario de recuperacao de senha
-function showForgotPassword() {
-    document.getElementById('loginForm').classList.add('hidden');
-    document.getElementById('registerForm').classList.add('hidden');
-    document.getElementById('forgotPasswordForm').classList.remove('hidden');
-}
-
-// Handler de login
-async function handleLogin(event) {
-    event.preventDefault();
+// Alternar abas de cadastro
+function switchRegisterTab(type) {
+    const tabs = document.querySelectorAll('.auth-tab');
+    tabs.forEach(t => t.classList.remove('active'));
     
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    
-    if (!email || !password) {
-        showToast('Preencha todos os campos', 'error');
-        return;
+    // Ativar aba clicada (logica simples baseada na ordem ou texto, mas melhor usar event target se possivel, aqui vamos pelo tipo)
+    if (type === 'empresa') {
+        tabs[0].classList.add('active');
+        document.getElementById('fieldsEmpresa').classList.remove('hidden');
+        document.getElementById('fieldsFuncionario').classList.add('hidden');
+        document.getElementById('regNomeEmpresa').setAttribute('required', 'true');
+        document.getElementById('regCargo').removeAttribute('required');
+        document.getElementById('regManagerLogin').removeAttribute('required');
+        document.getElementById('regManagerPass').removeAttribute('required');
+        document.getElementById('btnRegisterText').textContent = 'Cadastrar Empresa';
+    } else {
+        tabs[1].classList.add('active');
+        document.getElementById('fieldsEmpresa').classList.add('hidden');
+        document.getElementById('fieldsFuncionario').classList.remove('hidden');
+        document.getElementById('regNomeEmpresa').removeAttribute('required');
+        document.getElementById('regCargo').setAttribute('required', 'true');
+        document.getElementById('regManagerLogin').setAttribute('required', 'true');
+        document.getElementById('regManagerPass').setAttribute('required', 'true');
+        document.getElementById('btnRegisterText').textContent = 'Cadastrar Funcionário';
     }
     
-    showLoading('Entrando...');
-    
-    try {
-        // Tentar modo local primeiro
-        if (typeof loginLocal !== 'undefined') {
-            await loginLocal(email, password);
-            showToast('Login realizado com sucesso!', 'success');
-            showApp();
-            loadDashboard();
-        } else {
-            // Modo Firebase
-            await login(email, password);
-        }
-    } catch (error) {
-        console.error('Erro no login:', error);
-        showToast(error.message || 'Erro ao fazer login', 'error');
-    } finally {
-        hideLoading();
-    }
+    document.getElementById('regType').value = type;
 }
 
 // Handler de cadastro
 async function handleRegister(event) {
     event.preventDefault();
     
+    const type = document.getElementById('regType').value;
     const nome = document.getElementById('regNome').value.trim();
     const email = document.getElementById('regEmail').value.trim();
     const contato = document.getElementById('regContato').value.trim();
-    const cargo = document.getElementById('regCargo').value;
     const loginUsuario = document.getElementById('regLogin').value.trim();
     const password = document.getElementById('regPassword').value;
     const passwordConfirm = document.getElementById('regPasswordConfirm').value;
     
-    // Validacoes
-    if (!nome || !email || !contato || !cargo || !loginUsuario || !password || !passwordConfirm) {
-        showToast('Preencha todos os campos', 'error');
+    // Validacoes Comuns
+    if (!nome || !email || !contato || !loginUsuario || !password || !passwordConfirm) {
+        showToast('Preencha todos os campos obrigatórios', 'error');
         return;
     }
     
     if (password !== passwordConfirm) {
-        showToast('As senhas nao coincidem', 'error');
+        showToast('As senhas não coincidem', 'error');
         return;
     }
     
     if (password.length < 6) {
-        showToast('A senha deve ter no minimo 6 caracteres', 'error');
+        showToast('A senha deve ter no mínimo 6 caracteres', 'error');
         return;
     }
+
+    // Dados específicos
+    let extraData = {};
     
-    showLoading('Criando conta...');
+    if (type === 'empresa') {
+        const nomeEmpresa = document.getElementById('regNomeEmpresa').value.trim();
+        if (!nomeEmpresa) {
+            showToast('Nome da empresa é obrigatório', 'error');
+            return;
+        }
+        extraData = { nomeEmpresa, role: 'admin' };
+    } else {
+        const cargo = document.getElementById('regCargo').value;
+        const managerLogin = document.getElementById('regManagerLogin').value.trim();
+        const managerPass = document.getElementById('regManagerPass').value;
+        
+        if (!cargo || !managerLogin || !managerPass) {
+            showToast('Dados do funcionário e autorização do gestor são obrigatórios', 'error');
+            return;
+        }
+        
+        // Coletar módulos permitidos
+        const modules = [];
+        document.querySelectorAll('input[name="regModules"]:checked').forEach(cb => {
+            modules.push(cb.value);
+        });
+        
+        extraData = { 
+            cargo, 
+            role: 'user', 
+            managerLogin, 
+            managerPass,
+            allowedModules: modules
+        };
+    }
+    
+    showLoading(type === 'empresa' ? 'Criando empresa...' : 'Cadastrando funcionário...');
     
     try {
         // Tentar modo local primeiro
         if (typeof cadastrarUsuarioLocal !== 'undefined') {
-            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, cargo);
-            showToast('Conta criada com sucesso! Faca login.', 'success');
+            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+            showToast('Cadastro realizado com sucesso!', 'success');
         } else {
-            // Modo Firebase
-            await cadastrarUsuario(nome, email, contato, loginUsuario, password, cargo);
+            // Modo Firebase (Adaptar conforme necessário)
+            // await cadastrarUsuario(nome, email, contato, loginUsuario, password, extraData);
+            throw new Error('Cadastro online não implementado para este fluxo ainda.');
         }
         
         // Limpar formulario
-        document.getElementById('regNome').value = '';
-        document.getElementById('regEmail').value = '';
-        document.getElementById('regContato').value = '';
-        document.getElementById('regCargo').value = '';
-        document.getElementById('regLogin').value = '';
-        document.getElementById('regPassword').value = '';
-        document.getElementById('regPasswordConfirm').value = '';
+        document.querySelector('.auth-form').reset();
         
         // Voltar para login
         setTimeout(() => {

@@ -321,6 +321,7 @@ function filterModulesByRole(user, isAdmin) {
     }
     
     const cargo = user && user.cargo ? user.cargo : '';
+    const allowedModules = user && user.allowedModules ? user.allowedModules : [];
     
     modules.forEach(module => {
         // Pular modulos admin-only (ja tratados)
@@ -329,23 +330,29 @@ function filterModulesByRole(user, isAdmin) {
         const moduleName = module.getAttribute('data-module');
         let shouldShow = false;
         
-        switch(cargo) {
-            case 'Financeiro':
-                if (moduleName === 'financeiro') shouldShow = true;
-                break;
-            case 'Estoque':
-                if (['estoque-entrada', 'estoque-saida', 'visualizar'].includes(moduleName)) shouldShow = true;
-                break;
-            case 'RH':
-                if (moduleName === 'rh') shouldShow = true;
-                break;
-            case 'Administrativo':
-                if (moduleName === 'operacional') shouldShow = true;
-                break;
-            default:
-                // Se nao tiver cargo definido, talvez mostrar apenas visualizar ou nada?
-                // Por seguranca, vamos ocultar tudo se nao tiver cargo definido
-                shouldShow = false;
+        // Verificar se o modulo esta na lista de permitidos (nova logica)
+        if (allowedModules.length > 0) {
+            if (allowedModules.includes(moduleName)) {
+                shouldShow = true;
+            }
+        } else {
+            // Fallback para logica antiga baseada em cargo
+            switch(cargo) {
+                case 'Financeiro':
+                    if (moduleName === 'financeiro') shouldShow = true;
+                    break;
+                case 'Estoque':
+                    if (['estoque-entrada', 'estoque-saida', 'visualizar'].includes(moduleName)) shouldShow = true;
+                    break;
+                case 'RH':
+                    if (moduleName === 'rh') shouldShow = true;
+                    break;
+                case 'Administrativo':
+                    if (moduleName === 'operacional') shouldShow = true;
+                    break;
+                default:
+                    shouldShow = false;
+            }
         }
         
         if (shouldShow) {
