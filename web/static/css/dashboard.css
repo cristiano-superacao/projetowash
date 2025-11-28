@@ -143,9 +143,9 @@
 }
 
 .history-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .history-item {
@@ -157,6 +157,7 @@
     border-radius: 8px;
     border-left: 3px solid;
     transition: all 0.3s ease;
+    height: 100%; /* Garante altura uniforme */
 }
 
 .history-item:hover {
@@ -236,10 +237,18 @@
     .charts-grid {
         grid-template-columns: 1fr;
     }
+    
+    .history-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
     .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .history-list {
         grid-template-columns: 1fr;
     }
     

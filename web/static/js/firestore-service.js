@@ -312,7 +312,7 @@ async function buscarEstatisticas() {
             totalItens,
             valorTotal,
             vendasMes,
-            movimentacoes: movimentacoes.slice(0, 10)
+            movimentacoes: movimentacoes.slice(0, 15)
         };
     } catch (error) {
         console.error('Erro ao buscar estatisticas:', error);
