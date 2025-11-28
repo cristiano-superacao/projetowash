@@ -62,6 +62,9 @@ async function handleLogin(event) {
         // Tentar modo local primeiro
         if (typeof loginLocal !== 'undefined') {
             await loginLocal(email, password);
+            // Recarregar a página para inicializar o app corretamente com o usuário logado
+            window.location.reload();
+            return;
         } else {
             // Modo Firebase
             await login(email, password);
@@ -364,7 +367,7 @@ function listarUsuarios() {
         <div class="users-manager">
             <div class="manager-header">
                 <h3>Gerenciar Usuários</h3>
-                <button class="btn btn-success btn-sm" onclick="showRegister()">
+                <button class="btn btn-success btn-sm" onclick="showAddUser()">
                     <i class="fas fa-plus"></i> Novo Usuário
                 </button>
             </div>
@@ -388,7 +391,7 @@ function listarUsuarios() {
                                         <div class="user-avatar-small">${user.nome.charAt(0).toUpperCase()}</div>
                                         <div>
                                             <div class="user-name">${user.nome}</div>
-                                            <div class="user-role-badge ${user.role === 'admin' ? 'admin' : 'user'}">${user.role === 'admin' ? 'Admin' : 'User'}</div>
+                                            <div class="user-role-badge ${user.role === 'admin' ? 'admin' : 'user'}">${user.role === 'admin' ? 'ADMIN' : 'USER'}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -433,6 +436,140 @@ function listarUsuarios() {
 
     document.getElementById('modalTitle').textContent = 'Usuários';
     document.getElementById('modalBody').innerHTML = html;
+}
+
+// Mostrar formulario de adicionar usuario (Admin)
+function showAddUser() {
+    const html = `
+        <div class="add-user-form">
+            <div class="manager-header">
+                <h3>Novo Usuário</h3>
+            </div>
+            
+            <form onsubmit="handleAddUser(event)">
+                <div class="form-group">
+                    <label for="newNome">Nome Completo</label>
+                    <input type="text" id="newNome" required placeholder="Nome do funcionário">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newEmail">Email</label>
+                        <input type="email" id="newEmail" required placeholder="email@empresa.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="newContato">Contato</label>
+                        <input type="tel" id="newContato" required placeholder="(00) 00000-0000">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newCargo">Cargo</label>
+                        <select id="newCargo" class="form-select" required>
+                            <option value="">Selecione...</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Estoque">Estoque</option>
+                            <option value="RH">Recursos Humanos</option>
+                            <option value="Administrativo">Administrativo</option>
+                            <option value="Operacional">Operacional</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="newLogin">Login</label>
+                        <input type="text" id="newLogin" required placeholder="usuario.login">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newPassword">Senha</label>
+                        <input type="password" id="newPassword" required placeholder="Mínimo 6 caracteres">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPasswordConfirm">Confirmar Senha</label>
+                        <input type="password" id="newPasswordConfirm" required placeholder="Repita a senha">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Módulos Permitidos:</label>
+                    <div class="modules-checkbox-grid">
+                        <label><input type="checkbox" name="newModules" value="operacional" checked> Operacional</label>
+                        <label><input type="checkbox" name="newModules" value="estoque-entrada"> Entrada</label>
+                        <label><input type="checkbox" name="newModules" value="estoque-saida"> Saída</label>
+                        <label><input type="checkbox" name="newModules" value="financeiro"> Financeiro</label>
+                        <label><input type="checkbox" name="newModules" value="rh"> RH</label>
+                        <label><input type="checkbox" name="newModules" value="visualizar" checked> Visualizar</label>
+                    </div>
+                </div>
+                
+                <div class="button-group" style="justify-content: flex-end;">
+                    <button type="button" class="btn btn-secondary" onclick="listarUsuarios()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Salvar Usuário
+                    </button>
+                </div>
+            </form>
+        </div>
+    `;
+    
+    document.getElementById('modalBody').innerHTML = html;
+}
+
+// Handler para adicionar usuario
+async function handleAddUser(event) {
+    event.preventDefault();
+    
+    const nome = document.getElementById('newNome').value.trim();
+    const email = document.getElementById('newEmail').value.trim();
+    const contato = document.getElementById('newContato').value.trim();
+    const cargo = document.getElementById('newCargo').value;
+    const loginUsuario = document.getElementById('newLogin').value.trim();
+    const password = document.getElementById('newPassword').value;
+    const passwordConfirm = document.getElementById('newPasswordConfirm').value;
+    
+    if (password !== passwordConfirm) {
+        showToast('As senhas não coincidem', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showToast('A senha deve ter no mínimo 6 caracteres', 'error');
+        return;
+    }
+    
+    // Coletar módulos
+    const modules = [];
+    document.querySelectorAll('input[name="newModules"]:checked').forEach(cb => {
+        modules.push(cb.value);
+    });
+    
+    showLoading('Cadastrando...');
+    
+    try {
+        // Usar credenciais do admin logado para autorizar
+        const extraData = {
+            cargo: cargo,
+            role: 'user',
+            managerLogin: localCurrentUser.loginUsuario,
+            managerPass: localCurrentUser.senha,
+            allowedModules: modules
+        };
+        
+        await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+        
+        showToast('Usuário cadastrado com sucesso!', 'success');
+        listarUsuarios(); // Voltar para a lista
+        
+    } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        showToast(error.message || 'Erro ao cadastrar usuário', 'error');
+    } finally {
+        hideLoading();
+    }
 }
 
 // Editar usuario (Mock)

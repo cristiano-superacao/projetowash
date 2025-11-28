@@ -131,7 +131,7 @@ async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, 
     } else {
         // Cadastro de Funcionário
         // Validar credenciais do gestor
-        const manager = localUsers.find(u => u.loginUsuario === extraData.managerLogin && u.senha === extraData.managerPass);
+        const manager = localUsers.find(u => (u.loginUsuario === extraData.managerLogin || u.email === extraData.managerLogin) && u.senha === extraData.managerPass);
         
         if (!manager) {
             throw new Error('Credenciais do gestor inválidas. Verifique o login e senha do administrador.');
