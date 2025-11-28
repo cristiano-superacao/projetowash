@@ -2317,3 +2317,14 @@ table tbody tr:hover {
     }
 }
 
+
+/* Utility Class for Desktop Only Elements */
+.desktop-only {
+    display: flex !important;
+}
+
+@media (max-width: 1024px) {
+    .desktop-only {
+        display: none !important;
+    }
+}

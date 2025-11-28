@@ -257,6 +257,27 @@
                     </div>
                     
                     <div class="header-actions">
+                        <nav class="header-nav desktop-only">
+                            <button class="nav-btn" onclick="showModule('operacional')">
+                                <i class="fas fa-industry"></i> Operacional
+                            </button>
+                            <button class="nav-btn" onclick="showModule('estoque-entrada')">
+                                <i class="fas fa-box-open"></i> Entrada
+                            </button>
+                            <button class="nav-btn" onclick="showModule('estoque-saida')">
+                                <i class="fas fa-truck-loading"></i> Saída
+                            </button>
+                            <button class="nav-btn" onclick="showModule('financeiro')">
+                                <i class="fas fa-chart-line"></i> Financeiro
+                            </button>
+                            <button class="nav-btn" onclick="showModule('rh')">
+                                <i class="fas fa-users"></i> RH
+                            </button>
+                            <button class="nav-btn" onclick="showModule('visualizar')">
+                                <i class="fas fa-eye"></i> Estoque
+                            </button>
+                        </nav>
+
                         <button id="installBtn" class="install-btn hidden">
                             <i class="fas fa-download"></i>
                             Instalar App
