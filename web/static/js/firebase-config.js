@@ -10,41 +10,55 @@ const firebaseConfig = {
     measurementId: "G-XXXXXXXXXX"
 };
 
-// Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
+// Inicializar Firebase apenas se a chave for válida
+let auth, db;
+let firebaseInitialized = false;
 
-// Inicializar servicos
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Configurar persistencia
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+try {
+    if (firebaseConfig.apiKey !== "SUA_API_KEY_AQUI") {
+        firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        firebaseInitialized = true;
+    } else {
+        console.warn("Firebase não configurado. Usando modo local.");
+    }
+} catch (e) {
+    console.error("Erro ao inicializar Firebase:", e);
+}
 
 // Estado de autenticacao
 let currentUser = null;
 let isAdmin = false;
 
-// Observador de autenticacao
-auth.onAuthStateChanged(async (user) => {
-    if (user) {
-        currentUser = user;
-        
-        // Verificar se eh admin
-        const userDoc = await db.collection('usuarios').doc(user.uid).get();
-        if (userDoc.exists) {
-            const userData = userDoc.data();
-            isAdmin = userData.role === 'admin';
+// Observador de autenticacao (apenas se Firebase estiver ativo)
+if (firebaseInitialized) {
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            currentUser = user;
+            
+            // Verificar se eh admin
+            try {
+                const userDoc = await db.collection('usuarios').doc(user.uid).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    isAdmin = userData.role === 'admin';
+                }
+            } catch (e) {
+                console.error("Erro ao buscar dados do usuário", e);
+            }
+            
+            // Mostrar sistema
+            showApp();
+            loadDashboard();
+        } else {
+            currentUser = null;
+            isAdmin = false;
+            showAuth();
         }
-        
-        // Mostrar sistema
-        showApp();
-        loadDashboard();
-    } else {
-        currentUser = null;
-        isAdmin = false;
-        showAuth();
-    }
-});
+    });
+}
 
 // Funcao para mostrar tela de autenticacao
 function showAuth() {
@@ -72,6 +86,9 @@ function showApp() {
 
 // Funcao de login
 async function login(email, password) {
+    if (!firebaseInitialized) {
+        throw new Error("Firebase não configurado. Use o modo local.");
+    }
     try {
         showLoading('Entrando no sistema...');
         const result = await auth.signInWithEmailAndPassword(email, password);
@@ -97,6 +114,9 @@ async function login(email, password) {
 
 // Funcao de cadastro
 async function cadastrarUsuario(nome, email, contato, loginUsuario, senha) {
+    if (!firebaseInitialized) {
+        throw new Error("Firebase não configurado. Use o modo local.");
+    }
     try {
         showLoading('Criando conta...');
         
@@ -142,6 +162,7 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha) {
 
 // Funcao de logout
 async function logout() {
+    if (!firebaseInitialized) return;
     try {
         showLoading('Saindo...');
         await auth.signOut();
@@ -156,6 +177,9 @@ async function logout() {
 
 // Funcao para recuperar senha
 async function recuperarSenha(email) {
+    if (!firebaseInitialized) {
+        throw new Error("Firebase não configurado.");
+    }
     try {
         showLoading('Enviando email...');
         await auth.sendPasswordResetEmail(email);
@@ -187,7 +211,7 @@ function verificarAdmin() {
 
 // Obter dados do usuario atual
 async function getUserData() {
-    if (!currentUser) return null;
+    if (!currentUser || !firebaseInitialized) return null;
     
     const doc = await db.collection('usuarios').doc(currentUser.uid).get();
     if (doc.exists) {
