@@ -12,17 +12,31 @@ function loadLocalUsers() {
         localUsers = JSON.parse(stored);
     } else {
         // Usuario admin padrao
-        localUsers = [{
-            uid: 'admin-local-001',
-            nome: 'Administrador',
-            email: 'admin@local.com',
-            contato: '(00) 00000-0000',
-            loginUsuario: 'admin',
-            senha: 'admin123',
-            role: 'admin',
-            ativo: true,
-            dataCadastro: new Date().toISOString()
-        }];
+        localUsers = [
+            {
+                uid: 'admin-local-001',
+                nome: 'Administrador',
+                email: 'admin@local.com',
+                contato: '(00) 00000-0000',
+                loginUsuario: 'admin',
+                senha: 'admin123',
+                role: 'admin',
+                ativo: true,
+                dataCadastro: new Date().toISOString()
+            },
+            {
+                uid: 'user-local-alice',
+                nome: 'Alice',
+                email: 'alice@gmail.com',
+                contato: '(11) 99999-9999',
+                loginUsuario: 'alice',
+                senha: '123', // Senha padrão simples
+                role: 'admin', // Dando permissão de admin para facilitar testes
+                cargo: 'Diretor',
+                ativo: true,
+                dataCadastro: new Date().toISOString()
+            }
+        ];
         saveLocalUsers();
     }
 }
