@@ -1,6 +1,6 @@
 {
   "name": "estoque-certo-ltda",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Sistema de Gestao Empresarial com Firebase e Netlify",
   "main": "web/index.html",
   "scripts": {
