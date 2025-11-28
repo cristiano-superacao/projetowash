@@ -395,37 +395,35 @@ function loadFinanceiroModule(container) {
             </div>
             
             <form id="formFinanceiro" onsubmit="calcularFinanceiro(event)">
-                <div class="form-row">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 20px;">
                     <div class="form-group">
                         <label for="agua"><i class="fas fa-water"></i> Conta de Água (R$)</label>
-                        <input type="number" id="agua" name="agua" required min="0" step="0.01" placeholder="Ex: 1000.00">
+                        <input type="number" id="agua" name="agua" required min="0" step="0.01" placeholder="Ex: 1000.00" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
                     
                     <div class="form-group">
                         <label for="luz"><i class="fas fa-lightbulb"></i> Conta de Luz (R$)</label>
-                        <input type="number" id="luz" name="luz" required min="0" step="0.01" placeholder="Ex: 2500.00">
+                        <input type="number" id="luz" name="luz" required min="0" step="0.01" placeholder="Ex: 2500.00" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
-                </div>
-                
-                <div class="form-row">
+
                     <div class="form-group">
                         <label for="impostos"><i class="fas fa-file-invoice-dollar"></i> Impostos (R$)</label>
-                        <input type="number" id="impostos" name="impostos" required min="0" step="0.01" placeholder="Ex: 3000.00">
+                        <input type="number" id="impostos" name="impostos" required min="0" step="0.01" placeholder="Ex: 3000.00" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
                     
                     <div class="form-group">
                         <label for="salarios"><i class="fas fa-money-bill-wave"></i> Salários (R$)</label>
-                        <input type="number" id="salarios" name="salarios" required min="0" step="0.01" placeholder="Ex: 20000.00">
+                        <input type="number" id="salarios" name="salarios" required min="0" step="0.01" placeholder="Ex: 20000.00" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    
+                    <div class="form-group" style="grid-column: 1 / -1;">
+                        <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/Mês</label>
+                        <input type="number" id="totalPallets" name="totalPallets" required min="1" placeholder="Ex: 1000" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/Mês</label>
-                    <input type="number" id="totalPallets" name="totalPallets" required min="1" placeholder="Ex: 1000">
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-calculator"></i> Calcular
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1.1em;">
+                    <i class="fas fa-calculator"></i> Calcular Custos e Lucros
                 </button>
             </form>
             
