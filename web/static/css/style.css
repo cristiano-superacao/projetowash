@@ -1219,6 +1219,7 @@ table tbody tr:hover {
 .auth-wrapper {
     display: flex;
     min-height: 100vh;
+    height: 100vh; /* Garante altura total da viewport */
     width: 100%;
     background-color: #fff;
     overflow: hidden;
@@ -1240,6 +1241,7 @@ table tbody tr:hover {
     color: white;
     position: relative;
     overflow: hidden;
+    height: 100%; /* Altura total */
 }
 
 .auth-banner::before {
@@ -1291,6 +1293,8 @@ table tbody tr:hover {
     padding: 2rem;
     background-color: white;
     position: relative;
+    height: 100%; /* Altura total */
+    overflow-y: auto; /* Scroll se necessário */
 }
 
 .auth-card {
