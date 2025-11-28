@@ -1229,7 +1229,7 @@ table tbody tr:hover {
     min-height: 100vh;
     height: 100vh;
     width: 100%;
-    background-color: #fff;
+    background: linear-gradient(135deg, #2d5016 0%, #4a7c2a 50%, #6B8E23 100%);
     overflow: hidden;
     position: fixed;
     top: 0;
@@ -1248,7 +1248,8 @@ table tbody tr:hover {
 /* Lado Esquerdo - Banner */
 .auth-banner {
     flex: 1;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1257,7 +1258,8 @@ table tbody tr:hover {
     color: white;
     position: relative;
     overflow: hidden;
-    height: 100%; /* Altura total */
+    height: 100%;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .auth-banner::before {
@@ -1279,24 +1281,33 @@ table tbody tr:hover {
 }
 
 .banner-content i {
-    font-size: 5rem;
+    font-size: 6rem;
     margin-bottom: 2rem;
-    color: var(--success-color);
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+    color: white;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
 }
 
 .banner-content h1 {
-    font-size: 2.5rem;
+    font-size: 2.75rem;
     font-weight: 800;
     margin-bottom: 1rem;
     color: white;
     letter-spacing: -0.025em;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .banner-content p {
-    font-size: 1.125rem;
-    color: var(--text-light);
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.95);
     line-height: 1.6;
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Lado Direito - Formulário */
@@ -1307,26 +1318,37 @@ table tbody tr:hover {
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    background-color: white;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
     position: relative;
-    height: 100%; /* Altura total */
-    overflow-y: auto; /* Scroll se necessário */
+    height: 100%;
+    overflow-y: auto;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.1);
 }
 
 .auth-card {
     width: 100%;
-    max-width: 420px;
-    padding: 2rem;
-    animation: fadeIn 0.5s ease-out;
+    max-width: 460px;
+    padding: 2.5rem;
+    animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
 }
 
 .auth-card.hidden {
     display: none;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
 }
 
 .auth-header {
@@ -1335,15 +1357,17 @@ table tbody tr:hover {
 }
 
 .auth-header h2 {
-    font-size: 1.875rem;
+    font-size: 2rem;
     color: var(--text-primary);
     margin-bottom: 0.5rem;
-    font-weight: 700;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .auth-header p {
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
 /* Tabs de Autenticação */
@@ -1410,19 +1434,21 @@ table tbody tr:hover {
 
 .input-group input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
     font-size: 0.95rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: #f8fafc;
+    font-family: inherit;
 }
 
 .input-group input:focus {
     background: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    border-color: #6B8E23;
+    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1), 0 4px 12px rgba(107, 142, 35, 0.08);
     outline: none;
+    transform: translateY(-1px);
 }
 
 .input-group input:focus + i {
@@ -1431,28 +1457,65 @@ table tbody tr:hover {
 
 .form-select {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: var(--radius-md);
+    padding: 0.875rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
     font-size: 0.95rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: #f8fafc;
     color: var(--text-primary);
     cursor: pointer;
+    font-family: inherit;
 }
 
 .form-select:focus {
     background: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
+    border-color: #6B8E23;
+    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1), 0 4px 12px rgba(107, 142, 35, 0.08);
     outline: none;
+    transform: translateY(-1px);
 }
 
 .btn-block {
     width: 100%;
-    padding: 0.875rem;
+    padding: 1rem;
     font-size: 1rem;
+    font-weight: 700;
     margin-top: 1rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #4a7c2a 0%, #6B8E23 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(107, 142, 35, 0.3);
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-block:hover::before {
+    left: 100%;
+}
+
+.btn-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(107, 142, 35, 0.4);
+}
+
+.btn-block:active {
+    transform: translateY(0);
 }
 
 /* Links e Dicas */
@@ -1476,26 +1539,28 @@ table tbody tr:hover {
 
 .admin-login-hint {
     margin-top: 2rem;
-    padding: 1rem;
-    background: #f0f9ff;
-    border: 1px solid #bae6fd;
-    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    background: linear-gradient(135deg, rgba(107, 142, 35, 0.08) 0%, rgba(107, 142, 35, 0.04) 100%);
+    border-left: 4px solid #6B8E23;
+    border-radius: 12px;
     display: flex;
-    gap: 0.75rem;
+    gap: 1rem;
     align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(107, 142, 35, 0.08);
 }
 
 .admin-login-hint i {
-    color: var(--info-color);
-    font-size: 1.1rem;
+    color: #6B8E23;
+    font-size: 1.25rem;
     margin-top: 0.1rem;
 }
 
 .admin-login-hint p {
-    font-size: 0.85rem;
-    color: #0c4a6e;
+    font-size: 0.875rem;
+    color: #2d5016;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
 /* Checkbox Grid para Módulos */
@@ -1890,6 +1955,46 @@ table tbody tr:hover {
 }
 
 @media (max-width: 768px) {
+    .auth-wrapper {
+        flex-direction: column;
+    }
+    
+    .auth-banner {
+        height: 30vh;
+        min-height: 250px;
+        padding: 2rem;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .banner-content i {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .banner-content h1 {
+        font-size: 1.75rem;
+    }
+    
+    .banner-content p {
+        font-size: 1rem;
+    }
+    
+    .auth-content {
+        height: 70vh;
+        padding: 1.5rem;
+    }
+    
+    .auth-card {
+        padding: 1.5rem;
+        max-width: 100%;
+        box-shadow: none;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.5rem;
+    }
+    
     .stats-grid {
         grid-template-columns: 1fr;
     }
@@ -1920,6 +2025,53 @@ table tbody tr:hover {
 }
 
 @media (max-width: 480px) {
+    .auth-banner {
+        height: 25vh;
+        min-height: 200px;
+        padding: 1.5rem;
+    }
+    
+    .banner-content i {
+        font-size: 3rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .banner-content h1 {
+        font-size: 1.5rem;
+    }
+    
+    .banner-content p {
+        font-size: 0.875rem;
+    }
+    
+    .auth-content {
+        padding: 1rem;
+    }
+    
+    .auth-card {
+        padding: 1.25rem;
+    }
+    
+    .auth-header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .auth-header h2 {
+        font-size: 1.375rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .input-group input {
+        padding: 0.75rem 1rem 0.75rem 2.5rem;
+    }
+    
+    .btn-block {
+        padding: 0.875rem;
+    }
+    
     .stat-card {
         flex-direction: column;
         text-align: center;
