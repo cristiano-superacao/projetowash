@@ -7,9 +7,8 @@
 // Constantes e Configuracoes
 // Detecta se está rodando localmente ou em produção
 const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const API_BASE_URL = isLocalhost 
-    ? 'http://localhost:5000/api' 
-    : 'https://projetowash.onrender.com/api'; // URL de produção (Render)
+// Para Netlify Functions, usamos caminho relativo /api que é redirecionado para /.netlify/functions
+const API_BASE_URL = '/api'; 
 
 // ============================================================================
 // FUNCOES DE MODAL
@@ -152,8 +151,16 @@ async function apiRequest(endpoint, options = {}) {
         }
 
         // Adicionar header de Role para RBAC (Segurança)
-        const user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : (typeof currentUser !== 'undefined' ? currentUser : null);
-        const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
+        let user = null;
+        let isUserAdmin = false;
+
+        if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
+            user = typeof currentUser !== 'undefined' ? currentUser : null;
+            isUserAdmin = typeof isAdmin !== 'undefined' ? isAdmin : false;
+        } else {
+            user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : null;
+            isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : false;
+        }
         
         if (user || isUserAdmin) {
             let role = 'user';
@@ -298,9 +305,14 @@ function showApp() {
     document.getElementById('appContainer').classList.remove('hidden');
     
     // Obter usuario atual
-    const user = typeof localCurrentUser !== 'undefined' 
-        ? localCurrentUser 
-        : (typeof currentUser !== 'undefined' ? currentUser : null);
+    let user = null;
+    if (typeof window.currentUser !== 'undefined' && window.currentUser) {
+        user = window.currentUser;
+    } else if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
+        user = typeof currentUser !== 'undefined' ? currentUser : null;
+    } else {
+        user = typeof localCurrentUser !== 'undefined' ? localCurrentUser : null;
+    }
         
     const userName = user ? (user.nome || user.displayName || 'Usuario') : 'Usuario';
     
@@ -310,7 +322,12 @@ function showApp() {
     }
     
     // Mostrar/ocultar botoes admin
-    const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
+    let isUserAdmin = false;
+    if (typeof window.isAdmin !== 'undefined') {
+        isUserAdmin = window.isAdmin;
+    } else {
+        isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
+    }
     const adminButtons = document.querySelectorAll('.admin-only');
     adminButtons.forEach(btn => {
         if (isUserAdmin) {
@@ -391,6 +408,15 @@ async function handleLogout() {
     try {
         showLoading('Saindo...');
         
+        // Logout API/Neon
+        if (localStorage.getItem('currentUser')) {
+            localStorage.removeItem('currentUser');
+            window.currentUser = null;
+            window.isAdmin = false;
+            window.location.reload();
+            return;
+        }
+
         // Tentar modo local primeiro
         if (typeof logoutLocal !== 'undefined') {
             logoutLocal();
@@ -398,7 +424,7 @@ async function handleLogout() {
             showToast('Logout realizado com sucesso', 'success');
         } else {
             // Modo Firebase
-            await logout();
+            if (typeof logout !== 'undefined') await logout();
         }
     } catch (error) {
         console.error('Erro ao fazer logout:', error);
@@ -514,6 +540,22 @@ async function registrarSaidaEstoque(nomeProduto, quantidade, produtoId, valorVe
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Sistema Estoque Certo LTDA v2.0 iniciado');
     
+    // Verificar se existe usuário logado via API (Neon)
+    const apiUser = localStorage.getItem('currentUser');
+    if (apiUser) {
+        try {
+            window.currentUser = JSON.parse(apiUser);
+            window.isAdmin = window.currentUser.role === 'admin';
+            console.log('Modo API/Neon ativado');
+            showApp();
+            loadDashboard();
+            return;
+        } catch (e) {
+            console.error('Erro ao carregar usuário API', e);
+            localStorage.removeItem('currentUser');
+        }
+    }
+
     // Verificar modo de operacao
     if (typeof localCurrentUser !== 'undefined') {
         console.log('Modo Local/Demo ativado');

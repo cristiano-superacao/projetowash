@@ -1,60 +1,55 @@
 # Sistema Estoque Certo EV
 
-Bem-vindo ao repositório do **Estoque Certo EV**, um sistema de gestão empresarial (ERP) moderno, focado na indústria de veículos elétricos e componentes de alta tecnologia.
+**Estoque Certo EV** é um sistema de gestão empresarial (ERP) moderno e responsivo, focado na indústria de veículos elétricos e componentes de alta tecnologia.
 
-## 🚀 Visão Geral
+O sistema utiliza uma arquitetura **Serverless** moderna, garantindo baixo custo, alta escalabilidade e segurança profissional.
 
-O sistema foi projetado para ser flexível, funcionando tanto como uma aplicação completa com backend Python (Flask) quanto como uma aplicação web estática (PWA) que pode ser hospedada em serviços como Netlify ou Vercel.
+## 🏗️ Arquitetura do Sistema
+
+- **Frontend**: HTML5, CSS3 e JavaScript (PWA). Hospedado no **Netlify**.
+- **Backend**: Netlify Functions (Node.js). Gerencia autenticação e regras de negócio.
+- **Banco de Dados**: **Neon** (PostgreSQL). Banco de dados relacional robusto na nuvem.
 
 ### Módulos Principais
-- **Dashboard**: Visão geral com gráficos e indicadores de desempenho (KPIs).
-- **Operacional**: Cálculo de capacidade produtiva e eficiência de turnos.
-- **Estoque**: Controle de entrada e saída com rastreabilidade (Lote/Serial).
-- **Financeiro**: Gestão de custos, precificação e análise de ROI.
-- **RH**: Gestão de funcionários e folha de pagamento automatizada.
+- **📊 Dashboard**: Visão geral com gráficos e indicadores de desempenho (KPIs).
+- **🏭 Operacional**: Cálculo de capacidade produtiva e eficiência de turnos.
+- **📦 Estoque**: Controle de entrada e saída com rastreabilidade (Lote/Serial).
+- **💰 Financeiro**: Gestão de custos, precificação e análise de ROI.
+- **👥 RH**: Gestão de funcionários e folha de pagamento automatizada.
 
-## 🛠️ Tecnologias
+## 🚀 Como Configurar e Implantar
 
-- **Frontend**: HTML5, CSS3 (Design Responsivo), JavaScript (ES6+).
-- **Backend (Opcional)**: Python 3.x, Flask, SQLAlchemy.
-- **Persistência**:
-  - **Modo Local**: LocalStorage (Navegador) - Ideal para demos e testes.
-  - **Modo Nuvem**: Firebase (Firestore/Auth) - Para produção distribuída.
-  - **Modo Híbrido**: Banco de Dados SQL (PostgreSQL/SQLite) via Flask.
+Este projeto já está configurado para deploy contínuo no Netlify. Para que o sistema funcione corretamente (login, banco de dados), você precisa configurar o banco de dados Neon.
 
-## 📦 Instalação e Execução
+### Passo 1: Configuração do Banco de Dados (Neon)
+Siga o guia detalhado em:
+👉 **[CONFIGURACAO_NEON.md](CONFIGURACAO_NEON.md)**
 
-### Opção 1: Rodar Localmente (Python)
-Ideal para desenvolvimento e acesso a todas as funcionalidades de backend.
+### Passo 2: Deploy no Netlify
+1. Conecte este repositório ao seu Netlify.
+2. Nas configurações do site no Netlify, vá em **Environment Variables**.
+3. Adicione a variável `DATABASE_URL` com a string de conexão do seu banco Neon.
+4. O Netlify fará o deploy automaticamente.
 
-1. **Pré-requisitos**: Python 3.8+ instalado.
-2. **Instalar dependências**:
+## 💻 Desenvolvimento Local
+
+Para rodar o projeto localmente com acesso ao banco de dados, você precisa do [Netlify CLI](https://docs.netlify.com/cli/get-started/).
+
+1. Instale dependências:
    ```bash
-   pip install -r requirements.txt
+   npm install
    ```
-3. **Executar o servidor**:
+2. Inicie o servidor de desenvolvimento:
    ```bash
-   python app.py
+   netlify dev
    ```
-4. **Acessar**: Abra `http://localhost:5000` no navegador.
+   Isso iniciará o frontend e as funções backend localmente.
 
-### Opção 2: Hospedagem Estática (Netlify/Vercel)
-O projeto já está configurado para deploy automático.
+## 🔐 Acesso e Segurança
 
-1. **Configuração**: O arquivo `netlify.toml` define a pasta `web` como diretório de publicação.
-2. **Deploy**: Conecte este repositório ao Netlify. O sistema funcionará automaticamente em **Modo Local** (dados salvos no navegador do usuário).
-3. **Produção**: Para persistência em nuvem sem backend Python, configure as credenciais do Firebase em `web/static/js/firebase-config.js` e descomente as linhas correspondentes em `web/index.html`.
-
-## 🔐 Acesso (Modo Local)
-
-O sistema vem pré-configurado com um usuário administrador para testes locais:
-
-- **Email**: `admin@local.com`
-- **Senha**: `admin123`
-
-## 📱 PWA (Progressive Web App)
-
-Este sistema é instalável! Em dispositivos móveis ou desktop (Chrome/Edge), procure pelo ícone de instalação na barra de endereços para adicionar o **Estoque Certo EV** à sua tela inicial.
+- O sistema utiliza **RBAC (Role-Based Access Control)**.
+- Cada usuário vê apenas os módulos permitidos pelo seu cargo.
+- As senhas e dados sensíveis são gerenciados pelo backend seguro.
 
 ---
 © 2025 Estoque Certo LTDA. Todos os direitos reservados.

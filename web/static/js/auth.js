@@ -59,15 +59,33 @@ async function handleLogin(event) {
     showLoading('Entrando...');
     
     try {
-        // Tentar modo local primeiro
-        if (typeof loginLocal !== 'undefined') {
-            await loginLocal(email, password);
-            // Recarregar a página para inicializar o app corretamente com o usuário logado
+        // Tentar login via API (Neon/Netlify Functions)
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Login sucesso
+            localStorage.setItem('currentUser', JSON.stringify(data.user));
             window.location.reload();
             return;
         } else {
-            // Modo Firebase
-            await login(email, password);
+            // Se falhar API, tenta local (fallback) ou mostra erro
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            
+            // Fallback para local se API não estiver configurada (404/500)
+            if (typeof loginLocal !== 'undefined') {
+                console.warn('API falhou, tentando modo local...');
+                await loginLocal(email, password);
+                window.location.reload();
+                return;
+            }
         }
         
     } catch (error) {
@@ -144,24 +162,39 @@ async function handleRegister(event) {
     showLoading(type === 'empresa' ? 'Criando empresa...' : 'Cadastrando funcionário...');
     
     try {
-        // Tentar modo local primeiro
-        const isFirebaseActive = typeof firebaseInitialized !== 'undefined' && firebaseInitialized;
-        
-        if (typeof cadastrarUsuarioLocal !== 'undefined' && !isFirebaseActive) {
-            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+        // Tentar cadastro via API (Neon/Netlify Functions)
+        const response = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: nome,
+                email: email,
+                password: password,
+                role: extraData.role,
+                companyId: extraData.role === 'admin' ? 'comp-' + Date.now() : extraData.companyId || 'comp-default', // Simplificação
+                allowedModules: extraData.allowedModules
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
             showToast('Cadastro realizado com sucesso!', 'success');
-        } else {
-            // Modo Firebase
-            await cadastrarUsuario(nome, email, contato, loginUsuario, password, extraData);
+            document.querySelector('.auth-form').reset();
+            setTimeout(() => { showLogin(); }, 2000);
+            return;
         }
-        
-        // Limpar formulario
-        document.querySelector('.auth-form').reset();
-        
-        // Voltar para login
-        setTimeout(() => {
-            showLogin();
-        }, 2000);
+
+        // Se falhar API, tenta local (fallback)
+        if (typeof cadastrarUsuarioLocal !== 'undefined') {
+             await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+             showToast('Cadastro local realizado com sucesso!', 'success');
+             document.querySelector('.auth-form').reset();
+             setTimeout(() => { showLogin(); }, 2000);
+             return;
+        }
+
+        throw new Error(data.error || 'Erro ao cadastrar');
         
     } catch (error) {
         console.error('Erro no cadastro:', error);
