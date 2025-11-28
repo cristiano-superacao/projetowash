@@ -240,11 +240,11 @@ function createElementFromHTML(html) {
 }
 
 /**
- * Formata timestamp do Firestore
+ * Formata timestamp do Firestore (Data e Hora)
  * @param {object} timestamp - Timestamp do Firestore
- * @returns {string} Data formatada
+ * @returns {string} Data e Hora formatada
  */
-function formatTimestamp(timestamp) {
+function formatDateTime(timestamp) {
     if (!timestamp) return 'N/A';
     
     let date;
@@ -256,6 +256,27 @@ function formatTimestamp(timestamp) {
     
     return date.toLocaleString('pt-BR');
 }
+
+/**
+ * Formata timestamp do Firestore (Apenas Data)
+ * @param {object} timestamp - Timestamp do Firestore
+ * @returns {string} Data formatada
+ */
+function formatDate(timestamp) {
+    if (!timestamp) return 'N/A';
+    
+    let date;
+    if (timestamp.toDate) {
+        date = timestamp.toDate();
+    } else {
+        date = new Date(timestamp);
+    }
+    
+    return date.toLocaleDateString('pt-BR');
+}
+
+// Mantendo compatibilidade com nome antigo se houver uso
+const formatTimestamp = formatDateTime;
 
 // ============================================================================
 // FUNCOES DE AUTENTICACAO

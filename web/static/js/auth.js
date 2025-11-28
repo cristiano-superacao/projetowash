@@ -468,16 +468,4 @@ function toggleStatusUsuario(uid) {
     }
 }
 
-// Formatar data
-function formatDate(timestamp) {
-    if (!timestamp) return 'N/A';
-    
-    let date;
-    if (timestamp.toDate) {
-        date = timestamp.toDate();
-    } else {
-        date = new Date(timestamp);
-    }
-    
-    return date.toLocaleDateString('pt-BR');
-}
+
