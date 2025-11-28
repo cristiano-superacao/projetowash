@@ -241,25 +241,7 @@
                     </div>
                     
                     <div class="header-actions">
-                        <!-- Navigation Buttons -->
-                        <div class="header-nav">
-                            <button class="nav-btn module-nav-btn" data-module="estoque-entrada" onclick="showModule('estoque-entrada')" title="Entrada de Estoque">
-                                <i class="fas fa-box-open"></i>
-                                <span class="nav-text">Entrada</span>
-                            </button>
-                            <button class="nav-btn module-nav-btn" data-module="estoque-saida" onclick="showModule('estoque-saida')" title="Saída de Estoque">
-                                <i class="fas fa-truck-loading"></i>
-                                <span class="nav-text">Saída</span>
-                            </button>
-                            <button class="nav-btn module-nav-btn" data-module="visualizar" onclick="showModule('visualizar')" title="Visualizar Estoque">
-                                <i class="fas fa-eye"></i>
-                                <span class="nav-text">Visualizar</span>
-                            </button>
-                            <button class="nav-btn module-nav-btn" data-module="financeiro" onclick="showModule('financeiro')" title="Financeiro">
-                                <i class="fas fa-chart-line"></i>
-                                <span class="nav-text">Financeiro</span>
-                            </button>
-                        </div>
+                        <!-- Navigation Buttons removed (moved to sidebar) -->
 
                         <button id="installBtn" class="install-btn hidden">
                             <i class="fas fa-download"></i>
@@ -298,6 +280,63 @@
                     <!-- Sidebar Navigation (Modules) -->
                     <aside class="dashboard-sidebar">
                         <section id="modulesSection" class="modules-list">
+                            
+                            <!-- Dashboard Home -->
+                            <div class="module-card-side" onclick="closeModule()">
+                                <div class="module-icon-side gray">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Início</h3>
+                                    <p>Dashboard</p>
+                                </div>
+                            </div>
+
+                            <!-- Grupo Estoque -->
+                            <div class="module-card-side" data-module="estoque-entrada" onclick="showModule('estoque-entrada')">
+                                <div class="module-icon-side green">
+                                    <i class="fas fa-box-open"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Entrada</h3>
+                                    <p>Estoque</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
+                            </div>
+
+                            <div class="module-card-side" data-module="estoque-saida" onclick="showModule('estoque-saida')">
+                                <div class="module-icon-side orange">
+                                    <i class="fas fa-truck-loading"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Saída</h3>
+                                    <p>Estoque</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
+                            </div>
+
+                            <div class="module-card-side" data-module="visualizar" onclick="showModule('visualizar')">
+                                <div class="module-icon-side teal">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Visualizar</h3>
+                                    <p>Estoque Completo</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
+                            </div>
+
+                            <!-- Grupo Financeiro -->
+                            <div class="module-card-side" data-module="financeiro" onclick="showModule('financeiro')">
+                                <div class="module-icon-side purple">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Financeiro</h3>
+                                    <p>Custos e Lucros</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
+                            </div>
                             
                             <!-- Modulo Operacional -->
                             <div class="module-card-side" data-module="operacional" onclick="showModule('operacional')">

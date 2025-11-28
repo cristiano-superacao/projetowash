@@ -329,7 +329,7 @@ function showApp() {
  */
 function filterModulesByRole(user, isAdmin) {
     // Selecionar cards e botoes de navegacao
-    const modules = document.querySelectorAll('.module-card, .module-nav-btn');
+    const modules = document.querySelectorAll('.module-card, .module-nav-btn, .module-card-side');
     
     // Se for admin, mostra tudo (exceto o que ja foi tratado pela classe admin-only)
     if (isAdmin) {
