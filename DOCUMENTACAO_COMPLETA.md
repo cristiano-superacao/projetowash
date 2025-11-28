@@ -934,6 +934,75 @@ MIT License - Livre para uso, modificação e distribuição
 
 ---
 
-**✨ Sistema desenvolvido com ❤️ para facilitar a gestão empresarial!**
+## 👥 EQUIPE DE DESENVOLVIMENTO
 
-**Versão da Documentação:** 1.0 - 28/11/2025
+### 📚 Informações Acadêmicas
+
+**Instituição:** SENAI - Serviço Nacional de Aprendizagem Industrial  
+**Disciplina:** Lógica de Programação  
+**Professor:** Washington Luis Souza Anunciação  
+**Data de Início:** 22 de novembro de 2025  
+**Data de Conclusão:** 28 de novembro de 2025
+
+### 🎓 Integrantes da Equipe
+
+| # | Nome Completo | Email | Função |
+|---|---------------|-------|--------|
+| 1 | **Gabriela M. N. Silva** | gabriela.m.silva@ba.estudante.senai.br | Desenvolvedora Principal / Gestora GitHub |
+| 2 | **Cristiano Silva Santos** | Cristiano.s.santos@ba.estudante.senai.br | Desenvolvedor / Contribuidor |
+| 3 | **Joel Macena Costa** | joel.c@ba.estudante.senai.br | Desenvolvedor / Contribuidor |
+| 4 | **Josilton José Almeida Santos** | josilton.santos@aluno.senai.br | Desenvolvedor / Contribuidor |
+
+### 📋 Responsabilidades Detalhadas
+
+#### Gabriela M. N. Silva
+- 🎯 **Desenvolvedora Principal**
+- 📦 **Gestora do Repositório GitHub**
+- 🔗 **Integração com Repositório Remoto**
+- 🚀 **Deploy e Configuração Netlify**
+- 📚 **Documentação Principal**
+
+#### Cristiano Silva Santos
+- 💻 **Desenvolvimento de Funcionalidades**
+- 🧪 **Testes de Backend (Python/Flask)**
+- 📊 **Módulos Operacional e Financeiro**
+
+#### Joel Macena Costa
+- 🎨 **Desenvolvimento Frontend**
+- 📱 **Implementação PWA**
+- 🖼️ **Design Responsivo**
+
+#### Josilton José Almeida Santos
+- 🔧 **Desenvolvimento de Módulos**
+- ✅ **Validação e Testes**
+- 📖 **Revisão de Código**
+
+### 🤝 Contribuições da Equipe
+
+Todos os integrantes contribuem colaborativamente para:
+
+✅ **Implementação de Funcionalidades**
+- Desenvolvimento dos módulos principais
+- Integração entre frontend e backend
+- Criação de componentes reutilizáveis
+
+✅ **Testes e Validação**
+- Testes unitários e de integração
+- Validação de inputs e outputs
+- Testes de responsividade mobile
+
+✅ **Documentação**
+- Comentários no código
+- Documentação técnica
+- Guias de usuário
+
+✅ **Revisão de Código**
+- Code review em pares
+- Padronização de código
+- Boas práticas de programação
+
+---
+
+**✨ Sistema desenvolvido com ❤️ pela equipe SENAI para facilitar a gestão empresarial!**
+
+**Versão da Documentação:** 1.1 - 28/11/2025

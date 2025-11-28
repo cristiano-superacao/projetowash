@@ -287,8 +287,35 @@ Seu projeto está **100% ORGANIZADO** e **PRONTO PARA USO**!
 
 ---
 
+## 🎓 EQUIPE DE DESENVOLVIMENTO
+
+### Informações Acadêmicas
+- **Instituição:** SENAI - Serviço Nacional de Aprendizagem Industrial
+- **Disciplina:** Lógica de Programação
+- **Professor:** Washington Luis Souza Anunciação
+- **Período:** 22 a 28 de novembro de 2025
+
+### Integrantes
+
+| # | Nome | Email | Responsabilidade |
+|---|------|-------|------------------|
+| 1 | **Gabriela M. N. Silva** | gabriela.m.silva@ba.estudante.senai.br | Desenvolvedora Principal + GitHub |
+| 2 | **Cristiano Silva Santos** | Cristiano.s.santos@ba.estudante.senai.br | Backend + Módulos Python |
+| 3 | **Joel Macena Costa** | joel.c@ba.estudante.senai.br | Frontend + PWA |
+| 4 | **Josilton José A. Santos** | josilton.santos@aluno.senai.br | Testes + Validação |
+
+### Contribuições Coletivas
+- ✅ Implementação de funcionalidades
+- ✅ Testes e validação
+- ✅ Documentação completa
+- ✅ Revisão de código em pares
+
+---
+
 **🏆 PARABÉNS! Projeto finalizado com sucesso!**
 
 📅 Data: 28/11/2025  
-👨‍💻 Desenvolvedor: Estoque Certo LTDA  
+🎓 Instituição: SENAI  
+👥 Equipe: Gabriela, Cristiano, Joel e Josilton  
+👨‍🏫 Professor: Washington Luis Souza Anunciação  
 🎯 Status: ✅ PRONTO PARA PRODUÇÃO

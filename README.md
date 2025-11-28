@@ -137,7 +137,19 @@ MIT License - Livre para uso e modificação.
 ## 👨‍💻 Créditos
 
 **Desenvolvido por:** Estoque Certo LTDA  
-**Versão:** 2.0 | **Ano:** 2025
+**Instituição:** SENAI  
+**Disciplina:** Lógica de Programação  
+**Professor:** Washington Luis Souza Anunciação  
+**Período:** 22-28 de novembro de 2025
+
+### 👥 Equipe
+
+| Nome | Email | Função |
+|------|-------|--------|
+| **Gabriela M. N. Silva** | gabriela.m.silva@ba.estudante.senai.br | Dev Principal / GitHub |
+| **Cristiano Silva Santos** | Cristiano.s.santos@ba.estudante.senai.br | Desenvolvedor |
+| **Joel Macena Costa** | joel.c@ba.estudante.senai.br | Desenvolvedor |
+| **Josilton José A. Santos** | josilton.santos@aluno.senai.br | Desenvolvedor |
 
 ---
 
