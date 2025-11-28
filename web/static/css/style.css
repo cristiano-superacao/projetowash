@@ -47,6 +47,11 @@
 /* Utility Classes */
 .hidden {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    z-index: -9999 !important;
 }
 
 html {
@@ -94,6 +99,8 @@ p { margin-bottom: var(--spacing-md); }
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
 .app-container.hidden {
@@ -1220,14 +1227,22 @@ table tbody tr:hover {
 .auth-wrapper {
     display: flex;
     min-height: 100vh;
-    height: 100vh; /* Garante altura total da viewport */
+    height: 100vh;
     width: 100%;
     background-color: #fff;
     overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
 }
 
 .auth-wrapper.hidden {
-    display: none;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: -9999 !important;
 }
 
 /* Lado Esquerdo - Banner */

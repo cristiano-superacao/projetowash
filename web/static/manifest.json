@@ -3,6 +3,7 @@
   "short_name": "Estoque Certo",
   "description": "Sistema completo de gestão empresarial para controle de estoque, financeiro, RH e operações",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#2D5016",
@@ -10,9 +11,15 @@
   "icons": [
     {
       "src": "/static/icons/icon.svg",
-      "sizes": "any",
+      "sizes": "72x72 96x96 128x128 144x144 152x152 192x192 384x384 512x512",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [
