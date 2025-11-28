@@ -4,7 +4,7 @@
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v1';
+const CACHE_NAME = 'estoque-certo-v2';
 const urlsToCache = [
     '/',
     '/static/css/style.css',
@@ -12,8 +12,7 @@ const urlsToCache = [
     '/static/js/modules.js',
     '/static/js/pwa.js',
     '/static/manifest.json',
-    '/static/icons/icon-192x192.png',
-    '/static/icons/icon-512x512.png'
+    '/static/icons/icon.svg'
 ];
 
 // ============================================================================
@@ -155,8 +154,8 @@ self.addEventListener('push', (event) => {
     
     const options = {
         body: event.data ? event.data.text() : 'Nova notificação',
-        icon: '/static/icons/icon-192x192.png',
-        badge: '/static/icons/icon-72x72.png',
+        icon: '/static/icons/icon.svg',
+        badge: '/static/icons/icon.svg',
         vibrate: [200, 100, 200],
         data: {
             dateOfArrival: Date.now(),
