@@ -267,7 +267,7 @@ setInterval(() => {
 
 // Toggle Sidebar (Mobile)
 function toggleSidebar() {
-    const sidebar = document.getElementById('dashboardSidebar');
+    const sidebar = document.getElementById('mainSidebar');
     const overlay = document.getElementById('sidebarOverlay');
     
     if (sidebar && overlay) {
