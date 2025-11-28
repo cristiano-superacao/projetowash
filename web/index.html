@@ -8,7 +8,7 @@
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/static/manifest.json">
-    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/static/icons/icon.svg">
     
     <title>Estoque Certo LTDA - Sistema de Gestao</title>
     
@@ -33,9 +33,21 @@
 <body>
     
     <!-- CONTAINER DE AUTENTICACAO -->
-    <div id="authContainer" class="auth-container">
-        <!-- Login Form -->
-        <div id="loginForm" class="auth-card">
+    <div id="authContainer">
+        <div class="auth-wrapper">
+            <!-- Left Side: Banner -->
+            <div class="auth-banner">
+                <div class="banner-content">
+                    <i class="fas fa-warehouse"></i>
+                    <h1>Estoque Certo</h1>
+                    <p>Gestão Inteligente para sua Empresa</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Forms -->
+            <div class="auth-content">
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-card">
             <div class="auth-header">
                 <i class="fas fa-warehouse"></i>
                 <h1>Estoque Certo LTDA</h1>
@@ -224,6 +236,8 @@
             
             <div class="auth-links">
                 <a href="#" onclick="showLogin()">Voltar para login</a>
+            </div>
+        </div>
             </div>
         </div>
     </div>
