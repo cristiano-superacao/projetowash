@@ -295,32 +295,177 @@ function showConfig() {
         <div class="config-container">
             <h3>Configuracoes do Sistema</h3>
             
-            <div class="config-section">
-                <h4>Usuarios</h4>
-                <button class="btn btn-primary" onclick="listarUsuarios()">
-                    <i class="fas fa-users"></i> Gerenciar Usuarios
-                </button>
+            <div class="config-grid">
+                <div class="config-card">
+                    <div class="config-icon blue">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="config-info">
+                        <h4>Gerenciar Usuários</h4>
+                        <p>Adicionar, editar ou remover usuários do sistema.</p>
+                        <button class="btn btn-primary btn-sm" onclick="listarUsuarios()">
+                            Acessar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="config-card">
+                    <div class="config-icon green">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="config-info">
+                        <h4>Backup de Dados</h4>
+                        <p>Realizar backup completo dos dados.</p>
+                        <button class="btn btn-success btn-sm" onclick="realizarBackup()">
+                            Realizar Backup
+                        </button>
+                    </div>
+                </div>
             </div>
             
-            <div class="config-section">
-                <h4>Backup</h4>
-                <button class="btn btn-success" onclick="realizarBackup()">
-                    <i class="fas fa-database"></i> Realizar Backup Agora
-                </button>
-            </div>
-            
-            <div class="config-section">
-                <h4>Sistema</h4>
-                <p>Versao: 2.0</p>
-                <p>${typeof localCurrentUser !== 'undefined' ? 'Modo Local/Demo' : 'Firebase Conectado'}</p>
-                <p>Netlify Deploy: Automatico</p>
+            <div class="system-info mt-3">
+                <h4>Informações do Sistema</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Versão:</strong> 2.0
+                    </div>
+                    <div class="info-item">
+                        <strong>Modo:</strong> ${typeof localCurrentUser !== 'undefined' ? 'Local/Demo' : 'Online (Firebase)'}
+                    </div>
+                    <div class="info-item">
+                        <strong>Deploy:</strong> Netlify (Automático)
+                    </div>
+                </div>
             </div>
         </div>
     `;
     
-    document.getElementById('modalTitle').textContent = 'Configuracoes';
+    document.getElementById('modalTitle').textContent = 'Configurações';
     document.getElementById('modalBody').innerHTML = html;
     document.getElementById('modalContainer').classList.remove('hidden');
+}
+
+// Listar usuarios (Admin)
+function listarUsuarios() {
+    // Verificar permissao
+    const isAdminLocal = typeof verificarAdminLocal !== 'undefined' ? verificarAdminLocal() : verificarAdmin();
+    if (!isAdminLocal) return;
+
+    let users = [];
+    if (typeof localUsers !== 'undefined') {
+        users = localUsers;
+    } else {
+        // TODO: Implementar busca do Firebase
+        showToast('Funcionalidade disponível apenas no modo local por enquanto.', 'warning');
+        return;
+    }
+
+    const html = `
+        <div class="users-manager">
+            <div class="manager-header">
+                <h3>Gerenciar Usuários</h3>
+                <button class="btn btn-success btn-sm" onclick="showRegister()">
+                    <i class="fas fa-plus"></i> Novo Usuário
+                </button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email/Login</th>
+                            <th>Cargo</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr>
+                                <td>
+                                    <div class="user-cell">
+                                        <div class="user-avatar-small">${user.nome.charAt(0).toUpperCase()}</div>
+                                        <div>
+                                            <div class="user-name">${user.nome}</div>
+                                            <div class="user-role-badge ${user.role === 'admin' ? 'admin' : 'user'}">${user.role === 'admin' ? 'Admin' : 'User'}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>${user.email}</div>
+                                    <small class="text-muted">${user.loginUsuario}</small>
+                                </td>
+                                <td>${user.cargo || '-'}</td>
+                                <td>
+                                    <span class="status-badge ${user.ativo ? 'active' : 'inactive'}">
+                                        ${user.ativo ? 'Ativo' : 'Inativo'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-icon edit" onclick="editarUsuario('${user.uid}')" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        ${user.uid !== localCurrentUser.uid ? `
+                                        <button class="btn-icon delete" onclick="excluirUsuario('${user.uid}')" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        <button class="btn-icon toggle" onclick="toggleStatusUsuario('${user.uid}')" title="${user.ativo ? 'Desativar' : 'Ativar'}">
+                                            <i class="fas fa-${user.ativo ? 'ban' : 'check'}"></i>
+                                        </button>
+                                        ` : ''}
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="manager-footer">
+                <button class="btn btn-secondary" onclick="showConfig()">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('modalTitle').textContent = 'Usuários';
+    document.getElementById('modalBody').innerHTML = html;
+}
+
+// Editar usuario (Mock)
+function editarUsuario(uid) {
+    showToast('Funcionalidade de edição em desenvolvimento.', 'info');
+}
+
+// Excluir usuario
+function excluirUsuario(uid) {
+    if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+    
+    if (typeof localUsers !== 'undefined') {
+        const index = localUsers.findIndex(u => u.uid === uid);
+        if (index !== -1) {
+            localUsers.splice(index, 1);
+            saveLocalUsers();
+            listarUsuarios(); // Recarregar lista
+            showToast('Usuário excluído com sucesso.', 'success');
+        }
+    }
+}
+
+// Alternar status usuario
+function toggleStatusUsuario(uid) {
+    if (typeof localUsers !== 'undefined') {
+        const user = localUsers.find(u => u.uid === uid);
+        if (user) {
+            user.ativo = !user.ativo;
+            saveLocalUsers();
+            listarUsuarios(); // Recarregar lista
+            showToast(`Usuário ${user.ativo ? 'ativado' : 'desativado'} com sucesso.`, 'success');
+        }
+    }
 }
 
 // Formatar data

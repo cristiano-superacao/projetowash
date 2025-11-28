@@ -296,132 +296,136 @@
         <main class="main-content">
             <div class="container">
                 
-                <!-- Dashboard Section -->
-                <section id="dashboardSection" class="dashboard-section">
-                    <div class="welcome-header">
-                        <h2>Dashboard</h2>
-                        <p>Visao geral do sistema</p>
-                    </div>
-                    
-                    <!-- Alertas de Estoque Baixo -->
-                    <div id="stockAlerts" class="hidden"></div>
+                <div class="dashboard-layout">
+                    <!-- Sidebar Navigation (Modules) -->
+                    <aside class="dashboard-sidebar">
+                        <section id="modulesSection" class="modules-list">
+                            
+                            <!-- Modulo Operacional -->
+                            <div class="module-card-side" data-module="operacional" onclick="showModule('operacional')">
+                                <div class="module-icon-side blue">
+                                    <i class="fas fa-industry"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Operacional</h3>
+                                    <p>Produção</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
+                            </div>
 
-                    <!-- Cards de Estatisticas -->
-                    <div class="stats-grid">
-                        <div class="stat-card blue">
-                            <div class="stat-icon">
-                                <i class="fas fa-boxes"></i>
+                            <!-- Modulo RH -->
+                            <div class="module-card-side" data-module="rh" onclick="showModule('rh')">
+                                <div class="module-icon-side red">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>RH</h3>
+                                    <p>Folha Pagto</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
                             </div>
-                            <div class="stat-info">
-                                <h3 id="statTotalProdutos">0</h3>
-                                <p>Total de Produtos</p>
+                            
+                            <!-- Historico - Admin Only -->
+                            <div class="module-card-side admin-only hidden" data-module="historico" onclick="showModule('historico')">
+                                <div class="module-icon-side gray">
+                                    <i class="fas fa-history"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Histórico</h3>
+                                    <p>Movimentações</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
                             </div>
-                        </div>
-                        
-                        <div class="stat-card green">
-                            <div class="stat-icon">
-                                <i class="fas fa-cubes"></i>
+                            
+                            <!-- Backup - Admin Only -->
+                            <div class="module-card-side admin-only hidden" data-module="backup" onclick="realizarBackup()">
+                                <div class="module-icon-side indigo">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="module-info-side">
+                                    <h3>Backup</h3>
+                                    <p>Salvar Dados</p>
+                                </div>
+                                <i class="fas fa-chevron-right arrow-icon"></i>
                             </div>
-                            <div class="stat-info">
-                                <h3 id="statTotalItens">0</h3>
-                                <p>Total de Itens</p>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card purple">
-                            <div class="stat-icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statValorTotal">R$ 0,00</h3>
-                                <p>Valor em Estoque</p>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card orange">
-                            <div class="stat-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div class="stat-info">
-                                <h3 id="statVendasMes">R$ 0,00</h3>
-                                <p>Vendas do Mes</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Graficos -->
-                    <div class="charts-grid">
-                        <div class="chart-card">
-                            <h3>Movimentacoes Recentes</h3>
-                            <canvas id="chartMovimentacoes"></canvas>
-                        </div>
-                        
-                        <div class="chart-card">
-                            <h3>Top 5 Produtos</h3>
-                            <canvas id="chartTopProdutos"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Historico Recente -->
-                    <div class="history-card">
-                        <h3>Ultimas Movimentacoes</h3>
-                        <div id="historicoRecente" class="history-list">
-                            <!-- Preenchido via JS -->
-                        </div>
-                    </div>
-                </section>
+                        </section>
+                    </aside>
 
-                <!-- Navigation Cards (Modulos) -->
-                <section id="modulesSection" class="modules-grid">
-                    
-                    <!-- Modulo Operacional -->
-                    <div class="module-card" data-module="operacional">
-                        <div class="module-icon blue">
-                            <i class="fas fa-industry"></i>
+                    <!-- Dashboard Content -->
+                    <section id="dashboardSection" class="dashboard-content">
+                        <div class="welcome-header">
+                            <h2>Dashboard</h2>
+                            <p>Visão geral do sistema</p>
                         </div>
-                        <h3>Operacional</h3>
-                        <p>Calcular capacidade de producao da fabrica</p>
-                        <button class="btn btn-primary" onclick="showModule('operacional')">
-                            Acessar <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
+                        
+                        <!-- Alertas de Estoque Baixo -->
+                        <div id="stockAlerts" class="hidden"></div>
 
-                    <!-- Modulo RH -->
-                    <div class="module-card" data-module="rh">
-                        <div class="module-icon red">
-                            <i class="fas fa-users"></i>
+                        <!-- Cards de Estatisticas -->
+                        <div class="stats-grid">
+                            <div class="stat-card blue">
+                                <div class="stat-icon">
+                                    <i class="fas fa-boxes"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="statTotalProdutos">0</h3>
+                                    <p>Total de Produtos</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card green">
+                                <div class="stat-icon">
+                                    <i class="fas fa-cubes"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="statTotalItens">0</h3>
+                                    <p>Total de Itens</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card purple">
+                                <div class="stat-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="statValorTotal">R$ 0,00</h3>
+                                    <p>Valor em Estoque</p>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card orange">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="statVendasMes">R$ 0,00</h3>
+                                    <p>Vendas do Mês</p>
+                                </div>
+                            </div>
                         </div>
-                        <h3>Recursos Humanos</h3>
-                        <p>Calcular folha de pagamento</p>
-                        <button class="btn btn-danger" onclick="showModule('rh')">
-                            Acessar <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Historico - Admin Only -->
-                    <div class="module-card admin-only hidden" data-module="historico">
-                        <div class="module-icon gray">
-                            <i class="fas fa-history"></i>
+                        
+                        <!-- Graficos -->
+                        <div class="charts-grid">
+                            <div class="chart-card">
+                                <h3>Movimentações Recentes</h3>
+                                <canvas id="chartMovimentacoes"></canvas>
+                            </div>
+                            
+                            <div class="chart-card">
+                                <h3>Top 5 Produtos</h3>
+                                <canvas id="chartTopProdutos"></canvas>
+                            </div>
                         </div>
-                        <h3>Historico</h3>
-                        <p>Ver todas as movimentacoes do sistema</p>
-                        <button class="btn btn-secondary" onclick="showModule('historico')">
-                            Acessar <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                    
-                    <!-- Backup - Admin Only -->
-                    <div class="module-card admin-only hidden" data-module="backup">
-                        <div class="module-icon indigo">
-                            <i class="fas fa-database"></i>
+                        
+                        <!-- Historico Recente -->
+                        <div class="history-card">
+                            <h3>Últimas Movimentações</h3>
+                            <div id="historicoRecente" class="history-list">
+                                <!-- Preenchido via JS -->
+                            </div>
                         </div>
-                        <h3>Backup</h3>
-                        <p>Realizar backup dos dados do sistema</p>
-                        <button class="btn btn-secondary" onclick="realizarBackup()">
-                            Acessar <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </main>
 
