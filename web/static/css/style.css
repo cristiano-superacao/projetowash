@@ -1537,6 +1537,10 @@ table tbody tr:hover {
     .auth-header h2 {
         font-size: 1.5rem;
     }
+
+    .modules-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* ============================================================================
