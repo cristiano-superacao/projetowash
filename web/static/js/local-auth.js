@@ -35,6 +35,18 @@ function loadLocalUsers() {
                 cargo: 'Diretor',
                 ativo: true,
                 dataCadastro: new Date().toISOString()
+            },
+            {
+                uid: 'user-local-superacao',
+                nome: 'Cristiano Superacao',
+                email: 'superacao@gmail.com',
+                contato: '(00) 00000-0000',
+                loginUsuario: 'superacao',
+                senha: '123',
+                role: 'admin',
+                cargo: 'CEO',
+                ativo: true,
+                dataCadastro: new Date().toISOString()
             }
         ];
         saveLocalUsers();
