@@ -250,6 +250,11 @@
             <div class="container">
                 <div class="header-content">
                     <div class="logo">
+                        <!-- Mobile Menu Toggle -->
+                        <button id="mobileMenuBtn" class="mobile-menu-btn hidden-desktop" onclick="toggleSidebar()">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        
                         <i class="fas fa-warehouse"></i>
                         <h1>Estoque Certo LTDA</h1>
                     </div>
@@ -291,8 +296,19 @@
             <div class="container">
                 
                 <div class="dashboard-layout">
+                    <!-- Mobile Sidebar Overlay -->
+                    <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
                     <!-- Sidebar Navigation (Modules) -->
-                    <aside class="dashboard-sidebar">
+                    <aside id="dashboardSidebar" class="dashboard-sidebar">
+                        <!-- Mobile Close Button -->
+                        <div class="sidebar-header hidden-desktop">
+                            <h3>Menu</h3>
+                            <button class="close-sidebar-btn" onclick="toggleSidebar()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
                         <section id="modulesSection" class="modules-list">
                             
                             <!-- Dashboard Home -->

@@ -264,3 +264,15 @@ setInterval(() => {
         loadDashboard();
     }
 }, 60000); // Atualizar a cada 1 minuto
+
+// Toggle Sidebar (Mobile)
+function toggleSidebar() {
+    const sidebar = document.getElementById('dashboardSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+}
+
