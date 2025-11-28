@@ -8,13 +8,7 @@ async function loadDashboard() {
     try {
         showLoading('Carregando dashboard...');
         
-        // Tentar modo local primeiro
-        let stats;
-        if (typeof buscarEstatisticasLocal !== 'undefined') {
-            stats = await buscarEstatisticasLocal();
-        } else {
-            stats = await buscarEstatisticas();
-        }
+        const stats = await obterEstatisticas();
         
         // Atualizar cards de estatisticas
         document.getElementById('statTotalProdutos').textContent = stats.totalProdutos || 0;
@@ -81,22 +75,10 @@ function loadHistoricoRecente(movimentacoes) {
 // Carregar graficos e alertas
 async function loadChartsAndAlerts() {
     try {
-        let produtos = [];
-        let movimentacoes = [];
-
-        // Verificar modo local
-        if (typeof listarProdutosLocal !== 'undefined' && typeof buscarHistoricoLocal !== 'undefined') {
-            [produtos, movimentacoes] = await Promise.all([
-                listarProdutosLocal(),
-                buscarHistoricoLocal()
-            ]);
-        } else {
-            // Modo Firebase
-            [produtos, movimentacoes] = await Promise.all([
-                listarProdutos(),
-                buscarHistorico()
-            ]);
-        }
+        const [produtos, movimentacoes] = await Promise.all([
+            obterDadosEstoque(),
+            obterHistoricoMovimentacoes()
+        ]);
         
         // Verificar estoque baixo
         checkLowStock(produtos);

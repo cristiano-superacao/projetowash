@@ -381,6 +381,104 @@ async function handleLogout() {
 }
 
 // ============================================================================
+// FUNCOES DE DADOS (ABSTRAÇÃO)
+// ============================================================================
+
+/**
+ * Obtem a lista de produtos de qualquer fonte disponivel (Firestore, Local ou API)
+ * @returns {Promise<Array>} Lista de produtos
+ */
+async function obterDadosEstoque() {
+    if (typeof listarProdutos !== 'undefined') {
+        return await listarProdutos();
+    } else if (typeof listarProdutosLocal !== 'undefined') {
+        return await listarProdutosLocal();
+    } else {
+        try {
+            const response = await apiRequest('/estoque/produtos', { method: 'GET' });
+            return response.data.produtos || [];
+        } catch (e) {
+            console.error("Erro ao buscar produtos via API", e);
+            return [];
+        }
+    }
+}
+
+/**
+ * Obtem historico de movimentacoes de qualquer fonte disponivel
+ * @returns {Promise<Array>} Lista de movimentacoes
+ */
+async function obterHistoricoMovimentacoes() {
+    if (typeof buscarHistorico !== 'undefined') {
+        return await buscarHistorico();
+    } else if (typeof buscarHistoricoLocal !== 'undefined') {
+        return await buscarHistoricoLocal();
+    }
+    return [];
+}
+
+/**
+ * Obtem estatisticas gerais de qualquer fonte disponivel
+ * @returns {Promise<Object>} Objeto com estatisticas
+ */
+async function obterEstatisticas() {
+    if (typeof buscarEstatisticas !== 'undefined') {
+        return await buscarEstatisticas();
+    } else if (typeof buscarEstatisticasLocal !== 'undefined') {
+        return await buscarEstatisticasLocal();
+    }
+    return {};
+}
+
+/**
+ * Salva um novo produto no estoque
+ * @param {Object} produto - Dados do produto
+ */
+async function salvarProdutoEstoque(produto) {
+    if (typeof cadastrarProdutoFirestore !== 'undefined') {
+        return await cadastrarProdutoFirestore(produto);
+    } else if (typeof cadastrarProdutoFirestoreLocal !== 'undefined') {
+        return await cadastrarProdutoFirestoreLocal(
+            produto.codigo,
+            produto.nome,
+            produto.quantidade,
+            produto.data,
+            produto.fornecedor,
+            produto.local,
+            produto.valor
+        );
+    } else {
+        return await apiRequest('/estoque/entrada', {
+            method: 'POST',
+            body: JSON.stringify(produto)
+        });
+    }
+}
+
+/**
+ * Registra saida de produto
+ * @param {string} nomeProduto - Nome do produto
+ * @param {number} quantidade - Quantidade a sair
+ * @param {string} produtoId - ID do produto (para modo local)
+ * @param {number} valorVenda - Valor da venda (para modo local)
+ */
+async function registrarSaidaEstoque(nomeProduto, quantidade, produtoId, valorVenda) {
+    if (typeof registrarSaidaProduto !== 'undefined') {
+        return await registrarSaidaProduto(nomeProduto, quantidade);
+    } else if (typeof registrarSaidaProdutoLocal !== 'undefined') {
+        return await registrarSaidaProdutoLocal(produtoId, quantidade, valorVenda);
+    } else {
+        return await apiRequest('/estoque/saida', {
+            method: 'POST',
+            body: JSON.stringify({
+                nome: nomeProduto,
+                quantidade: quantidade
+            })
+        });
+    }
+}
+
+// ============================================================================
 // INICIALIZACAO
 // ============================================================================
 

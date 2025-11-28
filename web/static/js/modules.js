@@ -238,23 +238,7 @@ async function cadastrarProduto(event) {
             valor: parseFloat(valor)
         };
         
-        // Usar Local ou Firebase
-        if (typeof cadastrarProdutoFirestoreLocal !== 'undefined') {
-            await cadastrarProdutoFirestoreLocal(
-                formData.codigo,
-                formData.nome,
-                formData.quantidade,
-                formData.data,
-                formData.fornecedor,
-                formData.local,
-                formData.valor
-            );
-        } else {
-            await apiRequest('/estoque/entrada', {
-                method: 'POST',
-                body: JSON.stringify(formData)
-            });
-        }
+        await salvarProdutoEstoque(formData);
         
         showToast('✅ Produto cadastrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
@@ -316,13 +300,7 @@ async function venderProduto(event) {
     
     try {
         // Buscar o produto
-        let produtos = [];
-        if (typeof listarProdutosLocal !== 'undefined') {
-            produtos = await listarProdutosLocal();
-        } else {
-            const response = await apiRequest('/estoque/produtos', { method: 'GET' });
-            produtos = response.data.produtos || [];
-        }
+        const produtos = await obterDadosEstoque();
         
         const produto = produtos.find(p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
         
@@ -340,18 +318,7 @@ async function venderProduto(event) {
         
         // Registrar saída
         const valorVenda = produto.valor * 1.3; // Margem de 30%
-        
-        if (typeof registrarSaidaProdutoLocal !== 'undefined') {
-            await registrarSaidaProdutoLocal(produto.id, quantidadeVenda, valorVenda);
-        } else {
-            await apiRequest('/estoque/saida', {
-                method: 'POST',
-                body: JSON.stringify({
-                    nome: nomeProduto,
-                    quantidade: quantidadeVenda
-                })
-            });
-        }
+        await registrarSaidaEstoque(produto.nome, quantidadeVenda, produto.id, valorVenda);
         
         // Exibir resultado
         exibirResultadoVenda({
@@ -980,13 +947,7 @@ async function loadVisualizarModule(container) {
     showLoading('Carregando estoque...');
     
     try {
-        let produtos = [];
-        if (typeof listarProdutosLocal !== 'undefined') {
-            produtos = await listarProdutosLocal();
-        } else {
-            const response = await apiRequest('/estoque/produtos', { method: 'GET' });
-            produtos = response.data.produtos || [];
-        }
+        const produtos = await obterDadosEstoque();
         
         if (produtos && produtos.length > 0) {
             let tabelaHTML = '';
@@ -1145,13 +1106,7 @@ async function exportarEstoquePDF() {
     showLoading('Gerando PDF...');
     
     try {
-        let produtos = [];
-        if (typeof listarProdutosLocal !== 'undefined') {
-            produtos = await listarProdutosLocal();
-        } else {
-            const response = await apiRequest('/estoque/produtos', { method: 'GET' });
-            produtos = response.data.produtos || [];
-        }
+        const produtos = await obterDadosEstoque();
         
         if (produtos.length === 0) {
             showToast('Estoque vazio', 'warning');
