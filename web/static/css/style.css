@@ -4,10 +4,10 @@
 
 /* Variáveis CSS */
 :root {
-    --primary-color: #2563eb;
-    --primary-dark: #1e40af;
-    --secondary-color: #64748b;
-    --success-color: #10b981;
+    --primary-color: #2D5016;
+    --primary-dark: #1A3D0A;
+    --secondary-color: #4A5F4A;
+    --success-color: #52B788;
     --danger-color: #ef4444;
     --warning-color: #f59e0b;
     --info-color: #06b6d4;
@@ -1231,7 +1231,7 @@ table tbody tr:hover {
 /* Lado Esquerdo - Banner */
 .auth-banner {
     flex: 1;
-    background: linear-gradient(135deg, #2D5016 0%, #1A3D0A 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1263,7 +1263,7 @@ table tbody tr:hover {
 .banner-content i {
     font-size: 5rem;
     margin-bottom: 2rem;
-    color: #52B788;
+    color: var(--success-color);
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
 }
 
@@ -1358,7 +1358,7 @@ table tbody tr:hover {
 
 .auth-tab.active {
     background: white;
-    color: #2D5016;
+    color: var(--primary-color);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -1371,7 +1371,7 @@ table tbody tr:hover {
     display: block;
     font-size: 0.875rem;
     font-weight: 600;
-    color: #1A3D0A;
+    color: var(--primary-dark);
     margin-bottom: 0.5rem;
 }
 
@@ -1400,13 +1400,13 @@ table tbody tr:hover {
 
 .input-group input:focus {
     background: white;
-    border-color: #2D5016;
+    border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1);
     outline: none;
 }
 
 .input-group input:focus + i {
-    color: #2D5016;
+    color: var(--primary-color);
 }
 
 .btn-block {
@@ -1425,7 +1425,7 @@ table tbody tr:hover {
 }
 
 .auth-links a {
-    color: #2D5016;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 600;
     margin-left: 0.25rem;
