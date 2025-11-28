@@ -4,12 +4,18 @@
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v3';
+const CACHE_NAME = 'estoque-certo-v4';
 const urlsToCache = [
     '/',
     '/static/css/style.css',
     '/static/js/app.js',
-    '/static/js/modules.js',
+    '/static/js/modules/operacional.js',
+    '/static/js/modules/estoque_entrada.js',
+    '/static/js/modules/estoque_saida.js',
+    '/static/js/modules/financeiro.js',
+    '/static/js/modules/rh.js',
+    '/static/js/modules/visualizar_estoque.js',
+    '/static/js/modules/historico.js',
     '/static/js/pwa.js',
     '/static/manifest.json',
     '/static/icons/icon.svg'
