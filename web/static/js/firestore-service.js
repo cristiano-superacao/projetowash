@@ -4,6 +4,7 @@
 
 // Listar todos os produtos
 async function listarProdutos() {
+    if (typeof db === 'undefined' || !db) return [];
     try {
         const snapshot = await db.collection('estoque')
             .orderBy('nome')
@@ -174,6 +175,7 @@ async function registrarMovimentacao(dados) {
 
 // Buscar historico de movimentacoes
 async function buscarHistorico(filtros = {}) {
+    if (typeof db === 'undefined' || !db) return [];
     try {
         let query = db.collection('movimentacoes')
             .orderBy('timestamp', 'desc')
@@ -278,9 +280,18 @@ async function buscarHistoricoFolha(limite = 10) {
 }
 
 // DASHBOARD - Estatisticas
-
 // Buscar estatisticas gerais
 async function buscarEstatisticas() {
+    if (typeof db === 'undefined' || !db) {
+        return {
+            totalProdutos: 0,
+            totalItens: 0,
+            valorTotal: 0,
+            vendasMes: 0,
+            movimentacoes: []
+        };
+    }
+    try {ction buscarEstatisticas() {
     try {
         const [produtos, movimentacoes] = await Promise.all([
             listarProdutos(),

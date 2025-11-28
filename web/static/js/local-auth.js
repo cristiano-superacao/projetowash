@@ -152,8 +152,10 @@ function verificarAdminLocal() {
 }
 
 // Inicializar modo local
-loadLocalUsers();
-loadLocalCurrentUser();
-
-console.log('Modo Local/Demo ativado!');
-console.log('Usuario admin padrao: admin@local.com / admin123');
+document.addEventListener('DOMContentLoaded', () => {
+    loadLocalUsers();
+    loadLocalCurrentUser();
+    
+    console.log('Modo Local/Demo ativado!');
+    console.log('Usuario admin padrao: admin@local.com / admin123');
+});

@@ -389,7 +389,8 @@ async function handleLogout() {
  * @returns {Promise<Array>} Lista de produtos
  */
 async function obterDadosEstoque() {
-    if (typeof listarProdutos !== 'undefined') {
+    // Priorizar Firebase se estiver inicializado
+    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof listarProdutos !== 'undefined') {
         return await listarProdutos();
     } else if (typeof listarProdutosLocal !== 'undefined') {
         return await listarProdutosLocal();
@@ -409,7 +410,7 @@ async function obterDadosEstoque() {
  * @returns {Promise<Array>} Lista de movimentacoes
  */
 async function obterHistoricoMovimentacoes() {
-    if (typeof buscarHistorico !== 'undefined') {
+    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof buscarHistorico !== 'undefined') {
         return await buscarHistorico();
     } else if (typeof buscarHistoricoLocal !== 'undefined') {
         return await buscarHistoricoLocal();
@@ -422,7 +423,7 @@ async function obterHistoricoMovimentacoes() {
  * @returns {Promise<Object>} Objeto com estatisticas
  */
 async function obterEstatisticas() {
-    if (typeof buscarEstatisticas !== 'undefined') {
+    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof buscarEstatisticas !== 'undefined') {
         return await buscarEstatisticas();
     } else if (typeof buscarEstatisticasLocal !== 'undefined') {
         return await buscarEstatisticasLocal();
@@ -435,7 +436,7 @@ async function obterEstatisticas() {
  * @param {Object} produto - Dados do produto
  */
 async function salvarProdutoEstoque(produto) {
-    if (typeof cadastrarProdutoFirestore !== 'undefined') {
+    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof cadastrarProdutoFirestore !== 'undefined') {
         return await cadastrarProdutoFirestore(produto);
     } else if (typeof cadastrarProdutoFirestoreLocal !== 'undefined') {
         return await cadastrarProdutoFirestoreLocal(
@@ -463,7 +464,7 @@ async function salvarProdutoEstoque(produto) {
  * @param {number} valorVenda - Valor da venda (para modo local)
  */
 async function registrarSaidaEstoque(nomeProduto, quantidade, produtoId, valorVenda) {
-    if (typeof registrarSaidaProduto !== 'undefined') {
+    if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof registrarSaidaProduto !== 'undefined') {
         return await registrarSaidaProduto(nomeProduto, quantidade);
     } else if (typeof registrarSaidaProdutoLocal !== 'undefined') {
         return await registrarSaidaProdutoLocal(produtoId, quantidade, valorVenda);
