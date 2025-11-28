@@ -80,7 +80,19 @@
                 <p>Preencha seus dados para cadastro</p>
             </div>
             
+            <div class="auth-tabs">
+                <button type="button" class="auth-tab active" onclick="switchRegisterTab('empresa')">
+                    <i class="fas fa-building"></i> Sou Empresa
+                </button>
+                <button type="button" class="auth-tab" onclick="switchRegisterTab('funcionario')">
+                    <i class="fas fa-user-tie"></i> Sou Funcionário
+                </button>
+            </div>
+            
             <form onsubmit="handleRegister(event)" class="auth-form">
+                <input type="hidden" id="regType" value="empresa">
+                
+                <!-- Campos Comuns -->
                 <div class="form-group">
                     <label for="regNome">
                         <i class="fas fa-user"></i> Nome Completo
@@ -101,18 +113,55 @@
                     </label>
                     <input type="tel" id="regContato" required placeholder="(00) 00000-0000">
                 </div>
-                
-                <div class="form-group">
-                    <label for="regCargo">
-                        <i class="fas fa-briefcase"></i> Cargo / Departamento
-                    </label>
-                    <select id="regCargo" required class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 15px;">
-                        <option value="">Selecione...</option>
-                        <option value="Financeiro">Financeiro</option>
-                        <option value="Estoque">Estoque</option>
-                        <option value="RH">Recursos Humanos</option>
-                        <option value="Administrativo">Administrativo (Operacional)</option>
-                    </select>
+
+                <!-- Campos Empresa -->
+                <div id="fieldsEmpresa">
+                    <div class="form-group">
+                        <label for="regNomeEmpresa">
+                            <i class="fas fa-building"></i> Nome da Empresa
+                        </label>
+                        <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
+                    </div>
+                </div>
+
+                <!-- Campos Funcionario -->
+                <div id="fieldsFuncionario" class="hidden">
+                    <div class="form-group">
+                        <label for="regCargo">
+                            <i class="fas fa-briefcase"></i> Cargo / Departamento
+                        </label>
+                        <select id="regCargo" class="form-control" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="">Selecione...</option>
+                            <option value="Financeiro">Financeiro</option>
+                            <option value="Estoque">Estoque</option>
+                            <option value="RH">Recursos Humanos</option>
+                            <option value="Administrativo">Administrativo (Operacional)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="manager-auth-section">
+                        <h4><i class="fas fa-user-shield"></i> Autorização do Gestor</h4>
+                        <div class="form-group">
+                            <label for="regManagerLogin">Login do Gestor</label>
+                            <input type="text" id="regManagerLogin" placeholder="Login do admin da empresa">
+                        </div>
+                        <div class="form-group" style="margin-top: 10px;">
+                            <label for="regManagerPass">Senha do Gestor</label>
+                            <input type="password" id="regManagerPass" placeholder="Senha do admin para autorizar">
+                        </div>
+                        
+                        <div style="margin-top: 15px;">
+                            <label style="font-size: 13px; font-weight: 600; color: #2D5016;">Solicitar Acesso aos Módulos:</label>
+                            <div class="modules-checkbox-grid">
+                                <label><input type="checkbox" name="regModules" value="operacional" checked> Operacional</label>
+                                <label><input type="checkbox" name="regModules" value="estoque-entrada"> Entrada</label>
+                                <label><input type="checkbox" name="regModules" value="estoque-saida"> Saída</label>
+                                <label><input type="checkbox" name="regModules" value="financeiro"> Financeiro</label>
+                                <label><input type="checkbox" name="regModules" value="rh"> RH</label>
+                                <label><input type="checkbox" name="regModules" value="visualizar" checked> Visualizar</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -137,7 +186,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-success btn-block">
-                    <i class="fas fa-user-plus"></i> Cadastrar
+                    <i class="fas fa-user-plus"></i> <span id="btnRegisterText">Cadastrar Empresa</span>
                 </button>
             </form>
             
