@@ -523,3 +523,21 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Aguardando autenticacao...');
     }
 });
+
+
+// ============================================================================
+// FUNCOES DE UI (MOBILE)
+// ============================================================================
+
+/**
+ * Alternar menu mobile (Sidebar)
+ */
+function toggleMobileMenu() {
+    const sidebar = document.getElementById('mobileSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+}
