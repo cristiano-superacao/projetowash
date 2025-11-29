@@ -1,5 +1,41 @@
 // Funcoes de autenticacao UI
 
+// Login rápido com credenciais pré-definidas
+async function loginRapido(tipo) {
+    const credenciais = {
+        'superadmin': {
+            email: 'superadmin@quatrocantos.com',
+            senha: 'admin@2025'
+        },
+        'admin': {
+            email: 'admin@local.com',
+            senha: 'admin123'
+        }
+    };
+    
+    const cred = credenciais[tipo];
+    if (!cred) return;
+    
+    // Preencher campos
+    document.getElementById('loginEmail').value = cred.email;
+    document.getElementById('loginPassword').value = cred.senha;
+    
+    // Fazer login
+    showLoading(`Entrando como ${tipo === 'superadmin' ? 'Super Admin' : 'Admin'}...`);
+    
+    try {
+        if (typeof loginLocal !== 'undefined') {
+            await loginLocal(cred.email, cred.senha);
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error('Erro no login rápido:', error);
+        showToast(error.message || 'Erro ao entrar', 'error');
+    } finally {
+        hideLoading();
+    }
+}
+
 // Mostrar formulario de login
 function showLogin() {
     document.getElementById('loginForm').classList.remove('hidden');

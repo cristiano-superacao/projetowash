@@ -1713,6 +1713,21 @@ table tbody tr:hover {
     transform: translateY(0);
 }
 
+/* Botões de Login Rápido */
+.auth-form button[type="button"] {
+    transition: all 0.3s ease !important;
+}
+
+.auth-form button[type="button"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2) !important;
+    filter: brightness(1.1);
+}
+
+.auth-form button[type="button"]:active {
+    transform: translateY(0) !important;
+}
+
 /* Checkbox Grid para Módulos */
 .manager-auth-section {
     background: #f8fafc;

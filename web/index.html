@@ -74,6 +74,15 @@
                     <button type="submit" class="btn-block">
                         Entrar no Sistema
                     </button>
+                    
+                    <div style="display: flex; gap: 10px; margin-top: 10px;">
+                        <button type="button" onclick="loginRapido('superadmin')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s;">
+                            <i class="fas fa-shield-alt"></i> Super Admin
+                        </button>
+                        <button type="button" onclick="loginRapido('admin')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s;">
+                            <i class="fas fa-user-shield"></i> Admin
+                        </button>
+                    </div>
                 </form>
                 
                 <div class="auth-links">
