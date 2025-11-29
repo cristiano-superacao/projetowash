@@ -15,6 +15,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/segments.css">
+    <link rel="stylesheet" href="/static/css/admin.css">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -83,7 +84,10 @@
                 
                 <div class="admin-login-hint">
                     <i class="fas fa-info-circle"></i>
-                    <p><strong>Dica:</strong> Crie sua conta de empresa para começar a usar o sistema.</p>
+                    <p><strong>Modo Demo:</strong> Admin: admin@local.com / admin123 | Super Admin: superadmin@quatrocantos.com / admin@2025</p>
+                    <button onclick="resetLocalStorage()" style="margin-top: 10px; padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">
+                        <i class="fas fa-sync-alt"></i> Resetar Usuários Demo
+                    </button>
                 </div>
             </div>
             
@@ -409,6 +413,10 @@
                     <button class="sidebar-btn module-nav-btn admin-only hidden" data-module="backup" onclick="realizarBackup(); toggleMobileMenu()">
                         <i class="fas fa-database"></i> Backup
                     </button>
+                    <!-- Super Admin Only -->
+                    <button class="sidebar-btn module-nav-btn superadmin-only hidden" data-module="admin" onclick="showModule('admin'); toggleMobileMenu()" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); margin-top: 1rem;">
+                        <i class="fas fa-shield-alt"></i> Administração
+                    </button>
                 </div>
             </div>
             <div id="sidebarOverlay" class="sidebar-overlay hidden-desktop" onclick="toggleMobileMenu()"></div>
@@ -557,6 +565,7 @@
     
     <!-- Scripts comuns (sempre carregados) -->
     <script src="/static/js/auth.js"></script>
+    <script src="/static/js/admin-module.js"></script>
     <script src="/static/js/app.js"></script>
     <script src="/static/js/modules.js"></script>
     <script src="/static/js/dashboard.js"></script>

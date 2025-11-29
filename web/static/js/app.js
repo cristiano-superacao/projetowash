@@ -32,7 +32,8 @@ function showModule(moduleName) {
         'financeiro': 'Modulo Financeiro - Custos e Lucros',
         'rh': 'Modulo RH - Folha de Pagamento',
         'visualizar': 'Visualizar Estoque Completo',
-        'historico': 'Historico de Movimentacoes'
+        'historico': 'Historico de Movimentacoes',
+        'admin': 'Painel de Administração - Gestão de Empresas'
     };
     
     modalTitle.textContent = titles[moduleName] || 'Modulo';
@@ -59,6 +60,9 @@ function showModule(moduleName) {
             break;
         case 'historico':
             loadHistoricoModule(modalBody);
+            break;
+        case 'admin':
+            loadAdminModule(modalBody);
             break;
     }
     
@@ -311,9 +315,22 @@ function showApp() {
     
     // Mostrar/ocultar botoes admin
     const isUserAdmin = typeof localIsAdmin !== 'undefined' ? localIsAdmin : (typeof isAdmin !== 'undefined' ? isAdmin : false);
+    const isSuperAdmin = (typeof localCurrentUser !== 'undefined' && localCurrentUser && localCurrentUser.role === 'superadmin') ||
+                         (user && user.role === 'superadmin');
+    
     const adminButtons = document.querySelectorAll('.admin-only');
     adminButtons.forEach(btn => {
-        if (isUserAdmin) {
+        if (isUserAdmin || isSuperAdmin) {
+            btn.classList.remove('hidden');
+        } else {
+            btn.classList.add('hidden');
+        }
+    });
+    
+    // Mostrar/ocultar botoes super admin
+    const superAdminButtons = document.querySelectorAll('.superadmin-only');
+    superAdminButtons.forEach(btn => {
+        if (isSuperAdmin) {
             btn.classList.remove('hidden');
         } else {
             btn.classList.add('hidden');
@@ -321,7 +338,7 @@ function showApp() {
     });
 
     // Filtrar modulos por cargo
-    filterModulesByRole(user, isUserAdmin);
+    filterModulesByRole(user, isUserAdmin || isSuperAdmin);
 }
 
 /**

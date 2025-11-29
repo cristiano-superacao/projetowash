@@ -11,6 +11,26 @@ function loadLocalUsers() {
     if (stored) {
         localUsers = JSON.parse(stored);
         
+        // Garantir que o super admin exista
+        const superAdminIndex = localUsers.findIndex(u => u.email === 'superadmin@quatrocantos.com');
+        const defaultSuperAdmin = {
+            uid: 'superadmin-master-001',
+            nome: 'Super Administrador',
+            nomeEmpresa: 'Quatro Cantos - Administração',
+            email: 'superadmin@quatrocantos.com',
+            senha: 'admin@2025',
+            role: 'superadmin',
+            segmento: 'construcao',
+            companyId: 'superadmin-master',
+            ativo: true,
+            dataCadastro: new Date().toISOString()
+        };
+
+        if (superAdminIndex === -1) {
+            localUsers.push(defaultSuperAdmin);
+            saveLocalUsers();
+        }
+        
         // Garantir que o admin padrao exista e tenha os campos novos
         const adminIndex = localUsers.findIndex(u => u.loginUsuario === 'admin');
         const defaultAdmin = {
@@ -27,11 +47,9 @@ function loadLocalUsers() {
         };
 
         if (adminIndex === -1) {
-            // Se nao existir, adiciona
             localUsers.push(defaultAdmin);
             saveLocalUsers();
         } else {
-            // Se existir, atualiza campos criticos (como companyId) se estiverem faltando
             const admin = localUsers[adminIndex];
             if (!admin.companyId) {
                 admin.companyId = 'comp-default';
@@ -40,8 +58,20 @@ function loadLocalUsers() {
             }
         }
     } else {
-        // Usuario admin padrao
+        // Usuarios padroes: super admin e admin
         localUsers = [
+            {
+                uid: 'superadmin-master-001',
+                nome: 'Super Administrador',
+                nomeEmpresa: 'Quatro Cantos - Administração',
+                email: 'superadmin@quatrocantos.com',
+                senha: 'admin@2025',
+                role: 'superadmin',
+                segmento: 'construcao',
+                companyId: 'superadmin-master',
+                ativo: true,
+                dataCadastro: new Date().toISOString()
+            },
             {
                 uid: 'admin-local-001',
                 nome: 'Administrador',
@@ -95,7 +125,7 @@ function loadLocalCurrentUser() {
     const stored = localStorage.getItem('localCurrentUser');
     if (stored) {
         localCurrentUser = JSON.parse(stored);
-        localIsAdmin = localCurrentUser.role === 'admin';
+        localIsAdmin = localCurrentUser.role === 'admin' || localCurrentUser.role === 'superadmin';
         showApp();
         loadDashboard();
     } else {
@@ -114,18 +144,43 @@ function saveLocalCurrentUser() {
 
 // Login local
 async function loginLocal(emailOrLogin, password) {
-    const user = localUsers.find(u => (u.email === emailOrLogin || u.loginUsuario === emailOrLogin) && u.senha === password);
+    console.log('🔍 Tentando login:', emailOrLogin);
+    console.log('📋 Usuários disponíveis:', localUsers.length);
+    
+    // Debug: mostrar emails/logins disponíveis
+    localUsers.forEach(u => {
+        console.log(`  - ${u.email || u.loginUsuario} (role: ${u.role})`);
+    });
+    
+    const user = localUsers.find(u => {
+        const emailMatch = u.email === emailOrLogin;
+        const loginMatch = u.loginUsuario === emailOrLogin;
+        const senhaMatch = u.senha === password;
+        
+        console.log(`Verificando ${u.email || u.loginUsuario}:`, {
+            emailMatch,
+            loginMatch,
+            senhaMatch,
+            senhaEsperada: u.senha,
+            senhaRecebida: password
+        });
+        
+        return (emailMatch || loginMatch) && senhaMatch;
+    });
     
     if (!user) {
+        console.error('❌ Usuário não encontrado ou senha incorreta');
         throw new Error('Usuario ou senha incorretos');
     }
     
     if (!user.ativo) {
+        console.error('❌ Usuário inativo');
         throw new Error('Usuario inativo');
     }
     
+    console.log('✅ Login bem-sucedido:', user.email, '- Role:', user.role);
     localCurrentUser = user;
-    localIsAdmin = user.role === 'admin';
+    localIsAdmin = user.role === 'admin' || user.role === 'superadmin';
     saveLocalCurrentUser();
     
     return user;
@@ -202,11 +257,29 @@ function verificarAdminLocal() {
     return true;
 }
 
+// Resetar localStorage (útil para debug)
+function resetLocalStorage() {
+    if (confirm('⚠️ Isso irá apagar todos os usuários e dados salvos. Deseja continuar?')) {
+        localStorage.removeItem('localUsers');
+        localStorage.removeItem('localCurrentUser');
+        console.log('🔄 localStorage limpo! Recarregando página...');
+        location.reload();
+    }
+}
+
 // Inicializar modo local
 document.addEventListener('DOMContentLoaded', () => {
     loadLocalUsers();
     loadLocalCurrentUser();
     
     console.log('Modo Local/Demo ativado!');
+    console.log('Usuario admin padrao: admin@local.com / admin123');
+    console.log('Super Admin: superadmin@quatrocantos.com / admin@2025');
+    console.log('✅ Usuários carregados:', localUsers.length);
+    console.log('📋 Lista de usuários:');
+    localUsers.forEach(u => {
+        console.log(`  - ${u.email || u.loginUsuario} (${u.role}) - Senha: ${u.senha}`);
+    });
+});
     console.log('Usuario admin padrao: admin@local.com / admin123');
 });
