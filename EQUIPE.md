@@ -10,7 +10,7 @@
 | **Data de Início** | 22 de novembro de 2025 |
 | **Data de Conclusão** | 28 de novembro de 2025 |
 | **Duração** | 7 dias |
-| **Projeto** | Sistema de Gestão Empresarial - Estoque Certo LTDA |
+| **Projeto** | Sistema de Gestão Empresarial - Quatro Cantos |
 
 ---
 

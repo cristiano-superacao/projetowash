@@ -1,4 +1,4 @@
-# 📚 DOCUMENTAÇÃO COMPLETA - ESTOQUE CERTO LTDA
+# 📚 DOCUMENTAÇÃO COMPLETA - QUATRO CANTOS
 
 ## 📋 Índice
 
@@ -664,7 +664,7 @@ Clique em **"Entrar"**
 Após login, você verá:
 
 **Topo (Header):**
-- Logo "Estoque Certo LTDA"
+- Logo "Quatro Cantos"
 - Botão "Instalar App"
 - Menu do usuário (email, sair)
 
@@ -927,7 +927,7 @@ MIT License - Livre para uso, modificação e distribuição
 
 ## 👨‍💻 CRÉDITOS
 
-**Desenvolvido por:** Estoque Certo LTDA  
+**Desenvolvido por:** Quatro Cantos  
 **Versão:** 2.0  
 **Ano:** 2025  
 **Tecnologias:** Python, Flask, JavaScript, Firebase, PWA

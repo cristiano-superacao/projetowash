@@ -1,5 +1,5 @@
 // ============================================================================
-// SISTEMA ESTOQUE CERTO LTDA - JAVASCRIPT PRINCIPAL
+// SISTEMA QUATRO CANTOS - JAVASCRIPT PRINCIPAL
 // Arquivo: app.js
 // Descricao: Funcoes principais do sistema integrado com Firebase
 // ============================================================================
@@ -512,7 +512,7 @@ async function registrarSaidaEstoque(nomeProduto, quantidade, produtoId, valorVe
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Sistema Estoque Certo LTDA v2.0 iniciado');
+    console.log('Sistema Quatro Cantos v2.0 iniciado');
     
     // Verificar modo de operacao
     if (typeof localCurrentUser !== 'undefined') {

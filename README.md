@@ -1,6 +1,6 @@
-# Sistema Estoque Certo EV
+# Sistema Quatro Cantos
 
-Bem-vindo ao repositório do **Estoque Certo EV**, um sistema de gestão empresarial (ERP) moderno, focado na indústria de veículos elétricos e componentes de alta tecnologia.
+Bem-vindo ao repositório do **Quatro Cantos**, um sistema de gestão empresarial (ERP) moderno e versátil.
 
 ## 🚀 Visão Geral
 
@@ -54,7 +54,7 @@ O sistema vem pré-configurado com um usuário administrador para testes locais:
 
 ## 📱 PWA (Progressive Web App)
 
-Este sistema é instalável! Em dispositivos móveis ou desktop (Chrome/Edge), procure pelo ícone de instalação na barra de endereços para adicionar o **Estoque Certo EV** à sua tela inicial.
+Este sistema é instalável! Em dispositivos móveis ou desktop (Chrome/Edge), procure pelo ícone de instalação na barra de endereços para adicionar o **Quatro Cantos** à sua tela inicial.
 
 ---
-© 2025 Estoque Certo LTDA. Todos os direitos reservados.
+© 2025 Quatro Cantos. Todos os direitos reservados.

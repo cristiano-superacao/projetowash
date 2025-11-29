@@ -1,6 +1,6 @@
-# Manual do Usuário - Estoque Certo EV
+# Manual do Usuário - Quatro Cantos
 
-Este guia fornece instruções passo a passo sobre como utilizar os principais módulos do sistema **Estoque Certo EV**.
+Este guia fornece instruções passo a passo sobre como utilizar os principais módulos do sistema **Quatro Cantos**.
 
 ## 1. Acesso ao Sistema
 
@@ -26,7 +26,7 @@ Utilize este módulo para calcular a capacidade produtiva da fábrica.
 3. O sistema exibirá a produção diária, mensal e anual estimada, além de alertar sobre ociosidade.
 
 ### 📦 Estoque (Entrada)
-Cadastre novos componentes ou veículos.
+Cadastre novos produtos ou materiais de construção.
 1. Preencha o **Código SKU**, **Nome**, **Lote** e **Serial** (obrigatórios para rastreabilidade).
 2. Informe a quantidade, data, fornecedor e local de armazenamento.
 3. Clique em "Registrar Entrada".

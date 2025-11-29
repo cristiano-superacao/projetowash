@@ -24,7 +24,7 @@ Use o site: https://www.pwabuilder.com/imageGenerator
 ### Opção 2: Usar uma Logo Temporária
 
 Enquanto não tem os ícones, você pode:
-1. Criar uma imagem quadrada simples (ex: com as letras "EC" de Estoque Certo)
+1. Criar uma imagem quadrada simples (ex: com as letras "QC" de Quatro Cantos)
 2. Redimensionar para cada tamanho listado acima
 3. Salvar nesta pasta
 

@@ -166,7 +166,7 @@ self.addEventListener('push', (event) => {
     };
     
     event.waitUntil(
-        self.registration.showNotification('Estoque Certo LTDA', options)
+        self.registration.showNotification('Quatro Cantos', options)
     );
 });
 

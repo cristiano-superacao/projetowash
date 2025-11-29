@@ -41,38 +41,56 @@ def calcular_metricas_capacidade(turnos):
 def calcular_capacidade():
     """
     Calcula a capacidade de produção da fábrica baseada nos turnos ativos.
-    Modo interativo para console.
+    
+    Esta função demonstra conceitos de:
+    - Entrada e validação de dados numéricos
+    - Operações matemáticas básicas (multiplicação)
+    - Cálculo de porcentagens
+    - Análise de capacidade ociosa
+    - Formatação de números com separadores de milhar
+    
+    MODO: Interativo para console
     """
-
     
     print("\n" + "="*50)
-    print("   MÓDULO 1: OPERACIONAL - CAPACIDADE DE PRODUÇÃO")
+    print("   MODULO 1: OPERACIONAL - CAPACIDADE DE PRODUCAO")
     print("="*50)
     
     # ========================================================================
     # PASSO 1: DEFINIR A CAPACIDADE FIXA POR TURNO
     # ========================================================================
     # Este valor é fixo e representa quantas unidades cada turno pode produzir
+    # Em uma fábrica real, esse valor viria de estudos de tempos e movimentos
     capacidade_por_turno = 1666  # unidades por turno
     
-    print(f"\n📊 Capacidade por turno: {capacidade_por_turno} unidades")
+    print(f"\n Capacidade por turno: {capacidade_por_turno} unidades")
     
     # ========================================================================
     # PASSO 2: PERGUNTAR QUANTOS TURNOS ESTARÃO ATIVOS
     # ========================================================================
-    print("\n🕐 Turnos disponíveis: Manhã, Tarde, Noite")
+    # A empresa pode operar em 1, 2 ou 3 turnos dependendo da demanda
+    print("\n Turnos disponiveis: Manha, Tarde, Noite")
     
     try:
-        turnos = int(input("Quantos turnos estarão ativos (1, 2 ou 3)? "))
+        # input() captura o texto digitado pelo usuário
+        # int() converte o texto para número inteiro
+        turnos = int(input("Quantos turnos estarao ativos (1, 2 ou 3)? "))
         
-        # Validação: Verificar se o número está entre 1 e 3
+        # ====================================================================
+        # VALIDAÇÃO: Verificar se o número está entre 1 e 3
+        # ====================================================================
+        # Não faz sentido ter 0 turnos ou mais de 3 turnos (máximo possível)
         if turnos < 1 or turnos > 3:
-            print("\n❌ Erro: Por favor, escolha entre 1, 2 ou 3 turnos.")
-            return  # Sai da função se o valor for inválido
+            print("\n Erro: Por favor, escolha entre 1, 2 ou 3 turnos.")
+            return  # Comando 'return' encerra a execução da função
             
     except ValueError:
-        # Tratamento de erro caso o usuário digite algo que não seja número
-        print("\n❌ Erro: Digite apenas números inteiros!")
+        # ====================================================================
+        # TRATAMENTO DE EXCEÇÃO
+        # ====================================================================
+        # Se o usuário digitar texto (ex: "abc"), int() gera ValueError
+        # O bloco except captura esse erro e exibe mensagem amigável
+        print("\n Erro: Digite apenas numeros inteiros!")
         return
         
     # ========================================================================
@@ -91,33 +109,42 @@ def calcular_capacidade():
     # ========================================================================
     # PASSO 5: EXIBIR RELATÓRIO COMPLETO
     # ========================================================================
+    # Apresenta os resultados formatados de forma clara e organizada
     print("\n" + "="*50)
     print(f"   RESULTADOS PARA {turnos} TURNO(S)")
     print("="*50)
     
-    print(f"\n📈 Capacidade Diária:  {capacidade_diaria:,} unidades".replace(',', '.'))
-    print(f"📅 Capacidade Mensal:  {capacidade_mensal:,} unidades".replace(',', '.'))
-    print(f"🗓️  Capacidade Anual:   {capacidade_anual:,} unidades".replace(',', '.'))
+    # replace(',', '.') converte separador americano para brasileiro
+    print(f"\n Capacidade Diaria:  {capacidade_diaria:,} unidades".replace(',', '.'))
+    print(f" Capacidade Mensal:  {capacidade_mensal:,} unidades".replace(',', '.'))
+    print(f" Capacidade Anual:   {capacidade_anual:,} unidades".replace(',', '.'))
     
-    print(f"\n💹 Percentual de Uso:  {percentual_uso:.1f}% da capacidade máxima")
+    # .1f = uma casa decimal
+    print(f"\n Percentual de Uso:  {percentual_uso:.1f}% da capacidade maxima")
     
-    # Análise da capacidade
+    # ========================================================================
+    # ANÁLISE DA CAPACIDADE (DECISÃO BASEADA EM LÓGICA)
+    # ========================================================================
+    # Verifica se há capacidade ociosa (não utilizada)
     if diferenca > 0:
-        print(f"\n⚠️  A fábrica está operando ABAIXO da capacidade máxima.")
-        print(f"   Diferença: {diferenca:,} unidades/dia não produzidas".replace(',', '.'))
+        print(f"\n A fabrica esta operando ABAIXO da capacidade maxima.")
+        print(f"   Diferenca: {diferenca:,} unidades/dia nao produzidas".replace(',', '.'))
         print(f"   Isso representa {capacidade_maxima_diaria - capacidade_diaria:,} unidades/dia de capacidade ociosa.".replace(',', '.'))
     else:
-        print("\n✅ A fábrica está operando em capacidade TOTAL (100%)!")
-        print("   Todos os turnos estão ativos e produzindo no máximo.")
+        # Se diferença = 0, todos os 3 turnos estão ativos
+        print("\n A fabrica esta operando em capacidade TOTAL (100%)!")
+        print("   Todos os turnos estao ativos e produzindo no maximo.")
     
     print("="*50)
 
 
 # ============================================================================
-# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
+# BLOCO DE TESTE ISOLADO
 # ============================================================================
-# Esta função pode ser usada para testar o módulo isoladamente
+# __name__ == "__main__" é True apenas quando este arquivo é executado diretamente
+# Se este módulo for importado em outro arquivo, este bloco NÃO é executado
+# Isso permite testar o módulo de forma independente
 # ============================================================================
 if __name__ == "__main__":
-    print("🧪 Testando o Módulo Operacional...\n")
+    print(" Testando o Modulo Operacional...\n")
     calcular_capacidade()

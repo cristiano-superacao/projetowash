@@ -113,7 +113,7 @@ async function exportarEstoquePDF() {
         
         // Cabeçalho
         doc.setFontSize(18);
-        doc.text('Estoque Certo LTDA', 14, 22);
+        doc.text('Quatro Cantos', 14, 22);
         doc.setFontSize(14);
         doc.text('Relatório de Estoque', 14, 32);
         doc.setFontSize(10);

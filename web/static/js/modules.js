@@ -959,7 +959,7 @@ async function exportarFolhaPDF() {
     
     // Cabeçalho
     doc.setFontSize(18);
-    doc.text('Estoque Certo LTDA', 14, 22);
+    doc.text('Quatro Cantos', 14, 22);
     doc.setFontSize(14);
     doc.text('Relatório de Folha de Pagamento', 14, 32);
     doc.setFontSize(10);
@@ -1125,11 +1125,13 @@ async function exportarEstoquePDF() {
         
         // Cabeçalho
         doc.setFontSize(18);
-        doc.text('Estoque Certo EV - Relatório de Rastreabilidade', 14, 22);
+        doc.text('Quatro Cantos', 14, 22);
         doc.setFontSize(14);
-        doc.text('Inventário de Componentes e Veículos', 14, 32);
+        doc.text('Relatório de Rastreabilidade', 14, 32);
+        doc.setFontSize(12);
+        doc.text('Inventário de Componentes e Produtos', 14, 40);
         doc.setFontSize(10);
-        doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
+        doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 48);
         
         // Tabela
         const tableColumn = ["Cód", "Produto", "Lote", "Serial", "Qtd", "Valor Unit.", "Total", "Local"];

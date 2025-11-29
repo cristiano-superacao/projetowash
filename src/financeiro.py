@@ -54,44 +54,56 @@ def calcular_metricas_financeiras(agua, luz, impostos, salarios, total_pallets=1
 def calcular_lucros():
     """
     Calcula custos operacionais, define preço de venda e projeta lucros.
-    Modo interativo para console.
+    
+    Esta função demonstra conceitos de:
+    - Entrada de dados tipo float (números decimais)
+    - Operações matemáticas com moeda
+    - Cálculo de preçificação com margem de lucro
+    - Projeções mensais e anuais
+    - Indicadores financeiros (ROI, ponto de equilíbrio)
+    
+    MODO: Interativo para console
     """
 
     
     print("\n" + "="*50)
-    print("   MÓDULO 3: FINANCEIRO - CUSTOS E LUCROS")
+    print("   MODULO 3: FINANCEIRO - CUSTOS E LUCROS")
     print("="*50)
     
     # ========================================================================
     # PASSO 1: COLETAR DESPESAS MENSAIS
     # ========================================================================
-    print("\n💰 Por favor, informe os custos mensais da empresa:")
+    # Todas as despesas fixas da empresa que se repetem todo mês
+    print("\n Por favor, informe os custos mensais da empresa:")
     print("-"*50)
     
     try:
-        agua = float(input("💧 Conta de Água (R$): "))
-        luz = float(input("💡 Conta de Luz (R$): "))
-        impostos = float(input("🏛️  Impostos Gerais (R$): "))
-        salarios = float(input("👥 Total da Folha de Pagamento (R$): "))
+        # float() permite entrada de números decimais (ex: 1234.50)
+        agua = float(input(" Conta de Agua (R$): "))
+        luz = float(input(" Conta de Luz (R$): "))
+        impostos = float(input(" Impostos Gerais (R$): "))
+        salarios = float(input(" Total da Folha de Pagamento (R$): "))
         
         # Validação básica: valores não podem ser negativos
         if agua < 0 or luz < 0 or impostos < 0 or salarios < 0:
-            print("\n❌ Erro: Valores não podem ser negativos!")
+            print("\n Erro: Valores nao podem ser negativos!")
             return
             
     except ValueError:
-        print("\n❌ Erro: Digite apenas valores numéricos!")
+        # Tratamento de erro para entradas não numéricas
+        print("\n Erro: Digite apenas valores numericos!")
         return
     
     # ========================================================================
     # PASSO 2: CALCULAR O CUSTO TOTAL E MÉTRICAS (USANDO FUNÇÃO PURA)
     # ========================================================================
-    total_pallets = 1000
-    print(f"\n📦 Volume de movimentação mensal: {total_pallets} pallets")
+    total_pallets = 1000  # Volume de movimentação mensal padrão
+    print(f"\n Volume de movimentacao mensal: {total_pallets} pallets")
     
+    # Chama a função pura que realiza todos os cálculos
     dados = calcular_metricas_financeiras(agua, luz, impostos, salarios, total_pallets)
     
-    # Extrair dados para exibição
+    # Extrai os valores calculados do dicionário retornado
     custo_total = dados['custo_total']
     custo_por_pallet = dados['custo_por_pallet']
     preco_venda = dados['preco_venda']
@@ -106,72 +118,77 @@ def calcular_lucros():
     margem_lucro = dados['margem_lucro_alvo']
     
     print("\n" + "-"*50)
-    print("📊 ANÁLISE DE CUSTOS")
+    print(" ANALISE DE CUSTOS")
     print("-"*50)
-    print(f"💧 Água:          R$ {agua:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"💡 Luz:           R$ {luz:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"🏛️  Impostos:      R$ {impostos:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"👥 Salários:      R$ {salarios:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    # Formatação monetária brasileira com separador de milhar
+    print(f" Agua:          R$ {agua:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Luz:           R$ {luz:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Impostos:      R$ {impostos:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Salarios:      R$ {salarios:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     print("-"*50)
-    print(f"💵 CUSTO TOTAL:   R$ {custo_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" CUSTO TOTAL:   R$ {custo_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     
-    print(f"📊 Custo real por pallet: R$ {custo_por_pallet:.2f}")
+    # Custo unitário = custo total / volume produzido
+    print(f" Custo real por pallet: R$ {custo_por_pallet:.2f}")
     
     print("\n" + "-"*50)
-    print("💹 PRECIFICAÇÃO")
+    print(" PRECIFICACAO")
     print("-"*50)
-    print(f"📊 Margem de lucro aplicada: {margem_lucro * 100:.0f}%")
-    print(f"💰 Preço de venda sugerido: R$ {preco_venda:.2f} por pallet")
+    print(f" Margem de lucro aplicada: {margem_lucro * 100:.0f}%")
+    print(f" Preco de venda sugerido: R$ {preco_venda:.2f} por pallet")
     
     # ========================================================================
     # PASSO 5: EXIBIR RELATÓRIO FINANCEIRO COMPLETO
     # ========================================================================
-    # (Cálculos já realizados pela função pura)
+    # Todos os cálculos já foram realizados pela função pura
+    # Agora apenas exibimos os resultados de forma organizada
     
     print("\n" + "="*50)
-    print("   RELATÓRIO FINANCEIRO DETALHADO")
+    print("   RELATORIO FINANCEIRO DETALHADO")
     print("="*50)
     
-    print("\n📊 RESUMO MENSAL:")
+    print("\n RESUMO MENSAL:")
     print("-"*50)
-    print(f"💵 Receita Bruta:        R$ {receita_mensal:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"💸 Despesa Total:        R$ {custo_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"💰 Lucro Líquido:        R$ {lucro_mensal:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"📈 Margem de Lucro:      {margem_lucro_real:.1f}%")
+    print(f" Receita Bruta:        R$ {receita_mensal:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Despesa Total:        R$ {custo_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Lucro Liquido:        R$ {lucro_mensal:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Margem de Lucro:      {margem_lucro_real:.1f}%")
     
-    print("\n📅 PROJEÇÃO ANUAL:")
+    print("\n PROJECAO ANUAL:")
     print("-"*50)
-    print(f"💵 Receita Anual:        R$ {receita_anual:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print(f"💰 Lucro Anual:          R$ {lucro_anual:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Receita Anual:        R$ {receita_anual:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
+    print(f" Lucro Anual:          R$ {lucro_anual:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
     
-    print("\n📊 INDICADORES DE DESEMPENHO:")
+    print("\n INDICADORES DE DESEMPENHO:")
     print("-"*50)
-    print(f"⚖️  Ponto de Equilíbrio:  {ponto_equilibrio:.0f} pallets/mês")
-    print(f"📈 ROI (Retorno):        {roi:.1f}%")
-    print(f"💹 Lucro por Pallet:     R$ {lucro_por_unidade:.2f}")
+    print(f" Ponto de Equilibrio:  {ponto_equilibrio:.0f} pallets/mes")
+    print(f" ROI (Retorno):        {roi:.1f}%")
+    print(f" Lucro por Pallet:     R$ {lucro_por_unidade:.2f}")
     
-    # Análise adicional
+    # Análise adicional com base nos indicadores calculados
     print("\n" + "="*50)
-    print("   ANÁLISE E RECOMENDAÇÕES")
+    print("   ANALISE E RECOMENDACOES")
     print("="*50)
     
+    # Análise da margem de lucro (quanto maior, melhor)
     if margem_lucro_real >= 40:
-        print("✅ Margem de lucro EXCELENTE! Negócio muito rentável.")
+        print(" Margem de lucro EXCELENTE! Negocio muito rentavel.")
     elif margem_lucro_real >= 25:
-        print("✅ Margem de lucro BOA! Negócio rentável.")
+        print(" Margem de lucro BOA! Negocio rentavel.")
     elif margem_lucro_real >= 10:
-        print("⚠️  Margem de lucro RAZOÁVEL. Considere otimizar custos.")
+        print(" Margem de lucro RAZOAVEL. Considere otimizar custos.")
     else:
-        print("❌ Margem de lucro BAIXA! Revisar custos urgentemente.")
+        print(" Margem de lucro BAIXA! Revisar custos urgentemente.")
     
+    # Análise do ponto de equilíbrio (quantidade mínima para não ter prejuízo)
     if ponto_equilibrio < total_pallets:
         sobra = total_pallets - ponto_equilibrio
-        print(f"\n💹 Você está {sobra:.0f} pallets ACIMA do ponto de equilíbrio.")
-        print("   Isso significa que a operação é lucrativa!")
+        print(f"\n Voce esta {sobra:.0f} pallets ACIMA do ponto de equilibrio.")
+        print("   Isso significa que a operacao e lucrativa!")
     else:
         falta = ponto_equilibrio - total_pallets
-        print(f"\n⚠️  Você está {falta:.0f} pallets ABAIXO do ponto de equilíbrio.")
-        print("   É necessário aumentar as vendas ou reduzir custos.")
+        print(f"\n Voce esta {falta:.0f} pallets ABAIXO do ponto de equilibrio.")
+        print("   E necessario aumentar as vendas ou reduzir custos.")
     
     print("="*50)
 
@@ -180,19 +197,24 @@ def calcular_payback():
     """
     Função auxiliar para calcular o prazo de retorno de investimento (Payback).
     
-    Esta função calcula quanto tempo leva para recuperar um investimento inicial.
+    Esta função demonstra:
+    - Cálculo de retorno de investimento
+    - Conversão de unidades de tempo (meses para anos)
+    - Análise de viabilidade de investimento
+    
+    FÓRMULA: Payback = Investimento Inicial / Lucro Mensal
     """
     
     print("\n" + "="*50)
-    print("   CÁLCULO DE PAYBACK (RETORNO DE INVESTIMENTO)")
+    print("   CALCULO DE PAYBACK (RETORNO DE INVESTIMENTO)")
     print("="*50)
     
     try:
-        investimento_inicial = float(input("\n💰 Investimento inicial (R$): "))
-        lucro_mensal = float(input("📊 Lucro líquido mensal (R$): "))
+        investimento_inicial = float(input("\n Investimento inicial (R$): "))
+        lucro_mensal = float(input(" Lucro liquido mensal (R$): "))
         
         if lucro_mensal <= 0:
-            print("\n❌ Erro: Lucro mensal deve ser maior que zero!")
+            print("\n Erro: Lucro mensal deve ser maior que zero!")
             return
         
         # Payback = Investimento Inicial / Lucro Mensal
@@ -200,24 +222,25 @@ def calcular_payback():
         payback_anos = payback_meses / 12
         
         print("\n" + "-"*50)
-        print("📊 RESULTADO DO PAYBACK")
+        print(" RESULTADO DO PAYBACK")
         print("-"*50)
-        print(f"⏱️  Tempo de retorno: {payback_meses:.1f} meses")
-        print(f"⏱️  Equivalente a: {payback_anos:.2f} anos")
+        print(f" Tempo de retorno: {payback_meses:.1f} meses")
+        print(f" Equivalente a: {payback_anos:.2f} anos")
         
+        # Análise qualitativa do resultado
         if payback_meses <= 12:
-            print("\n✅ Excelente! Retorno em menos de 1 ano.")
+            print("\n Excelente! Retorno em menos de 1 ano.")
         elif payback_meses <= 24:
-            print("\n✅ Bom retorno! Entre 1 e 2 anos.")
+            print("\n Bom retorno! Entre 1 e 2 anos.")
         elif payback_meses <= 36:
-            print("\n⚠️  Retorno moderado. Entre 2 e 3 anos.")
+            print("\n Retorno moderado. Entre 2 e 3 anos.")
         else:
-            print("\n⚠️  Retorno longo. Mais de 3 anos.")
+            print("\n Retorno longo. Mais de 3 anos.")
         
         print("="*50)
         
     except ValueError:
-        print("\n❌ Erro: Digite apenas valores numéricos!")
+        print("\n Erro: Digite apenas valores numericos!")
 
 
 # ============================================================================

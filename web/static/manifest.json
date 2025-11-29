@@ -1,7 +1,7 @@
 {
-  "name": "Estoque Certo LTDA - Sistema de Gestão",
-  "short_name": "Estoque Certo",
-  "description": "Sistema completo de gestão empresarial para controle de estoque, financeiro, RH e operações",
+  "name": "Quatro Cantos - Sistema de Gestão",
+  "short_name": "Quatro Cantos",
+  "description": "Sistema completo de gestao empresarial",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

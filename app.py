@@ -1,9 +1,30 @@
-# app.py
 # ============================================================================
-# API WEB - FLASK REST API (VERSÃO CORRIGIDA)
+# ARQUIVO: app.py
+# SISTEMA DE GESTÃO EMPRESARIAL - API REST COM FLASK
 # ============================================================================
-# Este arquivo cria uma API REST usando Flask para conectar o sistema Python
-# ao site/aplicativo web. Permite acesso via navegador e instalação como PWA.
+# 
+# DESCRIÇÃO:
+# Este arquivo é o servidor principal da aplicação web. Ele cria uma API REST
+# (Representational State Transfer) usando o framework Flask do Python.
+# A API conecta o backend (Python) com o frontend (HTML/CSS/JavaScript).
+#
+# FUNCIONALIDADES PRINCIPAIS:
+# 1. Servir páginas HTML através de rotas web
+# 2. Fornecer endpoints de API para operações CRUD (Create, Read, Update, Delete)
+# 3. Gerenciar autenticação de usuários
+# 4. Processar requisições dos módulos: Operacional, Estoque, Financeiro e RH
+# 5. Permitir instalação como PWA (Progressive Web App)
+#
+# TECNOLOGIAS UTILIZADAS:
+# - Flask: Framework web Python para criar APIs REST
+# - Flask-CORS: Biblioteca para habilitar CORS (Cross-Origin Resource Sharing)
+# - SQLAlchemy: ORM para gerenciar banco de dados
+# - JSON: Formato de troca de dados entre frontend e backend
+#
+# ============================================================================
+
+# ============================================================================
+# IMPORTAÇÕES DE BIBLIOTECAS
 # ============================================================================
 
 from flask import Flask, render_template, request, jsonify, send_file
@@ -12,71 +33,141 @@ import sys
 import os
 from functools import wraps
 
-# Adicionar o diretório src ao path para importar os módulos
+# ============================================================================
+# CONFIGURAÇÃO DO PATH DO SISTEMA
+# ============================================================================
+# Adiciona o diretório 'src' ao caminho de busca do Python
+# Isso permite importar os módulos localizados na pasta src/
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-# Importar módulos refatorados e banco de dados
+# ============================================================================
+# IMPORTAÇÃO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
+# ============================================================================
+# Importa as classes e funções dos módulos do sistema
 from database import init_db, Produto, Funcionario, SessionLocal
 from operacional import calcular_metricas_capacidade
 from financeiro import calcular_metricas_financeiras
 from rh import processar_funcionario
 
-# Criar a aplicação Flask
+# ============================================================================
+# CRIAÇÃO E CONFIGURAÇÃO DA APLICAÇÃO FLASK
+# ============================================================================
+# Cria a instância principal da aplicação Flask
+# template_folder: define onde estão os arquivos HTML
+# static_folder: define onde estão os arquivos CSS, JS, imagens
 app = Flask(__name__,
             template_folder='web/templates',
             static_folder='web/static')
 
-# Habilitar CORS para permitir requisições de diferentes origens
+# ============================================================================
+# CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
+# ============================================================================
+# CORS permite que o frontend (rodando em uma URL) acesse o backend (rodando
+# em outra URL). Essencial para APIs REST e aplicações PWA.
 CORS(app)
 
-# Inicializar banco de dados
+# ============================================================================
+# INICIALIZAÇÃO DO BANCO DE DADOS
+# ============================================================================
+# Chama a função que cria as tabelas no banco de dados caso não existam
 init_db()
 
-# Middleware de Segurança (API Key Simples)
+# ============================================================================
+# MIDDLEWARE DE SEGURANÇA: VALIDAÇÃO DE API KEY
+# ============================================================================
+# Este decorator (função que decora outra função) adiciona uma camada de
+# segurança às rotas da API. Exige que o cliente envie uma chave de API
+# válida no header da requisição HTTP.
+#
+# COMO FUNCIONA:
+# 1. O cliente envia a chave no header 'X-API-KEY'
+# 2. O servidor compara com a chave configurada nas variáveis de ambiente
+# 3. Se não houver chave configurada ou se a chave for válida, permite acesso
+# 4. Se a chave for inválida, retorna erro 401 (Não autorizado)
+
 def require_api_key(f):
+    """
+    Decorator para proteger rotas que exigem autenticação via API Key.
+    
+    Argumentos:
+        f: função da rota que será protegida
+        
+    Retorna:
+        Função decorada com validação de API Key
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        # Em produção, use variáveis de ambiente.
-        # Para demo, aceita sem chave ou chave padrão.
+        # Obtém a API Key enviada pelo cliente no header da requisição
         api_key = request.headers.get('X-API-KEY')
+        
+        # Obtém a API Key configurada no servidor (variável de ambiente)
         env_key = os.getenv('API_KEY')
 
-        # Se houver uma chave configurada no ambiente,
-        # exige que ela seja enviada
+        # Se houver uma chave configurada no ambiente e ela não coincidir
+        # com a chave enviada, nega o acesso
         if env_key and api_key != env_key:
             return jsonify({'error': 'Acesso não autorizado'}), 401
+        
+        # Se passou na validação, executa a função original
         return f(*args, **kwargs)
     return decorated_function
 
-# Middleware de Controle de Acesso Baseado em Função (RBAC)
+# ============================================================================
+# MIDDLEWARE DE CONTROLE DE ACESSO BASEADO EM FUNÇÃO (RBAC)
+# ============================================================================
+# RBAC = Role-Based Access Control (Controle de Acesso Baseado em Função)
+# 
+# Este sistema implementa três níveis de acesso:
+# - admin: Acesso total ao sistema (nível 3)
+# - manager: Acesso gerencial (nível 2)
+# - user: Acesso básico (nível 1)
+#
+# COMO FUNCIONA:
+# 1. O cliente envia sua função (role) no header 'X-User-Role'
+# 2. O servidor verifica se o nível de acesso do usuário é suficiente
+# 3. Se o nível for insuficiente, retorna erro 403 (Acesso Negado)
+# 4. Se o nível for suficiente, permite a execução da função
+
 def require_role(required_role):
+    """
+    Decorator para implementar controle de acesso baseado em função.
+    
+    Argumentos:
+        required_role: função mínima necessária ('admin', 'manager' ou 'user')
+        
+    Retorna:
+        Decorator que valida o nível de acesso do usuário
+    """
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            # Simulação: Em produção, isso viria de um token JWT
-            # ou sessão segura. Aqui, confiamos no header X-User-Role
-            # enviado pelo frontend (apenas para demonstração)
+            # Obtém a função do usuário do header (padrão: 'user')
+            # NOTA: Em produção, isso deve vir de um token JWT seguro
             user_role = request.headers.get('X-User-Role', 'user')
             
-            # Hierarquia de roles simples
+            # Define a hierarquia de níveis de acesso
+            # Quanto maior o número, maior o nível de permissão
             roles_hierarchy = {
-                'admin': 3,
-                'manager': 2,
-                'user': 1
+                'admin': 3,      # Administrador: acesso total
+                'manager': 2,    # Gerente: acesso intermediário
+                'user': 1        # Usuário comum: acesso básico
             }
             
+            # Obtém o nível numérico do usuário e do requisito
             user_level = roles_hierarchy.get(user_role, 0)
             required_level = roles_hierarchy.get(required_role, 1)
             
+            # Se o nível do usuário for menor que o necessário, nega acesso
             if user_level < required_level:
                 return jsonify({
                     'success': False,
                     'error': (
-                        f'Acesso negado. Requer privilégios de '
+                        f'Acesso negado. Requer privilegios de '
                         f'{required_role} ou superior.'
                     )
                 }), 403
-                
+            
+            # Se passou na validação, executa a função original
             return f(*args, **kwargs)
         return decorated_function
     return decorator
@@ -461,17 +552,27 @@ def excluir_funcionario(id):
         db.close()
 
 # ============================================================================
-# INICIALIZAÇÃO DO SERVIDOR
+# INICIALIZAÇÃO DO SERVIDOR WEB
 # ============================================================================
+# Este bloco é executado quando o arquivo app.py é executado diretamente
+# (não quando é importado como módulo)
 
 if __name__ == '__main__':
+    # Exibe banner informativo no console
     print("\n" + "="*50)
-    print("   SISTEMA ESTOQUE CERTO LTDA - SERVIDOR WEB")
+    print("   QUATRO CANTOS - SERVIDOR WEB")
+    print("   Sistema de Gestao Empresarial")
     print("="*50)
-    print("\n🌐 Servidor iniciando...")
-    print("📱 Acesse: http://localhost:5000")
-    print("💡 Pressione Ctrl+C para encerrar\n")
+    print("\n Servidor iniciando...")
+    print(" Acesse: http://localhost:5000")
+    print(" Pressione Ctrl+C para encerrar\n")
     print("="*50 + "\n")
     
-    # Iniciar servidor Flask
+    # ========================================================================
+    # INICIA O SERVIDOR FLASK
+    # ========================================================================
+    # Parâmetros:
+    # - debug=True: Ativa modo de desenvolvimento (recarrega automaticamente)
+    # - host='0.0.0.0': Permite acesso de qualquer IP (necessário para rede local)
+    # - port=5000: Define a porta do servidor (padrão do Flask)
     app.run(debug=True, host='0.0.0.0', port=5000)
