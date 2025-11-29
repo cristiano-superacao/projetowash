@@ -125,30 +125,9 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha, extra
     try {
         showLoading('Criando conta...');
         
-        // Validar gestor se for funcionario
-        let companyId;
-        let role = extraData.role || 'user';
+        // Sempre cadastro de empresa (admin)
+        const role = 'admin';
         
-        if (role !== 'admin') {
-            // Buscar gestor pelo login para obter o ID da empresa
-            // Nota: Em produção, isso deveria ser feito via Cloud Functions para segurança
-            const managerQuery = await db.collection('usuarios')
-                .where('loginUsuario', '==', extraData.managerLogin)
-                .limit(1)
-                .get();
-                
-            if (managerQuery.empty) {
-                throw new Error('Gestor não encontrado. Verifique o login.');
-            }
-            
-            const managerData = managerQuery.docs[0].data();
-            companyId = managerData.companyId;
-            
-            // Opcional: Verificar senha do gestor (Não recomendado no client-side, mas mantendo a lógica do app)
-            // Aqui não temos como verificar a senha do gestor sem fazer login.
-            // Vamos assumir que se o login existe, permitimos (para este MVP).
-        }
-
         // Criar usuario no Authentication
         const result = await auth.createUserWithEmailAndPassword(email, senha);
         const user = result.user;
@@ -163,17 +142,20 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha, extra
             displayName: nome
         });
         
+        // Gerar ID da empresa (usar o UID do usuário como companyId)
+        const companyId = user.uid;
+        
         // Salvar dados adicionais no Firestore
         await db.collection('usuarios').doc(user.uid).set({
             nome: nome,
             email: email,
             contato: contato,
             loginUsuario: loginUsuario,
-            role: role,
+            role: 'admin',
             companyId: companyId,
-            cargo: extraData.cargo || (role === 'admin' ? 'Administrador' : 'Funcionário'),
+            cargo: 'Administrador',
             nomeEmpresa: extraData.nomeEmpresa || '',
-            allowedModules: extraData.allowedModules || [],
+            allowedModules: ['operacional', 'estoque-entrada', 'estoque-saida', 'financeiro', 'rh', 'visualizar'],
             dataCadastro: firebase.firestore.FieldValue.serverTimestamp(),
             ativo: true
         });

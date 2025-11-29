@@ -160,23 +160,7 @@ async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, 
         newUser.cargo = 'Administrador';
         newUser.nomeEmpresa = extraData.nomeEmpresa;
         newUser.companyId = 'comp-' + Date.now(); // Gerar ID da empresa
-    } else {
-        // Cadastro de Funcionário
-        // Validar credenciais do gestor
-        const manager = localUsers.find(u => (u.loginUsuario === extraData.managerLogin || u.email === extraData.managerLogin) && u.senha === extraData.managerPass);
-        
-        if (!manager) {
-            throw new Error('Credenciais do gestor inválidas. Verifique o login e senha do administrador.');
-        }
-        
-        if (manager.role !== 'admin') {
-            throw new Error('O usuário informado não tem permissão de administrador.');
-        }
-
-        newUser.role = 'user';
-        newUser.cargo = extraData.cargo;
-        newUser.companyId = manager.companyId || 'comp-default'; // Vincular à empresa do gestor
-        newUser.allowedModules = extraData.allowedModules || [];
+        newUser.allowedModules = ['operacional', 'estoque-entrada', 'estoque-saida', 'financeiro', 'rh', 'visualizar'];
     }
     
     localUsers.push(newUser);

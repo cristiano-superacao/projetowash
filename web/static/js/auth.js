@@ -12,36 +12,7 @@ function showRegister() {
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('registerForm').classList.remove('hidden');
     document.getElementById('forgotPasswordForm').classList.add('hidden');
-    switchRegisterTab('empresa'); // Default tab
-}
-
-// Alternar abas de cadastro
-function switchRegisterTab(type) {
-    const tabs = document.querySelectorAll('.auth-tab');
-    tabs.forEach(t => t.classList.remove('active'));
-    
-    // Ativar aba clicada (logica simples baseada na ordem ou texto, mas melhor usar event target se possivel, aqui vamos pelo tipo)
-    if (type === 'empresa') {
-        tabs[0].classList.add('active');
-        document.getElementById('fieldsEmpresa').classList.remove('hidden');
-        document.getElementById('fieldsFuncionario').classList.add('hidden');
-        document.getElementById('regNomeEmpresa').setAttribute('required', 'true');
-        document.getElementById('regCargo').removeAttribute('required');
-        document.getElementById('regManagerLogin').removeAttribute('required');
-        document.getElementById('regManagerPass').removeAttribute('required');
-        document.getElementById('btnRegisterText').textContent = 'Cadastrar Empresa';
-    } else {
-        tabs[1].classList.add('active');
-        document.getElementById('fieldsEmpresa').classList.add('hidden');
-        document.getElementById('fieldsFuncionario').classList.remove('hidden');
-        document.getElementById('regNomeEmpresa').removeAttribute('required');
-        document.getElementById('regCargo').setAttribute('required', 'true');
-        document.getElementById('regManagerLogin').setAttribute('required', 'true');
-        document.getElementById('regManagerPass').setAttribute('required', 'true');
-        document.getElementById('btnRegisterText').textContent = 'Cadastrar Funcionário';
-    }
-    
-    document.getElementById('regType').value = type;
+    // Sempre cadastro de empresa - campos já estão visíveis por padrão
 }
 
 // Handler de login
@@ -106,42 +77,19 @@ async function handleRegister(event) {
         return;
     }
 
-    // Dados específicos
-    let extraData = {};
-    
-    if (type === 'empresa') {
-        const nomeEmpresa = document.getElementById('regNomeEmpresa').value.trim();
-        if (!nomeEmpresa) {
-            showToast('Nome da empresa é obrigatório', 'error');
-            return;
-        }
-        extraData = { nomeEmpresa, role: 'admin' };
-    } else {
-        const cargo = document.getElementById('regCargo').value;
-        const managerLogin = document.getElementById('regManagerLogin').value.trim();
-        const managerPass = document.getElementById('regManagerPass').value;
-        
-        if (!cargo || !managerLogin || !managerPass) {
-            showToast('Dados do funcionário e autorização do gestor são obrigatórios', 'error');
-            return;
-        }
-        
-        // Coletar módulos permitidos
-        const modules = [];
-        document.querySelectorAll('input[name="regModules"]:checked').forEach(cb => {
-            modules.push(cb.value);
-        });
-        
-        extraData = { 
-            cargo, 
-            role: 'user', 
-            managerLogin, 
-            managerPass,
-            allowedModules: modules
-        };
+    // Dados específicos - sempre empresa
+    const nomeEmpresa = document.getElementById('regNomeEmpresa').value.trim();
+    if (!nomeEmpresa) {
+        showToast('Nome da empresa é obrigatório', 'error');
+        return;
     }
     
-    showLoading(type === 'empresa' ? 'Criando empresa...' : 'Cadastrando funcionário...');
+    const extraData = { 
+        nomeEmpresa, 
+        role: 'admin' 
+    };
+    
+    showLoading('Criando empresa...');
     
     try {
         // Tentar modo local primeiro
