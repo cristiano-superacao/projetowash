@@ -101,10 +101,11 @@ class Produto(Base):
     # primary_key=True: Define como chave prim\u00e1ria (identificador \u00fanico)
     # index=True: Cria \u00edndice para acelerar buscas
     # unique=True: Garante que n\u00e3o haver\u00e1 valores duplicados
-    # default=X: Valor padr\u00e3o caso n\u00e3o seja fornecido
+    # default=X: Valor padrão caso não seja fornecido
     
     id = Column(Integer, primary_key=True, index=True)
-    codigo = Column(Integer, unique=True, index=True)
+    company_id = Column(String, index=True)  # ID da empresa proprietária dos dados
+    codigo = Column(Integer, index=True)  # Removido unique para permitir mesmo código em empresas diferentes
     nome = Column(String, index=True)
     quantidade = Column(Integer, default=0)
     data_fabricacao = Column(String)
@@ -157,7 +158,8 @@ class Funcionario(Base):
     # DEFINI\u00c7\u00c3O DAS COLUNAS
     # ========================================================================
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, index=True)  # Indexado para busca r\u00e1pida por nome
+    company_id = Column(String, index=True)  # ID da empresa proprietária dos dados
+    nome = Column(String, index=True)  # Indexado para busca rápida por nome
     cargo = Column(String)
     admissao = Column(String)
     

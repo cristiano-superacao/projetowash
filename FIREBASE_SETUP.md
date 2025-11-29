@@ -16,7 +16,7 @@
 
 1. Acesse: https://console.firebase.google.com
 2. Clique em **"Adicionar projeto"** ou **"Create a project"**
-3. **Nome do projeto:** Digite `estoque-certo-ltda` (ou nome de sua preferência)
+3. **Nome do projeto:** Digite `quatro-cantos` (ou nome de sua preferência)
 4. **Google Analytics:** Desabilite (opcional para este projeto)
 5. Clique em **"Criar projeto"**
 6. Aguarde 30-60 segundos
@@ -54,7 +54,7 @@
 1. Vá para a aba **"Users"**
 2. Clique em **"Add user"**
 3. Preencha:
-   - **Email:** admin@estoquecerto.com
+   - **Email:** admin@quatrocantos.com
    - **Senha:** Admin@2025
 4. Clique em **"Add user"**
 
@@ -66,7 +66,7 @@
 2. Selecione **"Configurações do projeto"** ou **"Project settings"**
 3. Role para baixo até **"Seus aplicativos"** ou **"Your apps"**
 4. Clique no ícone **"</>"** (Web)
-5. **Apelido do app:** Digite `estoque-certo-web`
+5. **Apelido do app:** Digite `quatro-cantos-web`
 6. **NÃO marque** "Configure Firebase Hosting"
 7. Clique em **"Registrar app"**
 8. **COPIE** todo o objeto `firebaseConfig`:
@@ -74,9 +74,9 @@
 ```javascript
 const firebaseConfig = {
   apiKey: "AIzaSyAbc123...",
-  authDomain: "estoque-certo-ltda.firebaseapp.com",
-  projectId: "estoque-certo-ltda",
-  storageBucket: "estoque-certo-ltda.appspot.com",
+  authDomain: "quatro-cantos.firebaseapp.com",
+  projectId: "quatro-cantos",
+  storageBucket: "quatro-cantos.appspot.com",
   messagingSenderId: "123456789012",
   appId: "1:123456789012:web:abc123def456"
 };
@@ -150,7 +150,7 @@ firebase init
 
 Selecione:
 - [x] Firestore
-- Use existing project: `estoque-certo-ltda`
+- Use existing project: `quatro-cantos`
 - Firestore Rules: `firestore.rules` (padrão)
 - Firestore Indexes: `firestore.indexes.json` (padrão)
 
@@ -210,45 +210,65 @@ Se tudo estiver correto, você verá:
 
 ---
 
-## 🔒 Regras de Segurança Configuradas
+## 🔒 Regras de Segurança Configuradas (Multi-Tenancy)
 
-O arquivo `firestore.rules` já contém:
+O arquivo `firestore.rules` já contém regras com **isolamento por empresa**:
 
 ```javascript
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Produtos - Leitura pública, escrita autenticada
+    // Produtos - Isolamento por companyId
+    // Cada empresa só acessa seus próprios produtos
     match /produtos/{produto} {
-      allow read: if true;
-      allow write: if request.auth != null;
+      allow read: if request.auth != null && 
+                  resource.data.companyId == request.auth.uid;
+      allow create: if request.auth != null && 
+                    request.resource.data.companyId == request.auth.uid;
+      allow update, delete: if request.auth != null && 
+                            resource.data.companyId == request.auth.uid;
     }
     
-    // Movimentações - Apenas autenticados
+    // Movimentações - Isolamento por companyId
     match /movimentacoes/{movimentacao} {
-      allow read, write: if request.auth != null;
+      allow read, write: if request.auth != null && 
+                          resource.data.companyId == request.auth.uid;
+      allow create: if request.auth != null && 
+                    request.resource.data.companyId == request.auth.uid;
+    }
+    
+    // Funcionários - Isolamento por companyId
+    match /funcionarios/{funcionario} {
+      allow read, write: if request.auth != null && 
+                          resource.data.companyId == request.auth.uid;
+      allow create: if request.auth != null && 
+                    request.resource.data.companyId == request.auth.uid;
     }
     
     // Usuários - Apenas o próprio usuário
     match /usuarios/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
-    
-    // Empresas - Apenas autenticados
-    match /empresas/{empresa} {
-      allow read, write: if request.auth != null;
-    }
   }
 }
 ```
 
-### Significado:
+### Significado das Regras:
 
-- **Produtos:** Qualquer um pode ver, apenas autenticados podem adicionar/editar
-- **Movimentações:** Apenas usuários logados podem acessar
-- **Usuários:** Cada usuário só acessa seus próprios dados
-- **Empresas:** Apenas autenticados podem gerenciar
+- **✅ Isolamento Total:** Cada empresa (companyId) só acessa seus próprios dados
+- **✅ Multi-Tenancy Seguro:** Empresas não veem dados de outras empresas
+- **✅ Acesso Multi-Computador:** Mesma conta acessa de qualquer lugar
+- **✅ Autenticação Obrigatória:** Apenas usuários logados podem acessar
+- **✅ Validação Automática:** Firebase valida companyId em toda operação
+
+### Como Funciona:
+
+1. **Usuário se cadastra** → Firebase cria `uid` único
+2. **companyId = uid** → Cada empresa tem ID exclusivo
+3. **Ao salvar dados** → `companyId` é incluído automaticamente
+4. **Ao ler dados** → Firebase filtra por `companyId` do usuário logado
+5. **Resultado:** Isolamento total entre empresas
 
 ---
 
@@ -266,38 +286,22 @@ service cloud.firestore {
 **Solução:**
 1. Execute: `firebase deploy --only firestore:rules`
 2. Aguarde 1-2 minutos para propagar
-3. Tente novamente
+## 📊 Estrutura de Dados no Firestore (Multi-Tenancy)
 
-### Erro: "User creation failed"
+### 🔑 Campo Obrigatório: `companyId`
 
-**Solução:**
-1. Verifique se Authentication está ativo
-2. Confirme se Email/Password está habilitado
-3. Verifique console do navegador para detalhes
-
-### Firebase CLI não reconhecido
-
-**Solução:**
-```powershell
-npm install -g firebase-tools
-```
-
-Se persistir, reinicie o PowerShell.
-
----
-
-## 📊 Estrutura de Dados no Firestore
+**IMPORTANTE:** Todos os documentos devem incluir `companyId` para isolamento.
 
 ### Coleção: `usuarios`
 
 ```json
 {
   "uid": "abc123def456",
+  "companyId": "abc123def456",
   "email": "usuario@exemplo.com",
-  "nome": "João Silva",
-  "empresa": "Empresa ABC",
-  "cargo": "Gerente",
-  "permissoes": ["operacional", "estoque", "financeiro"],
+  "nomeEmpresa": "Quatro Cantos Materiais",
+  "cnpj": "12.345.678/0001-90",
+  "telefone": "(11) 98765-4321",
   "criadoEm": "2025-11-28T10:30:00Z"
 }
 ```
@@ -306,11 +310,81 @@ Se persistir, reinicie o PowerShell.
 
 ```json
 {
-  "codigo": "P001",
-  "nome": "Pallet Tipo A",
-  "quantidade": 100,
+  "id": "prod001",
+  "companyId": "abc123def456",
+  "codigo": 1001,
+  "nome": "Cimento CP-II 50kg",
+  "quantidade": 500,
+  "unidade": "sc",
   "dataFabricacao": "28/11/2025",
   "fornecedor": "Fornecedor X",
+  "localizacao": "Galpão A - Prateleira 1",
+  "valorUnitario": 32.50,
+  "criadoPor": "abc123def456",
+  "criadoEm": "2025-11-28T11:00:00Z"
+}
+```
+
+### Coleção: `funcionarios`
+
+```json
+{
+  "id": "func001",
+  "companyId": "abc123def456",
+  "nome": "Maria Santos",
+  "cargo": "Gerente de Estoque",
+  "cpf": "123.456.789-00",
+  "telefone": "(11) 91234-5678",
+  "salario": 3500.00,
+  "dataAdmissao": "15/01/2025",
+  "criadoEm": "2025-11-28T09:00:00Z"
+}
+```
+
+### Coleção: `movimentacoes`
+
+```json
+{
+  "id": "mov001",
+  "companyId": "abc123def456",
+  "tipo": "saida",
+  "produtoNome": "Cimento CP-II 50kg",
+  "produtoCodigo": 1001,
+  "quantidade": 50,
+  "valorUnitario": 32.50,
+  "valorTotal": 1625.00,
+  "dataHora": "2025-11-28T14:30:00Z",
+  "usuarioId": "abc123def456",
+  "observacao": "Venda para Cliente Y - Nota Fiscal 12345"
+}
+```
+
+### 🛡️ Validação de companyId
+
+O sistema **sempre** inclui `companyId` automaticamente:
+
+```javascript
+// Exemplo: Cadastrando produto
+const produto = {
+  codigo: 1001,
+  nome: "Cimento",
+  quantidade: 500,
+  companyId: firebase.auth().currentUser.uid  // ← Automático
+};
+
+db.collection('produtos').add(produto);
+```
+
+### 🔍 Consultas com Filtro
+
+Todas as consultas filtram por `companyId`:
+
+```javascript
+// Listar produtos da empresa
+db.collection('produtos')
+  .where('companyId', '==', firebase.auth().currentUser.uid)
+  .get();
+```fornecedor": "Fornecedor X",
   "local": "A1",
   "valorUnitario": 50.00,
   "criadoPor": "abc123def456",

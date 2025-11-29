@@ -2,61 +2,87 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
+    // ===== FUNCOES AUXILIARES =====
+    
     // Funcao auxiliar para verificar se o usuario esta autenticado
     function isAuthenticated() {
       return request.auth != null;
     }
     
-    // Funcao para verificar se o usuario eh admin
-    function isAdmin() {
+    // Funcao para verificar se o companyId do documento pertence ao usuario
+    // Implementa isolamento multi-tenant (cada empresa so acessa seus dados)
+    function belongsToCompany() {
       return isAuthenticated() && 
-             get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.role == 'admin';
+             resource.data.companyId == request.auth.uid;
     }
+    
+    // Funcao para validar companyId na criacao de documentos
+    function hasValidCompanyId() {
+      return isAuthenticated() && 
+             request.resource.data.companyId == request.auth.uid;
+    }
+    
+    // ===== REGRAS DE ACESSO =====
     
     // Regras para colecao de usuarios
+    // Cada usuario so pode ler/escrever seus proprios dados
     match /usuarios/{userId} {
-      // Permitir leitura apenas do proprio perfil ou admin
-      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
-      
-      // Permitir criacao apenas pelo proprio usuario
+      allow read: if isAuthenticated() && request.auth.uid == userId;
       allow create: if isAuthenticated() && request.auth.uid == userId;
-      
-      // Permitir atualizacao apenas do proprio perfil ou admin
-      allow update: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
-      
-      // Apenas admin pode deletar usuarios
-      allow delete: if isAdmin();
+      allow update: if isAuthenticated() && request.auth.uid == userId;
+      allow delete: if isAuthenticated() && request.auth.uid == userId;
     }
     
-    // Regras para estoque - apenas usuarios autenticados
-    match /estoque/{produtoId} {
-      allow read: if isAuthenticated();
-      allow write: if isAuthenticated();
+    // Regras para produtos (multi-tenant por companyId)
+    // Cada empresa so acessa produtos que ela cadastrou
+    match /produtos/{produtoId} {
+      // Leitura: apenas produtos da propria empresa
+      allow read: if belongsToCompany();
+      
+      // Criacao: deve incluir companyId do usuario autenticado
+      allow create: if hasValidCompanyId();
+      
+      // Atualizacao/Exclusao: apenas produtos da propria empresa
+      allow update, delete: if belongsToCompany();
     }
     
-    // Regras para movimentacoes - historico
+    // Regras para funcionarios (multi-tenant por companyId)
+    // Cada empresa so gerencia seus proprios funcionarios
+    match /funcionarios/{funcId} {
+      allow read: if belongsToCompany();
+      allow create: if hasValidCompanyId();
+      allow update, delete: if belongsToCompany();
+    }
+    
+    // Regras para movimentacoes de estoque (multi-tenant)
+    // Historico de entradas/saidas isolado por empresa
     match /movimentacoes/{movId} {
-      allow read: if isAuthenticated();
-      allow create: if isAuthenticated();
-      allow update, delete: if isAdmin();
+      allow read: if belongsToCompany();
+      allow create: if hasValidCompanyId();
+      allow update, delete: if belongsToCompany();
     }
     
-    // Regras para dados financeiros
+    // Regras para dados financeiros (multi-tenant)
+    // Cada empresa acessa apenas suas financas
     match /financeiro/{docId} {
-      allow read: if isAuthenticated();
-      allow write: if isAdmin();
+      allow read: if belongsToCompany();
+      allow create: if hasValidCompanyId();
+      allow update, delete: if belongsToCompany();
     }
     
-    // Regras para folha de pagamento
+    // Regras para folha de pagamento (multi-tenant)
+    // Salarios e pagamentos isolados por empresa
     match /folha_pagamento/{docId} {
-      allow read: if isAuthenticated();
-      allow write: if isAdmin();
+      allow read: if belongsToCompany();
+      allow create: if hasValidCompanyId();
+      allow update, delete: if belongsToCompany();
     }
     
-    // Regras para configuracoes do sistema
-    match /configuracoes/{docId} {
-      allow read: if isAuthenticated();
-      allow write: if isAdmin();
+    // Regras para estoque (legacy - manter compatibilidade)
+    match /estoque/{produtoId} {
+      allow read: if belongsToCompany();
+      allow create: if hasValidCompanyId();
+      allow update, delete: if belongsToCompany();
     }
   }
 }
