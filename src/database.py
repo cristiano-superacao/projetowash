@@ -123,9 +123,11 @@ class Produto(Base):
         - Exibi\u00e7\u00e3o de dados em formatos diversos
         
         Returns:
-            dict: Dicion\u00e1rio com os dados do produto
+            dict: Dicionário com os dados do produto (inclui company_id para multi-tenancy)
         """
         return {
+            "id": self.id,
+            "company_id": self.company_id,  # Multi-tenancy: Isolamento por empresa
             "codigo": self.codigo,
             "nome": self.nome,
             "quantidade": self.quantidade,
@@ -165,13 +167,14 @@ class Funcionario(Base):
     
     def to_dict(self):
         """
-        Converte o objeto Funcionario para dicion\u00e1rio Python.
+        Converte o objeto Funcionario para dicionário Python.
         
         Returns:
-            dict: Dicion\u00e1rio com os dados do funcion\u00e1rio
+            dict: Dicionário com os dados do funcionário (inclui company_id para multi-tenancy)
         """
         return {
             "id": self.id,
+            "company_id": self.company_id,  # Multi-tenancy: Isolamento por empresa
             "nome": self.nome,
             "cargo": self.cargo,
             "admissao": self.admissao
