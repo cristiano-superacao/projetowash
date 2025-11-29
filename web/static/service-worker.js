@@ -4,14 +4,18 @@
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v4';
+const CACHE_NAME = 'estoque-certo-v5';
 const urlsToCache = [
     '/',
     '/static/css/style.css',
+    '/static/css/admin.css',
     '/static/js/app.js',
     '/static/js/modules.js',
     '/static/js/dashboard.js',
     '/static/js/auth.js',
+    '/static/js/local-auth.js',
+    '/static/js/local-firestore.js',
+    '/static/js/admin-module.js',
     '/static/js/pwa.js',
     '/static/manifest.json',
     '/static/icons/icon.svg'

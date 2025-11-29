@@ -1,5 +1,6 @@
 // Modo Local/Demo - Autenticacao Simulada
 // Use este arquivo APENAS para testes locais sem Firebase
+console.log('🔄 local-auth.js v2.1 carregado');
 
 let localUsers = [];
 let localCurrentUser = null;

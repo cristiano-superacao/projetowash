@@ -73,10 +73,34 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/service-worker.js')
             .then((registration) => {
                 console.log('PWA: Service Worker registrado com sucesso:', registration.scope);
+                
+                // Verificar atualizações manualmente
+                registration.update();
+                
+                registration.onupdatefound = () => {
+                    const installingWorker = registration.installing;
+                    installingWorker.onstatechange = () => {
+                        if (installingWorker.state === 'installed') {
+                            if (navigator.serviceWorker.controller) {
+                                console.log('PWA: Nova atualização disponível!');
+                                showToast('Nova versão disponível! Atualizando...', 'info');
+                                setTimeout(() => window.location.reload(), 1000);
+                            } else {
+                                console.log('PWA: Conteúdo cacheado para uso offline.');
+                            }
+                        }
+                    };
+                };
             })
             .catch((error) => {
                 console.error('PWA: Erro ao registrar Service Worker:', error);
             });
+    });
+    
+    // Recarregar quando o novo SW assumir o controle
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('PWA: Novo Service Worker ativo. Recarregando...');
+        window.location.reload();
     });
 }
 

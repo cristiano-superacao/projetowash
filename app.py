@@ -207,6 +207,17 @@ def service_worker():
     except Exception as e:
         return jsonify({'error': str(e)}), 404
 
+@app.route('/favicon.ico')
+def favicon():
+    """Favicon para o navegador"""
+    try:
+        return send_file(
+            'web/static/icons/icon.svg',
+            mimetype='image/svg+xml'
+        )
+    except Exception as e:
+        return jsonify({'error': str(e)}), 404
+
 # ============================================================================
 # API ENDPOINTS - MÓDULO OPERACIONAL
 # ============================================================================
