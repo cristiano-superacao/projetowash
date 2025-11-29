@@ -79,13 +79,21 @@ async function handleRegister(event) {
 
     // Dados específicos - sempre empresa
     const nomeEmpresa = document.getElementById('regNomeEmpresa').value.trim();
+    const segmento = document.getElementById('regSegmento').value.trim();
+    
     if (!nomeEmpresa) {
         showToast('Nome da empresa é obrigatório', 'error');
         return;
     }
     
+    if (!segmento) {
+        showToast('Selecione o segmento da empresa', 'error');
+        return;
+    }
+    
     const extraData = { 
-        nomeEmpresa, 
+        nomeEmpresa,
+        segmento,
         role: 'admin' 
     };
     

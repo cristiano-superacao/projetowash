@@ -14,6 +14,7 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/segments.css">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -25,6 +26,9 @@
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Segments Config -->
+    <script src="/static/js/segments-config.js"></script>
 </head>
 <body>
     
@@ -126,6 +130,17 @@
                                 <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
                                 <i class="fas fa-building"></i>
                             </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regSegmento">Segmento da Empresa</label>
+                            <div class="input-group">
+                                <select id="regSegmento" required onchange="aplicarTemaSegmento(this.value)">
+                                    <option value="">Selecione o segmento</option>
+                                </select>
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <small class="form-hint">O layout se adaptará ao seu segmento</small>
                         </div>
                     </div>
 
@@ -546,5 +561,15 @@
     <script src="/static/js/modules.js"></script>
     <script src="/static/js/dashboard.js"></script>
     <script src="/static/js/pwa.js"></script>
+    
+    <!-- Inicialização do formulário de cadastro -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Popular select de segmento no formulário de cadastro
+            if (typeof popularSelectSegmento !== 'undefined') {
+                popularSelectSegmento('regSegmento');
+            }
+        });
+    </script>
 </body>
 </html>

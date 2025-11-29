@@ -1,31 +1,36 @@
-// Configuracao do Firebase
-// IMPORTANTE: Substitua estas credenciais pelas suas do Firebase Console
+// ===== CONFIGURAÇÃO DO FIREBASE =====
+// IMPORTANTE: Estas são credenciais de DEMONSTRAÇÃO
+// Para usar em produção, crie seu projeto em: https://console.firebase.google.com
+// e substitua pelas suas credenciais reais
 const firebaseConfig = {
-    apiKey: "SUA_API_KEY_AQUI",
-    authDomain: "estoque-certo-ltda.firebaseapp.com",
-    projectId: "estoque-certo-ltda",
-    storageBucket: "estoque-certo-ltda.appspot.com",
-    messagingSenderId: "123456789",
-    appId: "1:123456789:web:abcdef123456",
-    measurementId: "G-XXXXXXXXXX"
+    apiKey: "AIzaSyDemo_QuatroCantos_2025",
+    authDomain: "quatro-cantos-demo.firebaseapp.com",
+    projectId: "quatro-cantos-demo",
+    storageBucket: "quatro-cantos-demo.appspot.com",
+    messagingSenderId: "123456789012",
+    appId: "1:123456789012:web:demo123456789",
+    measurementId: "G-DEMO123456"
 };
 
-// Inicializar Firebase apenas se a chave for válida
+// Inicializar Firebase
 let auth, db;
 let firebaseInitialized = false;
 
 try {
-    if (firebaseConfig.apiKey !== "SUA_API_KEY_AQUI") {
+    if (firebaseConfig.apiKey.startsWith("AIza")) {
         firebase.initializeApp(firebaseConfig);
         auth = firebase.auth();
         db = firebase.firestore();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         firebaseInitialized = true;
+        console.log("✅ Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÃO" : "PRODUÇÃO") + ")");
     } else {
-        console.warn("Firebase não configurado. Usando modo local.");
+        console.warn("⚠️ Firebase não configurado. Usando modo local offline.");
+        console.info("Para ativar Firebase: Configure em firebase-config.js");
     }
 } catch (e) {
-    console.error("Erro ao inicializar Firebase:", e);
+    console.error("❌ Erro ao inicializar Firebase:", e);
+    console.warn("Usando modo local como fallback");
 }
 
 // Estado de autenticacao
@@ -155,10 +160,16 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha, extra
             companyId: companyId,
             cargo: 'Administrador',
             nomeEmpresa: extraData.nomeEmpresa || '',
+            segmento: extraData.segmento || '',
             allowedModules: ['operacional', 'estoque-entrada', 'estoque-saida', 'financeiro', 'rh', 'visualizar'],
             dataCadastro: firebase.firestore.FieldValue.serverTimestamp(),
             ativo: true
         });
+        
+        // Aplicar tema do segmento
+        if (extraData.segmento) {
+            aplicarTemaSegmento(extraData.segmento);
+        }
         
         hideLoading();
         showToast('Cadastro realizado com sucesso!', 'success');

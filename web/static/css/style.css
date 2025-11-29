@@ -2492,3 +2492,89 @@ table tbody tr:hover {
         display: none !important;
     }
 }
+
+
+/* ============================================================================
+   ESTILOS PARA SEGMENTOS E TIPOS DE MATERIAIS
+   ============================================================================ */
+
+.form-hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+select.form-control,
+select {
+    appearance: none;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23475569%27 d=%27M6 8L0 0h12z%27/%3E%3C/svg%3E');
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 8px;
+    padding-right: 2.5rem;
+}
+
+.input-group select + i {
+    pointer-events: none;
+}
+
+/* Tema dinâmico baseado no segmento */
+[data-segmento='construcao'] {
+    --primary-color: #d97706;
+}
+
+[data-segmento='automotivo'] {
+    --primary-color: #dc2626;
+}
+
+[data-segmento='industrial'] {
+    --primary-color: #059669;
+}
+
+[data-segmento='alimenticio'] {
+    --primary-color: #16a34a;
+}
+
+[data-segmento='farmaceutico'] {
+    --primary-color: #2563eb;
+}
+
+[data-segmento='eletroeletronico'] {
+    --primary-color: #7c3aed;
+}
+
+[data-segmento='textil'] {
+    --primary-color: #ec4899;
+}
+
+[data-segmento='agricola'] {
+    --primary-color: #65a30d;
+}
+
+[data-segmento='quimico'] {
+    --primary-color: #0891b2;
+}
+
+[data-segmento='papelaria'] {
+    --primary-color: #f59e0b;
+}
+
+/* Badges de tipo de material */
+.badge-tipo-material {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.badge-tipo-material i {
+    font-size: 1rem;
+}
+

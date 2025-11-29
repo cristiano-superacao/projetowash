@@ -144,10 +144,15 @@ function exibirResultadoOperacional(data) {
 // ============================================================================
 
 function loadEstoqueEntradaModule(container) {
+    // Carregar segmento da empresa
+    const segmentoSalvo = localStorage.getItem('segmento_empresa') || '';
+    const segmento = SEGMENTOS_EMPRESARIAIS[segmentoSalvo];
+    const titulo = segmento ? `Cadastrar ${segmento.nome === 'Construção Civil' ? 'Material' : 'Produto'}` : 'Cadastrar Produto';
+    
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-box-open"></i> Cadastrar Componente/Veículo
+                <i class="fas fa-box-open"></i> ${titulo}
             </div>
             
             <form id="formEstoqueEntrada" onsubmit="cadastrarProduto(event)">
@@ -158,14 +163,30 @@ function loadEstoqueEntradaModule(container) {
                     </div>
                     
                     <div class="form-group">
-                        <label for="nome"><i class="fas fa-tag"></i> Nome do Componente</label>
-                        <input type="text" id="nome" name="nome" required placeholder="Ex: Bateria LFP 60kWh">
+                        <label for="nome"><i class="fas fa-tag"></i> Nome do ${segmento ? (segmento.nome === 'Construção Civil' ? 'Material' : 'Produto') : 'Produto'}</label>
+                        <input type="text" id="nome" name="nome" required placeholder="Ex: Cimento CP-II 50kg">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="lote"><i class="fas fa-layer-group"></i> Lote de Produção</label>
+                        <label for="tipoMaterial"><i class="fas fa-layer-group"></i> Tipo de Material</label>
+                        <select id="tipoMaterial" name="tipoMaterial" required>
+                            <option value="">Selecione o tipo</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categoria"><i class="fas fa-folder"></i> Categoria</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">Selecione a categoria</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lote"><i class="fas fa-archive"></i> Lote de Produção</label>
                         <input type="text" id="lote" name="lote" required placeholder="Ex: BAT-2023-X99">
                     </div>
                     
@@ -182,6 +203,13 @@ function loadEstoqueEntradaModule(container) {
                     </div>
                     
                     <div class="form-group">
+                        <label for="unidadeMedida"><i class="fas fa-balance-scale"></i> Unidade de Medida</label>
+                        <select id="unidadeMedida" name="unidadeMedida" required>
+                            <option value="">Selecione</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="data"><i class="fas fa-calendar"></i> Data de Fabricação</label>
                         <input type="date" id="data" name="data" required>
                     </div>
@@ -190,7 +218,7 @@ function loadEstoqueEntradaModule(container) {
                 <div class="form-row">
                     <div class="form-group">
                         <label for="fornecedor"><i class="fas fa-truck"></i> Fornecedor/Origem</label>
-                        <input type="text" id="fornecedor" name="fornecedor" required placeholder="Ex: Gigafactory 1">
+                        <input type="text" id="fornecedor" name="fornecedor" required placeholder="Ex: Fornecedor ABC">
                     </div>
                     
                     <div class="form-group">
@@ -201,7 +229,7 @@ function loadEstoqueEntradaModule(container) {
                 
                 <div class="form-group">
                     <label for="valor"><i class="fas fa-dollar-sign"></i> Custo Unitário (R$)</label>
-                    <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 15000.00">
+                    <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 32.50">
                 </div>
                 
                 <button type="submit" class="btn btn-success btn-block">
@@ -212,6 +240,11 @@ function loadEstoqueEntradaModule(container) {
     `;
     
     container.innerHTML = html;
+    
+    // Popular selects dinamicamente
+    popularSelectTipoMaterial('tipoMaterial');
+    popularSelectCategoria(segmentoSalvo, 'categoria');
+    popularSelectUnidadeMedida('unidadeMedida', segmentoSalvo);
 }
 
 async function cadastrarProduto(event) {
@@ -220,28 +253,34 @@ async function cadastrarProduto(event) {
     // Validação dos campos
     const codigo = document.getElementById('codigo').value.trim();
     const nome = document.getElementById('nome').value.trim();
+    const tipoMaterial = document.getElementById('tipoMaterial').value.trim();
+    const categoria = document.getElementById('categoria').value.trim();
     const lote = document.getElementById('lote').value.trim();
     const serial = document.getElementById('serial').value.trim();
     const quantidade = document.getElementById('quantidade').value.trim();
+    const unidadeMedida = document.getElementById('unidadeMedida').value.trim();
     const data = document.getElementById('data').value.trim();
     const fornecedor = document.getElementById('fornecedor').value.trim();
     const local = document.getElementById('local').value.trim();
     const valor = document.getElementById('valor').value.trim();
     
-    if (!codigo || !nome || !lote || !serial || !quantidade || !data || !fornecedor || !local || !valor) {
+    if (!codigo || !nome || !tipoMaterial || !categoria || !lote || !serial || !quantidade || !unidadeMedida || !data || !fornecedor || !local || !valor) {
         showToast('Por favor, preencha todos os campos', 'error');
         return;
     }
     
-    showLoading('Cadastrando componente...');
+    showLoading('Cadastrando produto...');
     
     try {
         const formData = {
             codigo: parseInt(codigo),
             nome: nome,
+            tipo_material: tipoMaterial,
+            categoria: categoria,
             lote: lote,
             serial: serial,
             quantidade: parseInt(quantidade),
+            unidade_medida: unidadeMedida,
             data: data,
             fornecedor: fornecedor,
             local: local,
@@ -250,8 +289,14 @@ async function cadastrarProduto(event) {
         
         await salvarProdutoEstoque(formData);
         
-        showToast('✅ Componente registrado com sucesso!', 'success');
+        showToast('✅ Produto registrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
+        
+        // Repopular selects após reset
+        const segmentoSalvo = localStorage.getItem('segmento_empresa') || '';
+        popularSelectTipoMaterial('tipoMaterial');
+        popularSelectCategoria(segmentoSalvo, 'categoria');
+        popularSelectUnidadeMedida('unidadeMedida', segmentoSalvo);
         
     } catch (error) {
         console.error('Erro ao cadastrar:', error);

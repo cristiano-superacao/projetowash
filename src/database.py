@@ -107,6 +107,9 @@ class Produto(Base):
     company_id = Column(String, index=True)  # ID da empresa proprietária dos dados
     codigo = Column(Integer, index=True)  # Removido unique para permitir mesmo código em empresas diferentes
     nome = Column(String, index=True)
+    tipo_material = Column(String)  # Tipo: Matéria-Prima, Semi-Acabado, Acabado, MRO, etc.
+    categoria = Column(String)  # Categoria baseada no segmento da empresa
+    unidade_medida = Column(String, default="UN")  # UN, KG, M, L, PC, SC, etc.
     quantidade = Column(Integer, default=0)
     data_fabricacao = Column(String)
     fornecedor = Column(String)
@@ -130,6 +133,9 @@ class Produto(Base):
             "company_id": self.company_id,  # Multi-tenancy: Isolamento por empresa
             "codigo": self.codigo,
             "nome": self.nome,
+            "tipo_material": self.tipo_material,
+            "categoria": self.categoria,
+            "unidade_medida": self.unidade_medida,
             "quantidade": self.quantidade,
             "data": self.data_fabricacao,
             "fornecedor": self.fornecedor,
