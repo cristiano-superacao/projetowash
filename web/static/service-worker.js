@@ -4,7 +4,7 @@
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v7';
+const CACHE_NAME = 'estoque-certo-v8';
 const urlsToCache = [
     '/',
     '/static/css/style.css',

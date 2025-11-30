@@ -5,33 +5,78 @@
 function loadOperacionalModule(container) {
     const html = `
         <div class="card">
-            <div class="card-header">
-                <i class="fas fa-industry"></i> Cálculo de Capacidade de Produção
+            <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0;">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-industry" style="font-size: 1.5rem;"></i>
+                    <span>Módulo Operacional - Capacidade de Producao</span>
+                </h3>
             </div>
             
-            <form id="formOperacional" onsubmit="calcularOperacional(event)">
-                <div class="form-group">
-                    <label for="turnos">
-                        <i class="fas fa-clock"></i> Número de Turnos Ativos
-                    </label>
-                    <select id="turnos" name="turnos" required>
-                        <option value="">Selecione...</option>
-                        <option value="1">1 Turno (Manhã ou Tarde ou Noite)</option>
-                        <option value="2">2 Turnos (Manhã + Tarde ou Manhã + Noite, etc)</option>
-                        <option value="3">3 Turnos (Manhã + Tarde + Noite - 24h)</option>
-                    </select>
-                </div>
+            <div style="padding: 2rem;">
+                <h4 style="color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-calculator" style="color: #667eea;"></i>
+                    Cálculo de Capacidade de Produção
+                </h4>
                 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-calculator"></i> Calcular Capacidade
-                </button>
-            </form>
-            
-            <div id="resultadoOperacional" class="mt-3 hidden"></div>
+                <form id="formOperacional" onsubmit="calcularOperacional(event)">
+                    <div class="form-group">
+                        <label for="turnos" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-clock" style="font-size: 0.9rem;"></i>
+                            Número de Turnos Ativos
+                        </label>
+                        <div class="input-group" style="position: relative;">
+                            <i class="fas fa-clock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                            <select id="turnos" name="turnos" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
+                                <option value="">Selecione...</option>
+                                <option value="1">1 Turno (Manhã ou Tarde ou Noite)</option>
+                                <option value="2">2 Turnos (Manhã + Tarde ou Manhã + Noite, etc)</option>
+                                <option value="3">3 Turnos (Manhã + Tarde + Noite - 24h)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-operacional-gradient" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600; border: none; border-radius: 8px; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); color: white; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
+                        <i class="fas fa-calculator" style="font-size: 1.25rem;"></i>
+                        Calcular Capacidade
+                    </button>
+                </form>
+                
+                <div id="resultadoOperacional" class="mt-3 hidden"></div>
+            </div>
         </div>
     `;
     
     container.innerHTML = html;
+    
+    // Adicionar evento de hover no botão
+    setTimeout(() => {
+        const btn = document.querySelector('.btn-operacional-gradient');
+        if (btn) {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.4)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        }
+        
+        // Adicionar evento de focus no select
+        const select = document.getElementById('turnos');
+        if (select) {
+            select.addEventListener('focus', function() {
+                this.style.borderColor = '#3b82f6';
+                this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                this.style.background = '#ffffff';
+            });
+            select.addEventListener('blur', function() {
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+                this.style.background = '#f9fafb';
+            });
+        }
+    }, 100);
 }
 
 async function calcularOperacional(event) {
