@@ -25,6 +25,9 @@
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    
+    <!-- Segments Config -->
+    <script src="/static/js/segments-config.js?v=6"></script>
 </head>
 <body>
     
@@ -129,31 +132,33 @@
                     </div>
 
                     <!-- Campos Empresa -->
-                    <div class="form-group">
-                        <label for="regNomeEmpresa">Nome da Empresa</label>
-                        <div class="input-group">
-                            <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
-                            <i class="fas fa-building"></i>
+                    <div id="fieldsEmpresa">
+                        <div class="form-group">
+                            <label for="regNomeEmpresa">Nome da Empresa</label>
+                            <div class="input-group">
+                                <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
+                                <i class="fas fa-building"></i>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label for="regSegmento">Segmento da Empresa</label>
-                        <div class="input-group">
-                            <select id="regSegmento" required class="form-select" style="padding-left: 2.75rem;">
-                                <option value="" disabled selected>Selecione o segmento</option>
-                                <option value="construcao">Construção Civil</option>
-                                <option value="varejo">Varejo</option>
-                                <option value="servicos">Serviços</option>
-                                <option value="industria">Indústria</option>
-                                <option value="logistica">Logística</option>
-                                <option value="outros">Outros</option>
-                            </select>
-                            <i class="fas fa-folder-open"></i>
+                        <div class="form-group">
+                            <label for="regSegmento">Segmento da Empresa</label>
+                            <div class="input-group">
+                                <select id="regSegmento" required class="form-select" style="padding-left: 2.75rem;" onchange="aplicarTemaSegmento(this.value)">
+                                    <option value="" disabled selected>Selecione o segmento</option>
+                                    <option value="construcao">Construção Civil</option>
+                                    <option value="varejo">Varejo</option>
+                                    <option value="servicos">Serviços</option>
+                                    <option value="industria">Indústria</option>
+                                    <option value="logistica">Logística</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                                <i class="fas fa-industry"></i>
+                            </div>
+                            <small style="display: block; margin-top: 5px; color: #64748b; font-style: italic; font-size: 0.85em;">
+                                O layout se adaptará ao seu segmento
+                            </small>
                         </div>
-                        <small style="display: block; margin-top: 5px; color: #64748b; font-style: italic; font-size: 0.85em;">
-                            O layout se adaptará ao seu segmento
-                        </small>
                     </div>
 
                     <div class="form-group">

@@ -29,7 +29,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     
     <!-- Segments Config -->
-    <script src="/static/js/segments-config.js"></script>
+    <script src="/static/js/segments-config.js?v=6"></script>
 </head>
 <body>
     
@@ -148,12 +148,20 @@
                         <div class="form-group">
                             <label for="regSegmento">Segmento da Empresa</label>
                             <div class="input-group">
-                                <select id="regSegmento" required onchange="aplicarTemaSegmento(this.value)">
-                                    <option value="">Selecione o segmento</option>
+                                <select id="regSegmento" required class="form-select" style="padding-left: 2.75rem;" onchange="aplicarTemaSegmento(this.value)">
+                                    <option value="" disabled selected>Selecione o segmento</option>
+                                    <option value="construcao">Construção Civil</option>
+                                    <option value="varejo">Varejo</option>
+                                    <option value="servicos">Serviços</option>
+                                    <option value="industria">Indústria</option>
+                                    <option value="logistica">Logística</option>
+                                    <option value="outros">Outros</option>
                                 </select>
                                 <i class="fas fa-industry"></i>
                             </div>
-                            <small class="form-hint">O layout se adaptará ao seu segmento</small>
+                            <small style="display: block; margin-top: 5px; color: #64748b; font-style: italic; font-size: 0.85em;">
+                                O layout se adaptará ao seu segmento
+                            </small>
                         </div>
                     </div>
 
