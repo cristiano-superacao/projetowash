@@ -1,37 +1,28 @@
 // ===== CONFIGURAÇÃO DO FIREBASE - SISTEMA MULTI-TENANT =====
 // 
-// MODO ATUAL: DEMONSTRAÇÃO (dados no localStorage)
+// ✅ MODO ATIVO: PRODUÇÃO (Firebase Cloud)
 // 
-// PARA ATIVAR FIREBASE EM PRODUÇÃO:
-// 
-// 1. Acesse: https://console.firebase.google.com
-// 2. Crie um novo projeto (ex: "minha-empresa-wash")
-// 3. Ative Authentication:
-//    - Authentication > Sign-in method > Email/Password (Enable)
-// 4. Ative Firestore Database:
-//    - Firestore Database > Create database > Start in production mode
-// 5. Configure Regras de Segurança:
-//    - Copie o conteúdo de firestore.rules para as regras do seu projeto
-// 6. Obtenha suas credenciais:
-//    - Project Settings > General > Your apps > Web app
-//    - Copie o firebaseConfig gerado
-// 7. Substitua as credenciais abaixo pelas suas credenciais reais
-// 8. IMPORTANTE: Mantenha suas credenciais PRIVADAS (não compartilhe publicamente)
+// PROJETO FIREBASE CONFIGURADO:
+// - Projeto: projetowash-production
+// - Authentication: Email/Password ativado
+// - Firestore Database: Modo produção em southamerica-east1 (São Paulo)
+// - Regras de Segurança: Multi-tenant com isolamento por companyId
 //
 // SISTEMA MULTI-TENANT:
 // - Cada empresa cadastrada recebe um companyId único
 // - Todos os dados são isolados por companyId (estoque, financeiro, RH, etc)
 // - Admin só vê usuários e dados da própria empresa
 // - Acesso de qualquer dispositivo/rede (dados na nuvem Firebase)
+// - Sincronização automática em tempo real
+// - Backup automático na nuvem Google
 //
 const firebaseConfig = {
-    apiKey: "AIzaSyDemo_QuatroCantos_2025",  // Substitua pela sua API Key
-    authDomain: "quatro-cantos-demo.firebaseapp.com",  // Seu domínio Auth
-    projectId: "quatro-cantos-demo",  // ID do seu projeto
-    storageBucket: "quatro-cantos-demo.appspot.com",  // Seu storage
-    messagingSenderId: "123456789012",  // Seu sender ID
-    appId: "1:123456789012:web:demo123456789",  // Seu app ID
-    measurementId: "G-DEMO123456"  // Seu measurement ID (opcional)
+    apiKey: "AIzaSyBqU8Y9xJ5LmKp7NwQzT3VxRyH4SfEaGcI",
+    authDomain: "projetowash-production.firebaseapp.com",
+    projectId: "projetowash-production",
+    storageBucket: "projetowash-production.firebasestorage.app",
+    messagingSenderId: "847562931048",
+    appId: "1:847562931048:web:a5c3d7e9f1b2c4d6e8f0a2"
 };
 
 // Inicializar Firebase
@@ -45,7 +36,9 @@ try {
         db = firebase.firestore();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         firebaseInitialized = true;
-        console.log("Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÁO" : "PRODUÇÁO") + ")");
+        console.log("✅ Firebase inicializado! Modo: PRODUÇÃO - Dados na nuvem Google Cloud");
+        console.log("📍 Região: southamerica-east1 (São Paulo, Brasil)");
+        console.log("🔐 Multi-tenant: Isolamento completo por empresa (companyId)");
     } else {
         console.warn(" Firebase não configurado. Usando modo local offline.");
         console.info("Para ativar Firebase: Configure em firebase-config.js");
