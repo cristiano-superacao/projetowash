@@ -8,14 +8,14 @@ function loadOperacionalModule(container) {
             <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0;">
                 <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
                     <i class="fas fa-industry" style="font-size: 1.5rem;"></i>
-                    <span>Módulo Operacional - Capacidade de Producao</span>
+                    <span>Módulo Operacional - Capacidade de Produção</span>
                 </h3>
             </div>
             
             <div style="padding: 2rem;">
                 <h4 style="color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-calculator" style="color: #667eea;"></i>
-                    Cálculo de Capacidade de ProduÁ§Á£o
+                    Cálculo de Capacidade de Produção
                 </h4>
                 
                 <form id="formOperacional" onsubmit="calcularOperacional(event)">
@@ -28,9 +28,9 @@ function loadOperacionalModule(container) {
                             <i class="fas fa-clock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
                             <select id="turnos" name="turnos" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
                                 <option value="">Selecione...</option>
-                                <option value="1">1 Turno (ManhÁ£ ou Tarde ou Noite)</option>
-                                <option value="2">2 Turnos (ManhÁ£ + Tarde ou ManhÁ£ + Noite, etc)</option>
-                                <option value="3">3 Turnos (ManhÁ£ + Tarde + Noite - 24h)</option>
+                                <option value="1">1 Turno (Manhã ou Tarde ou Noite)</option>
+                                <option value="2">2 Turnos (Manhã + Tarde ou Manhã + Noite, etc)</option>
+                                <option value="3">3 Turnos (Manhã + Tarde + Noite - 24h)</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +48,7 @@ function loadOperacionalModule(container) {
     
     container.innerHTML = html;
     
-    // Adicionar evento de hover no botÁ£o
+    // Adicionar evento de hover no botão
     setTimeout(() => {
         const btn = document.querySelector('.btn-operacional-gradient');
         if (btn) {
@@ -88,7 +88,7 @@ async function calcularOperacional(event) {
     
     try {
         // Cálculo local de capacidade
-        const capacidade_por_turno = 1666; // unidades por turno (padrÁ£o da empresa)
+        const capacidade_por_turno = 1666; // unidades por turno (padrão da empresa)
         const dias_mes = 22; // dias úteis
         const horas_por_turno = 8;
         
@@ -192,7 +192,7 @@ function loadEstoqueEntradaModule(container) {
     // Carregar segmento da empresa
     const segmentoSalvo = localStorage.getItem('segmento_empresa') || '';
     const segmento = SEGMENTOS_EMPRESARIAIS[segmentoSalvo];
-    const titulo = segmento ? `Cadastrar ${segmento.nome === 'ConstruÁ§Á£o Civil' ? 'Material' : 'Produto'}` : 'Cadastrar Produto';
+    const titulo = segmento ? `Cadastrar ${segmento.nome === 'Construção Civil' ? 'Material' : 'Produto'}` : 'Cadastrar Produto';
     
     const html = `
         <div class="card">
@@ -225,7 +225,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="nome" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-tag" style="font-size: 0.9rem;"></i>
-                                Nome do ${segmento ? (segmento.nome === 'ConstruÁ§Á£o Civil' ? 'Material' : 'Produto') : 'Produto'}
+                                Nome do ${segmento ? (segmento.nome === 'Construção Civil' ? 'Material' : 'Produto') : 'Produto'}
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-tag" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -266,7 +266,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="lote" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-archive" style="font-size: 0.9rem;"></i>
-                                Lote de ProduÁ§Á£o
+                                Lote de Produção
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-archive" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -314,7 +314,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="data" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-calendar" style="font-size: 0.9rem;"></i>
-                                Data de FabricaÁ§Á£o
+                                Data de Fabricação
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-calendar" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -376,7 +376,7 @@ function loadEstoqueEntradaModule(container) {
     
     // Adicionar event listeners para interatividade
     setTimeout(() => {
-        // BotÁ£o submit
+        // Botão submit
         const btn = document.querySelector('.btn-estoque-gradient');
         if (btn) {
             btn.addEventListener('mouseenter', function() {
@@ -409,7 +409,7 @@ function loadEstoqueEntradaModule(container) {
 async function cadastrarProduto(event) {
     event.preventDefault();
     
-    // ValidaÁ§Á£o dos campos
+    // Validação dos campos
     const codigo = document.getElementById('codigo').value.trim();
     const nome = document.getElementById('nome').value.trim();
     const tipoMaterial = document.getElementById('tipoMaterial').value.trim();
@@ -519,7 +519,7 @@ async function venderProduto(event) {
         const produto = produtos.find(p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
         
         if (!produto) {
-            showToast(` Produto "${nomeProduto}" nÁ£o encontrado`, 'error');
+            showToast(` Produto "${nomeProduto}" não encontrado`, 'error');
             hideLoading();
             return;
         }
@@ -631,7 +631,7 @@ function loadFinanceiroModule(container) {
                     </div>
                     
                     <div class="form-group full-width">
-                        <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/MÁªs</label>
+                        <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/Mês</label>
                         <input type="number" id="totalPallets" name="totalPallets" required min="1" placeholder="Ex: 1000">
                     </div>
                 </div>
@@ -753,7 +753,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3"> PrecificaÁ§Á£o</h5>
+            <h5 class="mt-3"> Precificação</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -802,7 +802,7 @@ function exibirResultadoFinanceiro(data) {
                 <table>
                     <tr>
                         <td>Ponto de Equilíbrio:</td>
-                        <td>${formatNumber(data.indicadores.ponto_equilibrio)} pallets/mÁªs</td>
+                        <td>${formatNumber(data.indicadores.ponto_equilibrio)} pallets/mês</td>
                     </tr>
                     <tr>
                         <td>ROI (Retorno):</td>
@@ -822,13 +822,13 @@ function exibirResultadoFinanceiro(data) {
 // ============================================================================
 
 let funcionariosCache = []; // Cache local para pesquisa e cálculo
-let lastCalculatedFolha = null; // Cache para exportaÁ§Á£o PDF
+let lastCalculatedFolha = null; // Cache para exportação PDF
 
 function loadRHModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-users"></i> GestÁ£o de RH e Folha de Pagamento
+                <i class="fas fa-users"></i> Gestão de RH e Folha de Pagamento
             </div>
             
             <!-- Formulário de Cadastro -->
@@ -838,7 +838,7 @@ function loadRHModule(container) {
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nome Completo</label>
-                            <input type="text" id="novoNome" required placeholder="Ex: JoÁ£o da Silva">
+                            <input type="text" id="novoNome" required placeholder="Ex: João da Silva">
                         </div>
                         <div class="form-group">
                             <label>Cargo</label>
@@ -851,7 +851,7 @@ function loadRHModule(container) {
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>AdmissÁ£o</label>
+                            <label>Admissão</label>
                             <input type="date" id="novoAdmissao">
                         </div>
                     </div>
@@ -874,7 +874,7 @@ function loadRHModule(container) {
             
             <div class="button-group">
                 <button class="btn btn-primary" onclick="calcularFolhaPagamentoAPI()">
-                    <i class="fas fa-calculator"></i> Calcular Folha (MÁªs Atual)
+                    <i class="fas fa-calculator"></i> Calcular Folha (Mês Atual)
                 </button>
             </div>
             
@@ -894,7 +894,7 @@ async function cadastrarFuncionarioAPI(event) {
     const admissao = document.getElementById('novoAdmissao').value;
     
     if (!nome || !cargo) {
-        showToast('Nome e Cargo sÁ£o obrigatórios', 'warning');
+        showToast('Nome e Cargo são obrigatórios', 'warning');
         return;
     }
     
@@ -985,8 +985,8 @@ async function removerFuncionarioAPI(id) {
     
     try {
         // Headers personalizados precisam ser passados de forma específica
-        // Adicionamos X-User-Role: admin para permitir a exclusÁ£o no backend
-        // (Simulando elevaÁ§Á£o de privilégio via senha)
+        // Adicionamos X-User-Role: admin para permitir a exclusão no backend
+        // (Simulando elevação de privilégio via senha)
         
         const token = localStorage.getItem('api_key');
         const headers = {
@@ -1012,7 +1012,7 @@ async function removerFuncionarioAPI(id) {
         
     } catch (error) {
         console.error('Erro ao excluir:', error);
-        showToast('Erro de conexÁ£o ao excluir', 'error');
+        showToast('Erro de conexão ao excluir', 'error');
     } finally {
         hideLoading();
     }
@@ -1059,7 +1059,7 @@ async function calcularFolhaPagamentoAPI() {
 }
 
 function exibirResultadoRH(data) {
-    lastCalculatedFolha = data; // Salvar para exportaÁ§Á£o
+    lastCalculatedFolha = data; // Salvar para exportação
     const resultado = document.getElementById('resultadoRH');
     
     let tabelaHTML = '';
@@ -1167,7 +1167,7 @@ async function exportarFolhaPDF() {
     doc.setFontSize(14);
     doc.text('Relatório de Folha de Pagamento', 14, 32);
     doc.setFontSize(10);
-    doc.text(`Data de EmissÁ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
+    doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
     
     // Tabela de Funcionários
     const tableColumn = ["Nome", "Cargo", "Valor/h", "HE", "Bruto", "INSS", "IR", "Líquido"];
@@ -1335,7 +1335,7 @@ async function exportarEstoquePDF() {
         doc.setFontSize(12);
         doc.text('Inventário de Componentes e Produtos', 14, 40);
         doc.setFontSize(10);
-        doc.text(`Data de EmissÁ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 48);
+        doc.text(`Data de Emissão: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 48);
         
         // Tabela
         const tableColumn = ["Cód", "Produto", "Lote", "Serial", "Qtd", "Valor Unit.", "Total", "Local"];
@@ -1461,7 +1461,7 @@ async function loadHistoricoModule(container) {
                 <div class="card text-center">
                     <i class="fas fa-history" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
                     <h3>Sem Histórico</h3>
-                    <p>Nenhuma movimentaÁ§Á£o registrada ainda.</p>
+                    <p>Nenhuma movimentação registrada ainda.</p>
                 </div>
             `;
         }
