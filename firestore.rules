@@ -8,18 +8,23 @@ service cloud.firestore {
     function isAuthenticated() {
       return request.auth != null;
     }
+
+    // Helper para pegar o companyId do usuário logado
+    function getUserCompanyId() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.companyId;
+    }
     
     // Funcao para verificar se o companyId do documento pertence ao usuario
     // Implementa isolamento multi-tenant (cada empresa so acessa seus dados)
     function belongsToCompany() {
       return isAuthenticated() && 
-             resource.data.companyId == request.auth.uid;
+             resource.data.companyId == getUserCompanyId();
     }
     
     // Funcao para validar companyId na criacao de documentos
     function hasValidCompanyId() {
       return isAuthenticated() && 
-             request.resource.data.companyId == request.auth.uid;
+             request.resource.data.companyId == getUserCompanyId();
     }
     
     // ===== REGRAS DE ACESSO =====

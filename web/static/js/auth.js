@@ -543,16 +543,26 @@ async function handleAddUser(event) {
     showLoading('Cadastrando...');
     
     try {
-        // Usar credenciais do admin logado para autorizar
         const extraData = {
             cargo: cargo,
             role: 'user',
-            managerLogin: localCurrentUser.loginUsuario,
-            managerPass: localCurrentUser.senha,
             allowedModules: modules
         };
-        
-        await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+
+        // Verificar modo de operação (Firebase ou Local)
+        const isFirebaseActive = typeof firebaseInitialized !== 'undefined' && firebaseInitialized;
+
+        if (isFirebaseActive) {
+            // Modo Firebase: Usa a nova função que mantem o admin logado
+            await cadastrarFuncionario(nome, email, contato, loginUsuario, password, extraData);
+        } else {
+            // Modo Local
+            if (typeof localCurrentUser !== 'undefined') {
+                extraData.managerLogin = localCurrentUser.loginUsuario;
+                extraData.managerPass = localCurrentUser.senha;
+            }
+            await cadastrarUsuarioLocal(nome, email, contato, loginUsuario, password, extraData);
+        }
         
         showToast('Usuário cadastrado com sucesso!', 'success');
         listarUsuarios(); // Voltar para a lista

@@ -193,6 +193,72 @@ async function cadastrarUsuario(nome, email, contato, loginUsuario, senha, extra
     }
 }
 
+// Funcao para cadastrar funcionario (Admin logado cria outro usuario)
+async function cadastrarFuncionario(nome, email, contato, loginUsuario, senha, extraData = {}) {
+    if (!firebaseInitialized) {
+        throw new Error("Firebase não configurado. Use o modo local.");
+    }
+    
+    let secondaryApp = null;
+    
+    try {
+        showLoading('Cadastrando funcionário...');
+        
+        // Usar uma instancia secundaria para nao deslogar o admin atual
+        secondaryApp = firebase.initializeApp(firebaseConfig, "Secondary");
+        
+        // Criar usuario na instancia secundaria
+        const result = await secondaryApp.auth().createUserWithEmailAndPassword(email, senha);
+        const newUser = result.user;
+        
+        // Atualizar perfil
+        await newUser.updateProfile({
+            displayName: nome
+        });
+        
+        // O companyId DEVE ser o mesmo do admin logado
+        const companyId = currentUser.companyId;
+        
+        if (!companyId) {
+            throw new Error("Erro de consistência: Admin sem Company ID");
+        }
+        
+        // Salvar dados no Firestore (usando a instancia principal logada como admin)
+        await db.collection('usuarios').doc(newUser.uid).set({
+            nome: nome,
+            email: email,
+            contato: contato,
+            loginUsuario: loginUsuario,
+            role: 'user', // Funcionarios sao users
+            companyId: companyId, // VINCULO IMPORTANTE
+            cargo: extraData.cargo || 'Funcionário',
+            allowedModules: extraData.allowedModules || [],
+            managerLogin: currentUser.email, // Referencia de quem criou
+            dataCadastro: firebase.firestore.FieldValue.serverTimestamp(),
+            ativo: true
+        });
+        
+        // Logout da instancia secundaria e limpeza
+        await secondaryApp.auth().signOut();
+        await secondaryApp.delete();
+        
+        hideLoading();
+        return newUser;
+        
+    } catch (error) {
+        hideLoading();
+        // Limpar app secundario em caso de erro
+        if (secondaryApp) await secondaryApp.delete();
+        
+        let message = 'Erro ao cadastrar funcionário';
+        if (error.code === 'auth/email-already-in-use') {
+            message = 'Este email já está em uso por outro funcionário';
+        }
+        console.error("Erro no cadastro de funcionario:", error);
+        throw new Error(message);
+    }
+}
+
 // Funcao de logout
 async function logout() {
     if (!firebaseInitialized) return;
