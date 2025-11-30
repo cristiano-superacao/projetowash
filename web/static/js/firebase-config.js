@@ -1,15 +1,37 @@
-// ===== CONFIGURAÇÁO DO FIREBASE =====
-// IMPORTANTE: Estas são credenciais de DEMONSTRAÇÁO
-// Para usar em produção, crie seu projeto em: https://console.firebase.google.com
-// e substitua pelas suas credenciais reais
+// ===== CONFIGURAÇÃO DO FIREBASE - SISTEMA MULTI-TENANT =====
+// 
+// MODO ATUAL: DEMONSTRAÇÃO (dados no localStorage)
+// 
+// PARA ATIVAR FIREBASE EM PRODUÇÃO:
+// 
+// 1. Acesse: https://console.firebase.google.com
+// 2. Crie um novo projeto (ex: "minha-empresa-wash")
+// 3. Ative Authentication:
+//    - Authentication > Sign-in method > Email/Password (Enable)
+// 4. Ative Firestore Database:
+//    - Firestore Database > Create database > Start in production mode
+// 5. Configure Regras de Segurança:
+//    - Copie o conteúdo de firestore.rules para as regras do seu projeto
+// 6. Obtenha suas credenciais:
+//    - Project Settings > General > Your apps > Web app
+//    - Copie o firebaseConfig gerado
+// 7. Substitua as credenciais abaixo pelas suas credenciais reais
+// 8. IMPORTANTE: Mantenha suas credenciais PRIVADAS (não compartilhe publicamente)
+//
+// SISTEMA MULTI-TENANT:
+// - Cada empresa cadastrada recebe um companyId único
+// - Todos os dados são isolados por companyId (estoque, financeiro, RH, etc)
+// - Admin só vê usuários e dados da própria empresa
+// - Acesso de qualquer dispositivo/rede (dados na nuvem Firebase)
+//
 const firebaseConfig = {
-    apiKey: "AIzaSyDemo_QuatroCantos_2025",
-    authDomain: "quatro-cantos-demo.firebaseapp.com",
-    projectId: "quatro-cantos-demo",
-    storageBucket: "quatro-cantos-demo.appspot.com",
-    messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:demo123456789",
-    measurementId: "G-DEMO123456"
+    apiKey: "AIzaSyDemo_QuatroCantos_2025",  // Substitua pela sua API Key
+    authDomain: "quatro-cantos-demo.firebaseapp.com",  // Seu domínio Auth
+    projectId: "quatro-cantos-demo",  // ID do seu projeto
+    storageBucket: "quatro-cantos-demo.appspot.com",  // Seu storage
+    messagingSenderId: "123456789012",  // Seu sender ID
+    appId: "1:123456789012:web:demo123456789",  // Seu app ID
+    measurementId: "G-DEMO123456"  // Seu measurement ID (opcional)
 };
 
 // Inicializar Firebase

@@ -1,6 +1,35 @@
 // Servicos de dados do Firestore
+// Sistema Multi-Tenant: Todos os dados são isolados por companyId
 
-// ESTOQUE - CRUD Operations
+// ===== USUÁRIOS E GERENCIAMENTO DE EMPRESA =====
+
+// Listar usuários da empresa (apenas admin)
+async function listarUsuariosDaEmpresa() {
+    if (typeof db === 'undefined' || !db) return [];
+    try {
+        if (!currentUser || !currentUser.companyId) {
+            console.error('CompanyId não encontrado');
+            return [];
+        }
+        
+        // Buscar todos os usuários da mesma empresa
+        const snapshot = await db.collection('usuarios')
+            .where('companyId', '==', currentUser.companyId)
+            .get();
+        
+        const usuarios = [];
+        snapshot.forEach(doc => {
+            usuarios.push({ uid: doc.id, ...doc.data() });
+        });
+        
+        return usuarios;
+    } catch (error) {
+        console.error('Erro ao listar usuários:', error);
+        return [];
+    }
+}
+
+// ===== ESTOQUE - CRUD Operations =====
 
 // Listar todos os produtos
 async function listarProdutos() {

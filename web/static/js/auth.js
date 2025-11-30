@@ -347,17 +347,46 @@ function showConfig() {
 }
 
 // Listar usuarios (Admin)
-function listarUsuarios() {
+async function listarUsuarios() {
     // Verificar permissao
     const isAdminLocal = typeof verificarAdminLocal !== 'undefined' ? verificarAdminLocal() : verificarAdmin();
     if (!isAdminLocal) return;
 
     let users = [];
-    if (typeof localUsers !== 'undefined') {
-        users = localUsers;
-    } else {
-        // TODO: Implementar busca do Firebase
-        showToast('Funcionalidade disponível apenas no modo local por enquanto.', 'warning');
+    
+    try {
+        showLoading('Carregando usuários...');
+        
+        // Modo Firebase
+        if (typeof listarUsuariosDaEmpresa !== 'undefined' && typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
+            users = await listarUsuariosDaEmpresa();
+        }
+        // Modo Local
+        else if (typeof listarUsuariosDaEmpresaLocal !== 'undefined') {
+            users = listarUsuariosDaEmpresaLocal();
+        }
+        else if (typeof localUsers !== 'undefined') {
+            // Fallback: filtrar pelo companyId manualmente
+            const currentCompanyId = (typeof localCurrentUser !== 'undefined' && localCurrentUser) 
+                ? localCurrentUser.companyId 
+                : (currentUser ? currentUser.companyId : null);
+            
+            if (currentCompanyId) {
+                users = localUsers.filter(u => u.companyId === currentCompanyId);
+            } else {
+                users = localUsers;
+            }
+        }
+        
+        hideLoading();
+        
+        if (users.length === 0) {
+            showToast('Nenhum usuário encontrado para esta empresa.', 'info');
+        }
+    } catch (error) {
+        hideLoading();
+        console.error('Erro ao listar usuários:', error);
+        showToast('Erro ao carregar usuários', 'error');
         return;
     }
 

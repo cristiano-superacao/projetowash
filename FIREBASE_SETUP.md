@@ -1,433 +1,269 @@
-#  Guia de Configuração Firebase
+# Configuração Firebase - Sistema Multi-Tenant
 
-##  Índice
+## Visão Geral
 
-1. [Criar Projeto Firebase](#1-criar-projeto-firebase)
-2. [Ativar Firestore Database](#2-ativar-firestore-database)
-3. [Ativar Authentication](#3-ativar-authentication)
-4. [Obter Credenciais](#4-obter-credenciais)
-5. [Configurar no Projeto](#5-configurar-no-projeto)
-6. [Deploy das Regras](#6-deploy-das-regras)
-7. [Testar Integração](#7-testar-integração)
+Este sistema implementa **multi-tenancy completo**, onde:
+- ✅ Cada empresa tem seu próprio `companyId` único
+- ✅ Dados totalmente isolados entre empresas (estoque, financeiro, RH, usuários)
+- ✅ Admin só vê e gerencia usuários da própria empresa
+- ✅ Acesso de qualquer dispositivo/rede (dados na nuvem)
+- ✅ Layout responsivo mantido (mobile, tablet, desktop)
 
 ---
 
-## 1. Criar Projeto Firebase
+## 📋 Passo a Passo - Ativação do Firebase
+
+### 1. Criar Projeto Firebase
 
 1. Acesse: https://console.firebase.google.com
-2. Clique em **"Adicionar projeto"** ou **"Create a project"**
-3. **Nome do projeto:** Digite `quatro-cantos` (ou nome de sua preferência)
-4. **Google Analytics:** Desabilite (opcional para este projeto)
+2. Clique em **"Adicionar projeto"**
+3. Nome do projeto: `sua-empresa-wash` (ou nome desejado)
+4. Desabilite Google Analytics (opcional)
 5. Clique em **"Criar projeto"**
-6. Aguarde 30-60 segundos
-7. Clique em **"Continuar"** quando concluído
+6. Aguarde a criação (30-60 segundos)
 
----
+### 2. Ativar Authentication
 
-## 2. Ativar Firestore Database
-
-1. No painel lateral esquerdo, clique em **"Firestore Database"**
-2. Clique em **"Criar banco de dados"**
-3. **Modo de segurança:**
-   - Selecione **"Iniciar em modo de produção"**
-   - (As regras serão configuradas depois via arquivo)
-4. **Local do Firestore:**
-   - Escolha **"southamerica-east1 (São Paulo)"**
-   - Isso garante menor latência para Brasil
-5. Clique em **"Ativar"**
-6. Aguarde a criação do banco de dados
-
----
-
-## 3. Ativar Authentication
-
-1. No painel lateral, clique em **"Authentication"**
-2. Clique em **"Começar"** ou **"Get started"**
-3. Vá até a aba **"Sign-in method"**
+1. No menu lateral, clique em **"Authentication"**
+2. Clique em **"Começar"**
+3. Aba **"Sign-in method"**
 4. Clique em **"Email/Password"**
-5. **Ative a primeira opção:** "Email/Password" (toggle para ON)
-6. **Deixe desativado:** "Email link (passwordless sign-in)"
-7. Clique em **"Salvar"**
+5. **Habilite** a primeira opção
+6. Clique em **"Salvar"**
 
-### Criar Primeiro Usuário Admin (Opcional)
+### 3. Criar Firestore Database
 
-1. Vá para a aba **"Users"**
-2. Clique em **"Add user"**
-3. Preencha:
-   - **Email:** admin@quatrocantos.com
-   - **Senha:** Admin@2025
-4. Clique em **"Add user"**
+1. No menu lateral, clique em **"Firestore Database"**
+2. Clique em **"Criar banco de dados"**
+3. Localização: **`southamerica-east1`** (São Paulo)
+4. Modo: **"Produção"**
+5. Clique em **"Ativar"**
 
----
+### 4. Configurar Regras de Segurança
 
-## 4. Obter Credenciais
+1. No Firestore, clique na aba **"Regras"**
+2. **Apague** todo o conteúdo
+3. **Copie** o conteúdo de `firestore.rules`
+4. **Cole** no editor
+5. Clique em **"Publicar"**
 
-1. Clique no ícone de **engrenagem**  no canto superior esquerdo
-2. Selecione **"Configurações do projeto"** ou **"Project settings"**
-3. Role para baixo até **"Seus aplicativos"** ou **"Your apps"**
-4. Clique no ícone **"</>"** (Web)
-5. **Apelido do app:** Digite `quatro-cantos-web`
-6. **NÁO marque** "Configure Firebase Hosting"
-7. Clique em **"Registrar app"**
-8. **COPIE** todo o objeto `firebaseConfig`:
+### 5. Obter Credenciais
+
+1. Clique no ícone ⚙️ → **"Configurações do projeto"**
+2. Seção **"Seus aplicativos"**
+3. Clique em **</> Web**
+4. Nome: `Quatro Cantos Web`
+5. **Copie** o `firebaseConfig`
+
+### 6. Atualizar Código
+
+Abra `web/static/js/firebase-config.js` e substitua:
 
 ```javascript
 const firebaseConfig = {
-  apiKey: "AIzaSyAbc123...",
-  authDomain: "quatro-cantos.firebaseapp.com",
-  projectId: "quatro-cantos",
-  storageBucket: "quatro-cantos.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abc123def456"
-};
-```
-
-9. Clique em **"Continuar no console"**
-
----
-
-## 5. Configurar no Projeto
-
-### Passo 1: Editar firebase-config.js
-
-Abra o arquivo:
-```
-t:\Sistemas_Desenvolvimento\projetowash\web\static\js\firebase-config.js
-```
-
-Substitua as credenciais:
-
-```javascript
-// ===== CONFIGURAÇÁO DO FIREBASE =====
-// Obtenha suas credenciais em: https://console.firebase.google.com
-// Configurações do projeto > Aplicativo web
-
-const firebaseConfig = {
-    apiKey: "COLE_SUA_API_KEY_AQUI",
+    apiKey: "SUA_API_KEY_AQUI",
     authDomain: "seu-projeto.firebaseapp.com",
-    projectId: "seu-projeto-id",
+    projectId: "seu-projeto",
     storageBucket: "seu-projeto.appspot.com",
     messagingSenderId: "123456789012",
-    appId: "1:123456789012:web:abc123def456"
+    appId: "1:123456789012:web:abc123",
+    measurementId: "G-ABC123"
 };
-
-// Inicializa Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Exporta instâncias para uso nos módulos
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-console.log(" Firebase inicializado com sucesso!");
 ```
 
-### Passo 2: Salvar o arquivo
-
-Certifique-se de salvar após colar suas credenciais.
-
----
-
-## 6. Deploy das Regras
-
-### Instalar Firebase CLI (se não tiver)
+### 7. Deploy
 
 ```powershell
-npm install -g firebase-tools
-```
-
-### Login no Firebase
-
-```powershell
-firebase login
-```
-
-### Inicializar Projeto (apenas primeira vez)
-
-```powershell
-cd t:\Sistemas_Desenvolvimento\projetowash
-firebase init
-```
-
-Selecione:
-- [x] Firestore
-- Use existing project: `quatro-cantos`
-- Firestore Rules: `firestore.rules` (padrão)
-- Firestore Indexes: `firestore.indexes.json` (padrão)
-
-### Deploy das Regras
-
-```powershell
-firebase deploy --only firestore:rules
-```
-
-Aguarde a mensagem:
-```
- Deploy complete!
+git add .
+git commit -m "feat: Ativar Firebase produção"
+git push origin main
 ```
 
 ---
 
-## 7. Testar Integração
+## 🏢 Como Funciona o Multi-Tenant
 
-### Passo 1: Iniciar o Servidor
-
-```powershell
-python app.py
-```
-
-### Passo 2: Abrir no Navegador
-
-Acesse: http://localhost:5000
-
-### Passo 3: Verificar Console
-
-Abra o console do navegador (F12) e procure por:
-```
- Firebase inicializado com sucesso!
-```
-
-### Passo 4: Criar Conta
-
-1. Clique em **"Criar conta"**
-2. Preencha os dados
-3. Clique em **"Cadastrar Empresa"**
-
-Se tudo estiver correto, você verá:
-```
- Cadastro realizado com sucesso!
-```
-
-### Passo 5: Verificar no Firebase
-
-1. Volte ao Firebase Console
-2. Vá em **"Authentication"** > **"Users"**
-3. Seu usuário deve aparecer na lista
-
-4. Vá em **"Firestore Database"**
-5. Verifique se as coleções foram criadas:
-   - `usuarios`
-   - `produtos` (após cadastrar um produto)
-
----
-
-##  Regras de Segurança Configuradas (Multi-Tenancy)
-
-O arquivo `firestore.rules` já contém regras com **isolamento por empresa**:
+### Cada Empresa é Isolada
 
 ```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    
-    // Produtos - Isolamento por companyId
-    // Cada empresa só acessa seus próprios produtos
-    match /produtos/{produto} {
-      allow read: if request.auth != null && 
-                  resource.data.companyId == request.auth.uid;
-      allow create: if request.auth != null && 
-                    request.resource.data.companyId == request.auth.uid;
-      allow update, delete: if request.auth != null && 
-                            resource.data.companyId == request.auth.uid;
-    }
-    
-    // Movimentações - Isolamento por companyId
-    match /movimentacoes/{movimentacao} {
-      allow read, write: if request.auth != null && 
-                          resource.data.companyId == request.auth.uid;
-      allow create: if request.auth != null && 
-                    request.resource.data.companyId == request.auth.uid;
-    }
-    
-    // Funcionários - Isolamento por companyId
-    match /funcionarios/{funcionario} {
-      allow read, write: if request.auth != null && 
-                          resource.data.companyId == request.auth.uid;
-      allow create: if request.auth != null && 
-                    request.resource.data.companyId == request.auth.uid;
-    }
-    
-    // Usuários - Apenas o próprio usuário
-    match /usuarios/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}
-```
-
-### Significado das Regras:
-
-- ** Isolamento Total:** Cada empresa (companyId) só acessa seus próprios dados
-- ** Multi-Tenancy Seguro:** Empresas não veem dados de outras empresas
-- ** Acesso Multi-Computador:** Mesma conta acessa de qualquer lugar
-- ** Autenticação Obrigatória:** Apenas usuários logados podem acessar
-- ** Validação Automática:** Firebase valida companyId em toda operação
-
-### Como Funciona:
-
-1. **Usuário se cadastra** → Firebase cria `uid` único
-2. **companyId = uid** → Cada empresa tem ID exclusivo
-3. **Ao salvar dados** → `companyId` é incluído automaticamente
-4. **Ao ler dados** → Firebase filtra por `companyId` do usuário logado
-5. **Resultado:** Isolamento total entre empresas
-
----
-
-##  Troubleshooting
-
-### Erro: "Firebase não configurado. Usando modo local."
-
-**Solução:**
-1. Verifique se `firebase-config.js` tem suas credenciais
-2. Confirme se API Key está correta (sem espaços)
-3. Verifique se o arquivo está sendo carregado (F12 > Network)
-
-### Erro: "Permission denied"
-
-**Solução:**
-1. Execute: `firebase deploy --only firestore:rules`
-2. Aguarde 1-2 minutos para propagar
-##  Estrutura de Dados no Firestore (Multi-Tenancy)
-
-###  Campo Obrigatório: `companyId`
-
-**IMPORTANTE:** Todos os documentos devem incluir `companyId` para isolamento.
-
-### Coleção: `usuarios`
-
-```json
+// Documento no Firestore
 {
-  "uid": "abc123def456",
-  "companyId": "abc123def456",
-  "email": "usuario@exemplo.com",
-  "nomeEmpresa": "Quatro Cantos Materiais",
-  "cnpj": "12.345.678/0001-90",
-  "telefone": "(11) 98765-4321",
-  "criadoEm": "2025-11-28T10:30:00Z"
+  codigo: "P001",
+  nome: "Produto X",
+  quantidade: 100,
+  companyId: "abc123", // ← ISOLAMENTO
+  dataCriacao: "2025-11-30"
 }
 ```
 
-### Coleção: `produtos`
-
-```json
-{
-  "id": "prod001",
-  "companyId": "abc123def456",
-  "codigo": 1001,
-  "nome": "Cimento CP-II 50kg",
-  "quantidade": 500,
-  "unidade": "sc",
-  "dataFabricacao": "28/11/2025",
-  "fornecedor": "Fornecedor X",
-  "localizacao": "Galpão A - Prateleira 1",
-  "valorUnitario": 32.50,
-  "criadoPor": "abc123def456",
-  "criadoEm": "2025-11-28T11:00:00Z"
-}
-```
-
-### Coleção: `funcionarios`
-
-```json
-{
-  "id": "func001",
-  "companyId": "abc123def456",
-  "nome": "Maria Santos",
-  "cargo": "Gerente de Estoque",
-  "cpf": "123.456.789-00",
-  "telefone": "(11) 91234-5678",
-  "salario": 3500.00,
-  "dataAdmissao": "15/01/2025",
-  "criadoEm": "2025-11-28T09:00:00Z"
-}
-```
-
-### Coleção: `movimentacoes`
-
-```json
-{
-  "id": "mov001",
-  "companyId": "abc123def456",
-  "tipo": "saida",
-  "produtoNome": "Cimento CP-II 50kg",
-  "produtoCodigo": 1001,
-  "quantidade": 50,
-  "valorUnitario": 32.50,
-  "valorTotal": 1625.00,
-  "dataHora": "2025-11-28T14:30:00Z",
-  "usuarioId": "abc123def456",
-  "observacao": "Venda para Cliente Y - Nota Fiscal 12345"
-}
-```
-
-###  Validação de companyId
-
-O sistema **sempre** inclui `companyId` automaticamente:
+### Filtros Automáticos
 
 ```javascript
-// Exemplo: Cadastrando produto
-const produto = {
-  codigo: 1001,
-  nome: "Cimento",
-  quantidade: 500,
-  companyId: firebase.auth().currentUser.uid  // ← Automático
-};
-
-db.collection('produtos').add(produto);
-```
-
-###  Consultas com Filtro
-
-Todas as consultas filtram por `companyId`:
-
-```javascript
-// Listar produtos da empresa
-db.collection('produtos')
-  .where('companyId', '==', firebase.auth().currentUser.uid)
+// Buscar produtos - SEMPRE filtra
+db.collection('estoque')
+  .where('companyId', '==', currentUser.companyId)
   .get();
-```fornecedor": "Fornecedor X",
-  "local": "A1",
-  "valorUnitario": 50.00,
-  "criadoPor": "abc123def456",
-  "criadoEm": "2025-11-28T11:00:00Z"
-}
 ```
 
-### Coleção: `movimentacoes`
+### Admin vs Funcionário
 
-```json
-{
-  "tipo": "saida",
-  "produto": "Pallet Tipo A",
-  "quantidade": 50,
-  "valor": 2500.00,
-  "dataHora": "2025-11-28T14:30:00Z",
-  "usuario": "abc123def456",
-  "observacao": "Venda para Cliente Y"
-}
+**Admin:**
+- `companyId`: Próprio (gerado no cadastro)
+- `role`: `'admin'`
+- Cadastra funcionários
+- Vê todos os dados da empresa
+
+**Funcionário:**
+- `companyId`: **Mesmo do admin**
+- `role`: `'user'`
+- Acesso limitado por módulos
+- Vê apenas dados da própria empresa
+
+---
+
+## 👥 Gerenciar Usuários
+
+### Cadastrar Funcionário
+
+1. Login como Admin
+2. Menu → **"Configurações"**
+3. **"Gerenciar Usuários"**
+4. **"Novo Usuário"**
+5. Preencha dados e módulos permitidos
+6. **"Salvar"**
+
+### Listar Usuários
+
+Admin vê **apenas** usuários da própria empresa:
+
+```javascript
+// Automaticamente filtrado
+const usuarios = await db.collection('usuarios')
+    .where('companyId', '==', currentUser.companyId)
+    .get();
 ```
 
 ---
 
-##  Próximos Passos
+## 📱 Acesso Multi-Dispositivo
 
-Após configurar o Firebase:
+### ✅ Funciona Em
 
-1.  Teste todas as funcionalidades
-2.  Cadastre produtos de exemplo
-3.  Faça movimentações de teste
-4.  Verifique persistência dos dados
-5.  Teste em diferentes dispositivos
-6.  Configure backup automático (opcional)
+- Qualquer computador
+- Qualquer celular
+- Qualquer rede Wi-Fi
+- Dados móveis (4G/5G)
+- Diferentes cidades/países
+
+### ✅ Navegadores
+
+- Chrome (recomendado)
+- Edge
+- Firefox
+- Safari
+
+### ✅ Dispositivos
+
+- Desktop
+- Notebook
+- Tablet
+- Smartphone
+
+**Layout responsivo se adapta automaticamente!**
 
 ---
 
-##  Recursos Adicionais
+## 🔒 Segurança
 
-- **Documentação Firebase:** https://firebase.google.com/docs
-- **Firestore Guides:** https://firebase.google.com/docs/firestore
-- **Authentication Docs:** https://firebase.google.com/docs/auth
-- **Console Firebase:** https://console.firebase.google.com
+### 3 Camadas de Proteção
+
+1. **Firestore Rules:** Bloqueia no servidor
+2. **JavaScript:** Filtros automáticos
+3. **Authentication:** Email/senha
+
+### Impossível
+
+- ❌ Empresa A ver dados da Empresa B
+- ❌ Funcionário ver outras empresas
+- ❌ Criar dados sem `companyId`
+- ❌ Modificar `companyId` existente
 
 ---
 
-** Configuração completa! Seu sistema agora está 100% integrado à nuvem!**
+## 🧪 Testar Isolamento
+
+1. **Criar Empresa A:**
+   - Email: `empresaA@test.com`
+   - Adicionar 3 produtos
+
+2. **Logout**
+
+3. **Criar Empresa B:**
+   - Email: `empresaB@test.com`
+   - Adicionar 2 produtos
+
+4. **Login Empresa A:**
+   - Vê apenas 3 produtos
+   - Não vê admin da Empresa B
+
+5. **Login Empresa B:**
+   - Vê apenas 2 produtos
+   - Não vê admin da Empresa A
+
+✅ **Dados completamente isolados!**
+
+---
+
+## 📊 Monitoramento
+
+Acesse: https://console.firebase.google.com
+
+**Ver:**
+- Total de usuários
+- Operações no banco
+- Tentativas de acesso negadas
+
+**Plano Gratuito:**
+- 10.000 autenticações/mês
+- 50.000 leituras/dia
+- 20.000 gravações/dia
+- 1 GB armazenamento
+
+---
+
+## ❓ Problemas Comuns
+
+### "Firebase não configurado"
+
+**Solução:** Atualizar credenciais em `firebase-config.js`
+
+### "Missing permissions"
+
+**Solução:** Publicar `firestore.rules` no console
+
+### "Email already in use"
+
+**Solução:** Usar outro email ou deletar usuário no console
+
+---
+
+## ✅ Checklist
+
+- [ ] Projeto Firebase criado
+- [ ] Authentication habilitado
+- [ ] Firestore criado
+- [ ] Regras publicadas
+- [ ] Credenciais atualizadas
+- [ ] Deploy no Netlify
+- [ ] Empresa cadastrada
+- [ ] Testado em outro dispositivo
+
+**Sistema pronto para produção!** 🎉
+
+---
+
+## 📞 Documentação
+
+- Firebase: https://firebase.google.com/docs
+- Firestore Rules: https://firebase.google.com/docs/firestore/security
+- Authentication: https://firebase.google.com/docs/auth/web/start

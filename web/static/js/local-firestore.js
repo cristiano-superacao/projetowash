@@ -190,6 +190,17 @@ async function buscarHistoricoLocal() {
     return localMovimentacoes;
 }
 
+// Listar usuários da empresa (modo local)
+function listarUsuariosDaEmpresaLocal() {
+    if (!localCurrentUser || !localCurrentUser.companyId) {
+        console.error('CompanyId não encontrado');
+        return [];
+    }
+    
+    // Filtrar usuários pela mesma empresa
+    return localUsers.filter(user => user.companyId === localCurrentUser.companyId);
+}
+
 // Realizar backup
 async function realizarBackupLocal() {
     const backup = {
