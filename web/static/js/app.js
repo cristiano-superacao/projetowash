@@ -481,10 +481,11 @@ async function obterEstatisticas() {
  * @param {Object} produto - Dados do produto
  */
 async function salvarProdutoEstoque(produto) {
+    let result;
     if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof cadastrarProdutoFirestore !== 'undefined') {
-        return await cadastrarProdutoFirestore(produto);
+        result = await cadastrarProdutoFirestore(produto);
     } else if (typeof cadastrarProdutoFirestoreLocal !== 'undefined') {
-        return await cadastrarProdutoFirestoreLocal(
+        result = await cadastrarProdutoFirestoreLocal(
             produto.codigo,
             produto.nome,
             produto.quantidade,
@@ -494,11 +495,16 @@ async function salvarProdutoEstoque(produto) {
             produto.valor
         );
     } else {
-        return await apiRequest('/estoque/entrada', {
+        result = await apiRequest('/estoque/entrada', {
             method: 'POST',
             body: JSON.stringify(produto)
         });
     }
+    
+    // Atualizar dashboard se estiver ativo
+    atualizarDashboardSeAtivo();
+    
+    return result;
 }
 
 /**
@@ -509,18 +515,38 @@ async function salvarProdutoEstoque(produto) {
  * @param {number} valorVenda - Valor da venda (para modo local)
  */
 async function registrarSaidaEstoque(nomeProduto, quantidade, produtoId, valorVenda) {
+    let result;
     if (typeof firebaseInitialized !== 'undefined' && firebaseInitialized && typeof registrarSaidaProduto !== 'undefined') {
-        return await registrarSaidaProduto(nomeProduto, quantidade);
+        result = await registrarSaidaProduto(nomeProduto, quantidade);
     } else if (typeof registrarSaidaProdutoLocal !== 'undefined') {
-        return await registrarSaidaProdutoLocal(produtoId, quantidade, valorVenda);
+        result = await registrarSaidaProdutoLocal(produtoId, quantidade, valorVenda);
     } else {
-        return await apiRequest('/estoque/saida', {
+        result = await apiRequest('/estoque/saida', {
             method: 'POST',
             body: JSON.stringify({
                 nome: nomeProduto,
                 quantidade: quantidade
             })
         });
+    }
+    
+    // Atualizar dashboard se estiver ativo
+    atualizarDashboardSeAtivo();
+    
+    return result;
+}
+
+/**
+ * Atualiza o dashboard se estiver na view ativa
+ */
+function atualizarDashboardSeAtivo() {
+    // Verificar se o dashboard está visível
+    const dashboardContainer = document.getElementById('dashboardContainer');
+    if (dashboardContainer && !dashboardContainer.classList.contains('hidden') && typeof loadDashboard === 'function') {
+        console.log('Atualizando dashboard após movimentação...');
+        setTimeout(() => {
+            loadDashboard().catch(err => console.error('Erro ao atualizar dashboard:', err));
+        }, 500); // Delay para garantir que os dados foram salvos
     }
 }
 

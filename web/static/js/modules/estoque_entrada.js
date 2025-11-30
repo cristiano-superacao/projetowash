@@ -96,6 +96,11 @@ async function cadastrarProduto(event) {
         showToast('Produto cadastrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
         
+        // Atualizar visualização se estiver na tela de estoque
+        if (typeof loadVisualizarEstoqueModule === 'function') {
+            console.log('Estoque atualizado - Dashboard será recarregado automaticamente');
+        }
+        
     } catch (error) {
         console.error('Erro ao cadastrar:', error);
         showToast(error.message || 'Erro ao cadastrar produto', 'error');
