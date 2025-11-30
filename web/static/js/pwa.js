@@ -42,7 +42,7 @@ installButton.addEventListener('click', async () => {
     console.log(`PWA: Usuário ${outcome === 'accepted' ? 'aceitou' : 'recusou'} a instalação`);
     
     if (outcome === 'accepted') {
-        showToast('App instalado com sucesso! 🎉', 'success');
+        showToast('App instalado com sucesso! ', 'success');
     }
     
     // Limpa o prompt

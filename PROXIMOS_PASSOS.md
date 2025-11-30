@@ -1,36 +1,36 @@
-# 🚀 QUATRO CANTOS - Próximos Passos
+#  QUATRO CANTOS - Próximos Passos
 
-## ✅ O QUE JÁ ESTÁ PRONTO
+##  O QUE JÁ ESTÁ PRONTO
 
 ```
-✅ Sistema renomeado para "Quatro Cantos"
-✅ Cadastro simplificado (só empresa)
-✅ Banco de dados com company_id (multi-tenancy)
-✅ Frontend Firebase 100% funcional
-✅ Regras de segurança implementadas
-✅ Documentação completa
-✅ Commits Git criados para restauração
+ Sistema renomeado para "Quatro Cantos"
+ Cadastro simplificado (só empresa)
+ Banco de dados com company_id (multi-tenancy)
+ Frontend Firebase 100% funcional
+ Regras de segurança implementadas
+ Documentação completa
+ Commits Git criados para restauração
 ```
 
 ---
 
-## 🎯 PARA USAR MULTI-COMPUTADOR (3 PASSOS)
+##  PARA USAR MULTI-COMPUTADOR (3 PASSOS)
 
-### **1️⃣ Criar Projeto Firebase** (20 min)
+### **1⃣ Criar Projeto Firebase** (20 min)
 ```
-🌐 https://console.firebase.google.com
-   ├─ Criar projeto "quatro-cantos"
-   ├─ Ativar Authentication (Email/Password)
-   └─ Ativar Firestore (São Paulo)
-```
-
-### **2️⃣ Configurar Credenciais** (5 min)
-```
-📝 Editar: web/static/js/firebase-config.js
-   └─ Colar credenciais do Firebase Console
+ https://console.firebase.google.com
+    Criar projeto "quatro-cantos"
+    Ativar Authentication (Email/Password)
+    Ativar Firestore (São Paulo)
 ```
 
-### **3️⃣ Deploy Regras** (5 min)
+### **2⃣ Configurar Credenciais** (5 min)
+```
+ Editar: web/static/js/firebase-config.js
+    Colar credenciais do Firebase Console
+```
+
+### **3⃣ Deploy Regras** (5 min)
 ```powershell
 npm install -g firebase-tools
 firebase login
@@ -40,17 +40,17 @@ firebase deploy --only firestore:rules
 
 ---
 
-## 📚 DOCUMENTOS IMPORTANTES
+##  DOCUMENTOS IMPORTANTES
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `FIREBASE_SETUP.md` | 📖 Guia completo passo a passo |
-| `MULTI_TENANCY_STATUS.md` | 📊 Status e pendências |
-| `ALTERACOES_CONCLUIDAS.md` | ✅ O que foi feito hoje |
+| `FIREBASE_SETUP.md` |  Guia completo passo a passo |
+| `MULTI_TENANCY_STATUS.md` |  Status e pendências |
+| `ALTERACOES_CONCLUIDAS.md` |  O que foi feito hoje |
 
 ---
 
-## 🧪 TESTAR FUNCIONALIDADE
+##  TESTAR FUNCIONALIDADE
 
 ```powershell
 # 1. Iniciar servidor
@@ -62,12 +62,12 @@ http://localhost:5000
 # 3. Criar conta
 # 4. Cadastrar produtos
 # 5. Fazer login em outro computador
-# 6. Ver produtos sincronizados ✨
+# 6. Ver produtos sincronizados 
 ```
 
 ---
 
-## 🔄 RESTAURAR VERSÕES ANTIGAS
+##  RESTAURAR VERSÕES ANTIGAS
 
 ```powershell
 # Ver commits
@@ -82,10 +82,10 @@ git checkout main
 
 ---
 
-## 💡 DÚVIDAS?
+##  DÚVIDAS?
 
-Leia: `FIREBASE_SETUP.md` - Todas as respostas estão lá! 📖
+Leia: `FIREBASE_SETUP.md` - Todas as respostas estão lá! 
 
 ---
 
-**Sistema pronto para apresentação em sala de aula! 🎓**
+**Sistema pronto para apresentação em sala de aula! **

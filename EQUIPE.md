@@ -1,6 +1,6 @@
-# 👥 EQUIPE DE DESENVOLVIMENTO
+#  EQUIPE DE DESENVOLVIMENTO
 
-## 📚 Informações do Projeto
+##  Informações do Projeto
 
 | Informação | Detalhes |
 |------------|----------|
@@ -14,21 +14,21 @@
 
 ---
 
-## 🎓 Integrantes da Equipe
+##  Integrantes da Equipe
 
-### 1️⃣ Gabriela M. N. Silva
+### 1⃣ Gabriela M. N. Silva
 **Email:** gabriela.m.silva@ba.estudante.senai.br  
 **GitHub:** Proprietária do repositório  
 **Função:** Desenvolvedora Principal
 
 **Responsabilidades:**
-- 🎯 Líder técnica do projeto
-- 📦 Gestão do repositório GitHub
-- 🔗 Integração com repositório remoto
-- 🚀 Configuração e deploy no Netlify
-- 📚 Documentação principal do sistema
-- 🔄 Controle de versão (Git)
-- ✅ Revisão final de código
+-  Líder técnica do projeto
+-  Gestão do repositório GitHub
+-  Integração com repositório remoto
+-  Configuração e deploy no Netlify
+-  Documentação principal do sistema
+-  Controle de versão (Git)
+-  Revisão final de código
 
 **Contribuições Principais:**
 - Estruturação inicial do projeto
@@ -38,16 +38,16 @@
 
 ---
 
-### 2️⃣ Cristiano Silva Santos
+### 2⃣ Cristiano Silva Santos
 **Email:** Cristiano.s.santos@ba.estudante.senai.br  
 **Função:** Desenvolvedor Backend
 
 **Responsabilidades:**
-- 💻 Desenvolvimento de funcionalidades Python
-- 🧪 Testes de módulos backend
-- 📊 Implementação dos módulos Operacional e Financeiro
-- 🔧 Otimização de algoritmos
-- 📝 Comentários e documentação de código
+-  Desenvolvimento de funcionalidades Python
+-  Testes de módulos backend
+-  Implementação dos módulos Operacional e Financeiro
+-  Otimização de algoritmos
+-  Comentários e documentação de código
 
 **Contribuições Principais:**
 - Módulo de cálculos operacionais
@@ -57,16 +57,16 @@
 
 ---
 
-### 3️⃣ Joel Macena Costa
+### 3⃣ Joel Macena Costa
 **Email:** joel.c@ba.estudante.senai.br  
 **Função:** Desenvolvedor Frontend
 
 **Responsabilidades:**
-- 🎨 Desenvolvimento da interface web
-- 📱 Implementação PWA (Progressive Web App)
-- 🖼️ Design responsivo e mobile-first
-- ✨ Animações e efeitos visuais
-- 🌈 Estilização CSS avançada
+-  Desenvolvimento da interface web
+-  Implementação PWA (Progressive Web App)
+-  Design responsivo e mobile-first
+-  Animações e efeitos visuais
+-  Estilização CSS avançada
 
 **Contribuições Principais:**
 - Interface de autenticação
@@ -76,16 +76,16 @@
 
 ---
 
-### 4️⃣ Josilton José Almeida Santos
+### 4⃣ Josilton José Almeida Santos
 **Email:** josilton.santos@aluno.senai.br  
 **Função:** Desenvolvedor e Testador
 
 **Responsabilidades:**
-- 🔧 Desenvolvimento de módulos específicos
-- ✅ Testes de validação
-- 🐛 Identificação e correção de bugs
-- 📖 Revisão de código em pares
-- 🔍 Testes de integração
+-  Desenvolvimento de módulos específicos
+-  Testes de validação
+-  Identificação e correção de bugs
+-  Revisão de código em pares
+-  Testes de integração
 
 **Contribuições Principais:**
 - Módulos de RH e Estoque
@@ -95,30 +95,30 @@
 
 ---
 
-## 🤝 Contribuições Coletivas
+##  Contribuições Coletivas
 
 Todos os integrantes trabalharam colaborativamente em:
 
-### 💻 Implementação de Funcionalidades
+###  Implementação de Funcionalidades
 - Desenvolvimento dos 7 módulos principais
 - Integração frontend-backend
 - Sistema de autenticação local
 - CRUD completo de produtos
 
-### 🧪 Testes e Validação
+###  Testes e Validação
 - Testes unitários de funções
 - Validação de inputs do usuário
 - Testes de responsividade
 - Testes de compatibilidade entre navegadores
 
-### 📚 Documentação
+###  Documentação
 - README.md completo
 - DOCUMENTACAO_COMPLETA.md (1.500+ linhas)
 - FIREBASE_SETUP.md
 - Comentários inline no código
 - Guias passo a passo
 
-### 🔍 Revisão de Código
+###  Revisão de Código
 - Code review em pares
 - Padronização de código (PEP8 para Python)
 - Boas práticas de programação
@@ -126,7 +126,7 @@ Todos os integrantes trabalharam colaborativamente em:
 
 ---
 
-## 📊 Estatísticas do Projeto
+##  Estatísticas do Projeto
 
 ### Linhas de Código
 - **Python:** ~1.500 linhas
@@ -142,16 +142,16 @@ Todos os integrantes trabalharam colaborativamente em:
 - **Documentação:** 4 arquivos principais
 
 ### Funcionalidades Implementadas
-- ✅ 7 módulos funcionais completos
-- ✅ Sistema de autenticação
-- ✅ PWA instalável
-- ✅ API REST com 20+ endpoints
-- ✅ Layout 100% responsivo
-- ✅ Deploy automático
+-  7 módulos funcionais completos
+-  Sistema de autenticação
+-  PWA instalável
+-  API REST com 20+ endpoints
+-  Layout 100% responsivo
+-  Deploy automático
 
 ---
 
-## 🎯 Metodologia de Trabalho
+##  Metodologia de Trabalho
 
 ### Ferramentas Utilizadas
 - **Controle de Versão:** Git + GitHub
@@ -170,41 +170,41 @@ Todos os integrantes trabalharam colaborativamente em:
 6. **Documentação:** Atualização contínua
 
 ### Práticas Aplicadas
-- ✅ Git Flow simplificado
-- ✅ Commits semânticos com emojis
-- ✅ Code review obrigatório
-- ✅ Testes antes de merge
-- ✅ Documentação contínua
-- ✅ Deploy automático
+-  Git Flow simplificado
+-  Commits semânticos com emojis
+-  Code review obrigatório
+-  Testes antes de merge
+-  Documentação contínua
+-  Deploy automático
 
 ---
 
-## 🏆 Conquistas da Equipe
+##  Conquistas da Equipe
 
 ### Técnicas
-- ✅ Sistema completo e funcional
-- ✅ 100% responsivo
-- ✅ PWA instalável
-- ✅ Deploy automático configurado
-- ✅ Documentação profissional completa
-- ✅ Código limpo e comentado
+-  Sistema completo e funcional
+-  100% responsivo
+-  PWA instalável
+-  Deploy automático configurado
+-  Documentação profissional completa
+-  Código limpo e comentado
 
 ### Educacionais
-- ✅ Aplicação prática de Lógica de Programação
-- ✅ Trabalho em equipe remoto
-- ✅ Uso profissional de Git/GitHub
-- ✅ Deploy em produção real
-- ✅ Metodologias ágeis
+-  Aplicação prática de Lógica de Programação
+-  Trabalho em equipe remoto
+-  Uso profissional de Git/GitHub
+-  Deploy em produção real
+-  Metodologias ágeis
 
 ### Pessoais
-- ✅ Aprendizado colaborativo
-- ✅ Resolução de problemas em equipe
-- ✅ Comunicação técnica efetiva
-- ✅ Gestão de tempo e prazos
+-  Aprendizado colaborativo
+-  Resolução de problemas em equipe
+-  Comunicação técnica efetiva
+-  Gestão de tempo e prazos
 
 ---
 
-## 📞 Contatos
+##  Contatos
 
 ### Para Dúvidas Técnicas
 - **Gabriela M. N. Silva:** gabriela.m.silva@ba.estudante.senai.br
@@ -220,13 +220,13 @@ Todos os integrantes trabalharam colaborativamente em:
 
 ---
 
-## 📜 Licença
+##  Licença
 
 MIT License - Projeto educacional desenvolvido no SENAI.
 
 ---
 
-## 🙏 Agradecimentos
+##  Agradecimentos
 
 - **Professor Washington Luis Souza Anunciação** - Orientação e apoio durante todo o projeto
 - **SENAI** - Estrutura e recursos disponibilizados
@@ -235,9 +235,9 @@ MIT License - Projeto educacional desenvolvido no SENAI.
 
 ---
 
-**✨ Projeto desenvolvido com dedicação e trabalho em equipe!**
+** Projeto desenvolvido com dedicação e trabalho em equipe!**
 
-**📅 Data de Conclusão:** 28 de novembro de 2025  
-**👥 Equipe:** Gabriela, Cristiano, Joel e Josilton  
-**🎓 Instituição:** SENAI  
-**🏆 Status:** Projeto Concluído com Sucesso
+** Data de Conclusão:** 28 de novembro de 2025  
+** Equipe:** Gabriela, Cristiano, Joel e Josilton  
+** Instituição:** SENAI  
+** Status:** Projeto Concluído com Sucesso

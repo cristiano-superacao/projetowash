@@ -105,10 +105,12 @@ def require_api_key(f):
         # Obtém a API Key configurada no servidor (variável de ambiente)
         env_key = os.getenv('API_KEY')
 
-        # Se houver uma chave configurada no ambiente e ela não coincidir
-        # com a chave enviada, nega o acesso
-        if env_key and api_key != env_key:
-            return jsonify({'error': 'Acesso não autorizado'}), 401
+        # SEGURANÇA: API Key é OBRIGATÓRIA - não permite acesso sem autenticação
+        if not env_key:
+            return jsonify({'error': 'Servidor não configurado corretamente (API_KEY ausente)'}), 500
+        
+        if not api_key or api_key != env_key:
+            return jsonify({'error': 'Acesso não autorizado - API Key inválida ou ausente'}), 401
         
         # Se passou na validação, executa a função original
         return f(*args, **kwargs)

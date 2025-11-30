@@ -1,6 +1,6 @@
 // Modo Local/Demo - Autenticacao Simulada
 // Use este arquivo APENAS para testes locais sem Firebase
-console.log('🔄 local-auth.js v2.1 carregado');
+console.log(' local-auth.js v2.1 carregado');
 
 let localUsers = [];
 let localCurrentUser = null;
@@ -31,12 +31,12 @@ function loadLocalUsers() {
             // Super admin não existe, adicionar
             localUsers.unshift(defaultSuperAdmin); // Adiciona no início
             saveLocalUsers();
-            console.log('✅ Super admin criado:', defaultSuperAdmin.email);
+            console.log('Super admin criado:', defaultSuperAdmin.email);
         } else {
             // Super admin existe, garantir que está correto
             localUsers[superAdminIndex] = defaultSuperAdmin;
             saveLocalUsers();
-            console.log('✅ Super admin atualizado:', defaultSuperAdmin.email);
+            console.log('Super admin atualizado:', defaultSuperAdmin.email);
         }
         
         // Garantir que o admin padrao exista e tenha os campos novos
@@ -152,9 +152,9 @@ function saveLocalCurrentUser() {
 
 // Login local
 async function loginLocal(emailOrLogin, password) {
-    console.log('🔍 Tentando login:', emailOrLogin);
-    console.log('🔑 Senha informada:', password);
-    console.log('📋 Total de usuários:', localUsers.length);
+    console.log(' Tentando login:', emailOrLogin);
+    console.log(' Senha informada:', password);
+    console.log(' Total de usuários:', localUsers.length);
     
     // Debug: mostrar todos os usuários
     console.table(localUsers.map(u => ({
@@ -171,7 +171,7 @@ async function loginLocal(emailOrLogin, password) {
         const matchSenha = u.senha && u.senha.trim() === password.trim();
         
         if (matchEmail || matchLogin) {
-            console.log(`🔍 Usuário encontrado: ${u.email || u.loginUsuario}`);
+            console.log(` Usuário encontrado: ${u.email || u.loginUsuario}`);
             console.log(`  - Senha correta: ${matchSenha}`);
             console.log(`  - Senha esperada: "${u.senha}"`);
             console.log(`  - Senha recebida: "${password}"`);
@@ -181,17 +181,17 @@ async function loginLocal(emailOrLogin, password) {
     });
     
     if (!user) {
-        console.error('❌ Usuário não encontrado ou senha incorreta');
-        console.error('💡 Dica: Clique em "Resetar Usuários Demo" para recriar os usuários padrão');
+        console.error(' Usuário não encontrado ou senha incorreta');
+        console.error(' Dica: Clique em "Resetar Usuários Demo" para recriar os usuários padrão');
         throw new Error('Usuario ou senha incorretos');
     }
     
     if (!user.ativo) {
-        console.error('❌ Usuário inativo');
+        console.error(' Usuário inativo');
         throw new Error('Usuario inativo');
     }
     
-    console.log('✅ Login bem-sucedido!');
+    console.log('Login bem-sucedido!');
     console.log('  - Email:', user.email);
     console.log('  - Role:', user.role);
     console.log('  - Nome:', user.nome);
@@ -276,7 +276,7 @@ function verificarAdminLocal() {
 
 // Resetar localStorage (útil para debug)
 function resetLocalStorage() {
-    if (confirm('⚠️ Isso irá apagar todos os usuários e dados salvos. Deseja continuar?')) {
+    if (confirm(' Isso irá apagar todos os usuários e dados salvos. Deseja continuar?')) {
         // Limpar tudo
         localStorage.clear();
         
@@ -309,11 +309,11 @@ function resetLocalStorage() {
         ];
         
         saveLocalUsers();
-        console.log('🔄 localStorage limpo!');
-        console.log('✅ Usuários padrão recriados:');
+        console.log(' localStorage limpo!');
+        console.log('Usuários padrão recriados:');
         console.log('  - superadmin@quatrocantos.com / admin@2025');
         console.log('  - admin@local.com / admin123');
-        console.log('🔄 Recarregando página...');
+        console.log(' Recarregando página...');
         
         setTimeout(() => location.reload(), 500);
     }
@@ -327,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Modo Local/Demo ativado!');
     console.log('Usuario admin padrao: admin@local.com / admin123');
     console.log('Super Admin: superadmin@quatrocantos.com / admin@2025');
-    console.log('✅ Usuários carregados:', localUsers.length);
-    console.log('📋 Lista de usuários:');
+    console.log('Usuários carregados:', localUsers.length);
+    console.log(' Lista de usuários:');
     localUsers.forEach(u => {
         console.log(`  - ${u.email || u.loginUsuario} (${u.role}) - Senha: ${u.senha}`);
     });

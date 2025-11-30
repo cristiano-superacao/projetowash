@@ -52,13 +52,13 @@ async function venderProduto(event) {
         const produto = produtos.find(p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
         
         if (!produto) {
-            showToast(`❌ Produto "${nomeProduto}" não encontrado`, 'error');
+            showToast(` Produto "${nomeProduto}" não encontrado`, 'error');
             hideLoading();
             return;
         }
         
         if (produto.quantidade < quantidadeVenda) {
-            showToast(`❌ Estoque insuficiente. Disponível: ${produto.quantidade}`, 'warning');
+            showToast(` Estoque insuficiente. Disponível: ${produto.quantidade}`, 'warning');
             hideLoading();
             return;
         }
@@ -77,7 +77,7 @@ async function venderProduto(event) {
             estoqueAtual: produto.quantidade - quantidadeVenda
         });
         
-        showToast('✅ Venda registrada com sucesso!', 'success');
+        showToast('Venda registrada com sucesso!', 'success');
         document.getElementById('formEstoqueSaida').reset();
         
     } catch (error) {

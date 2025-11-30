@@ -1,4 +1,4 @@
-# Sistema Quatro Cantos 🏢
+# Sistema Quatro Cantos
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/projetowash/deploys)
 ![GitHub last commit](https://img.shields.io/github/last-commit/cristiano-superacao/projetowash)
@@ -6,19 +6,19 @@
 
 Bem-vindo ao repositório do **Quatro Cantos**, um sistema de gestão empresarial (ERP) moderno, versátil e com interface profissional responsiva.
 
-## 🌐 Deploy Automático
+## Deploy Automático
 
-🚀 **Deploy contínuo configurado!** Toda alteração na branch `main` é automaticamente publicada no Netlify.
+**Deploy contínuo configurado!** Toda alteração na branch `main` é automaticamente publicada no Netlify.
 
 - **URL Produção**: https://projetowash.netlify.app
 - **Painel Netlify**: https://app.netlify.com/sites/projetowash
 - **Configuração**: Veja [DEPLOY_GUIDE.md](./DEPLOY_GUIDE.md) para instruções detalhadas
 
-## 🚀 Visão Geral
+## Visão Geral
 
 O sistema foi projetado para ser flexível, funcionando tanto como uma aplicação completa com backend Python (Flask) quanto como uma aplicação web estática (PWA) que pode ser hospedada em serviços como Netlify ou Vercel.
 
-### ✨ Atualizações Recentes (Novembro 2025)
+### Atualizações Recentes (Novembro 2025)
 - **Interface de Autenticação Modernizada**: Formulário de cadastro redesenhado com ícones posicionados internamente à esquerda, esquema de cores profissional (azul #3b82f6 para labels, cinza claro #f9fafb para inputs) e botão com gradiente dinâmico (azul→vermelho→laranja)
 - **Refatoração Backend**: Lógica de negócio separada da interface CLI nos módulos `estoque_entrada.py` e `estoque_saida.py`
 - **Otimização CSS**: Eliminação de duplicatas, consolidação de estilos e melhor organização do código
@@ -32,7 +32,7 @@ O sistema foi projetado para ser flexível, funcionando tanto como uma aplicaç�
 - **Financeiro**: Gestão de custos, precificação e análise de ROI.
 - **RH**: Gestão de funcionários e folha de pagamento automatizada.
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 - **Frontend**: HTML5, CSS3 (Design Responsivo), JavaScript (ES6+).
 - **Backend (Opcional)**: Python 3.x, Flask, SQLAlchemy.
@@ -41,7 +41,7 @@ O sistema foi projetado para ser flexível, funcionando tanto como uma aplicaç�
   - **Modo Nuvem**: Firebase (Firestore/Auth) - Para produção distribuída.
   - **Modo Híbrido**: Banco de Dados SQL (PostgreSQL/SQLite) via Flask.
 
-## 📦 Instalação e Execução
+## Instalação e Execução
 
 ### Opção 1: Rodar Localmente (Python)
 Ideal para desenvolvimento e acesso a todas as funcionalidades de backend.
@@ -64,18 +64,18 @@ O projeto já está configurado para deploy automático.
 2. **Deploy**: Conecte este repositório ao Netlify. O sistema funcionará automaticamente em **Modo Local** (dados salvos no navegador do usuário).
 3. **Produção**: Para persistência em nuvem sem backend Python, configure as credenciais do Firebase em `web/static/js/firebase-config.js` e descomente as linhas correspondentes em `web/index.html`.
 
-## 🔐 Acesso (Modo Local)
+## Acesso (Modo Local)
 
 O sistema vem pré-configurado com um usuário administrador para testes locais:
 
 - **Email**: `admin@local.com`
 - **Senha**: `admin123`
 
-## 📱 PWA (Progressive Web App)
+## PWA (Progressive Web App)
 
 Este sistema é instalável! Em dispositivos móveis ou desktop (Chrome/Edge), procure pelo ícone de instalação na barra de endereços para adicionar o **Quatro Cantos** à sua tela inicial.
 
-## 🎨 Interface e Design
+## Interface e Design
 
 ### Formulário de Autenticação
 - **Ícones FontAwesome 6.4.0**: Posicionados à esquerda dentro dos campos (user, envelope, lock, briefcase)
@@ -103,7 +103,7 @@ web/
 │   └── service-worker.js   # PWA Service Worker (v7)
 ```
 
-## 🔧 Estrutura Backend
+## Estrutura Backend
 
 ### Módulos Python
 - **app.py**: Servidor Flask principal com rotas e inicialização do banco de dados
@@ -115,10 +115,10 @@ web/
 
 ### Refatoração Recente
 Os módulos de estoque foram refatorados para separar a lógica de negócio da interface CLI:
-- ✅ Funções puras que retornam dados estruturados
-- ✅ Independentes de `input()` e `print()`
-- ✅ Prontas para integração com APIs REST ou interfaces gráficas
-- ✅ Tratamento robusto de erros com dicionários de status
+- Funções puras que retornam dados estruturados
+- Independentes de `input()` e `print()`
+- Prontas para integração com APIs REST ou interfaces gráficas
+- Tratamento robusto de erros com dicionários de status
 
 ---
 © 2025 Quatro Cantos. Todos os direitos reservados.

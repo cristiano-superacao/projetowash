@@ -629,6 +629,7 @@ p { margin-bottom: var(--spacing-md); }
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
+        -webkit-backdrop-filter: blur(2px);
         backdrop-filter: blur(2px);
     }
 
@@ -1430,6 +1431,7 @@ table tbody tr:hover {
 .auth-banner {
     flex: 1;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
@@ -1655,9 +1657,9 @@ table tbody tr:hover {
     color: #111827;
     cursor: pointer;
     font-family: inherit;
-    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
     background-position: right 0.75rem center;
     background-repeat: no-repeat;
@@ -1853,6 +1855,7 @@ table tbody tr:hover {
     
     .auth-card {
         background: rgba(255, 255, 255, 0.95);
+        -webkit-backdrop-filter: blur(10px);
         backdrop-filter: blur(10px);
         padding: 2.5rem;
         border-radius: var(--radius-xl);
@@ -2555,6 +2558,7 @@ table tbody tr:hover {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
 }
 
@@ -2605,6 +2609,8 @@ table tbody tr:hover {
 
 select.form-control,
 select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
     appearance: none;
     background-image: url('data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2712%27 height=%278%27 viewBox=%270 0 12 8%27%3E%3Cpath fill=%27%23475569%27 d=%27M6 8L0 0h12z%27/%3E%3C/svg%3E');
     background-repeat: no-repeat;
@@ -2690,6 +2696,178 @@ select {
     color: #cbd5e1;
 }
 
+/* ============================================================================
+   CLASSES PARA SUBSTITUIR ESTILOS INLINE
+   ============================================================================ */
+
+/* Botões de login rápido */
+.btn-login-superadmin {
+    flex: 1;
+    padding: 10px;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login-superadmin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.btn-login-admin {
+    flex: 1;
+    padding: 10px;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-login-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.login-buttons-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Botão reset localStorage */
+.btn-reset-storage {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.btn-reset-storage:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+/* Select de segmento com padding para ícone */
+.select-with-icon {
+    padding-left: 2.75rem !important;
+}
+
+/* Texto informativo do segmento */
+.segmento-info-text {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-style: italic;
+    font-size: 0.85em;
+}
+
+/* Subtítulo do sistema */
+.system-subtitle {
+    margin-top: 0;
+    font-size: 0.9em;
+    opacity: 0.8;
+}
+
+/* Container de busca global */
+.global-search-container {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 2rem;
+}
+
+.global-search-input-group {
+    margin-bottom: 0;
+}
+
+.global-search-input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    padding-left: 2.5rem;
+}
+
+.global-search-input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.global-search-icon {
+    color: rgba(255,255,255,0.6);
+}
+
+/* Botão de notificações com badge */
+.btn-notifications {
+    background: transparent;
+    border: none;
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background: var(--danger-color);
+    border-radius: 50%;
+}
+
+/* Espaçamento do dashboard */
+.dashboard-spacing {
+    margin-top: 2rem;
+}
+
+/* Rodapé da sidebar */
+.sidebar-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 2rem;
+}
+
+.sidebar-status-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--success-color);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    background: var(--success-color);
+    border-radius: 50%;
+    display: block;
+}
+
+/* Botão admin na sidebar */
+.btn-admin-module {
+    background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+    border: 2px solid rgba(139, 92, 246, 0.3);
+}
+
+.btn-admin-module:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+/* Main content sem padding */
+.main-content-no-padding {
+    padding: 0;
+}
 
 
 .segment-help {

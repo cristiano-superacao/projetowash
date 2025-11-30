@@ -111,7 +111,7 @@ async function calcularFinanceiro(event) {
         };
         
         exibirResultadoFinanceiro(data);
-        showToast('✅ Cálculo realizado com sucesso!', 'success');
+        showToast('Cálculo realizado com sucesso!', 'success');
         
     } catch (error) {
         console.error('Erro ao calcular:', error);
@@ -128,7 +128,7 @@ function exibirResultadoFinanceiro(data) {
         <div class="card">
             <h4><i class="fas fa-chart-pie"></i> Relatório Financeiro</h4>
             
-            <h5 class="mt-3">💰 Custos Mensais</h5>
+            <h5 class="mt-3"> Custos Mensais</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -154,7 +154,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3">💵 Precificação</h5>
+            <h5 class="mt-3"> Precificação</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -176,7 +176,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3">📊 Projeções</h5>
+            <h5 class="mt-3"> Projeções</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -198,7 +198,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3">📈 Indicadores</h5>
+            <h5 class="mt-3"> Indicadores</h5>
             <div class="table-container">
                 <table>
                     <tr>

@@ -1,6 +1,6 @@
-# 🛡️ Guia do Super Administrador
+#  Guia do Super Administrador
 
-## 🔑 Credenciais de Acesso
+##  Credenciais de Acesso
 
 ### Super Admin
 - **Email:** `superadmin@quatrocantos.com`
@@ -14,7 +14,7 @@
 
 ---
 
-## 🚀 Como Acessar o Painel de Administração
+##  Como Acessar o Painel de Administração
 
 1. **Acesse o sistema:**
    - Local: `http://localhost:5000`
@@ -26,52 +26,52 @@
 
 ---
 
-## 📊 Funcionalidades do Painel Admin
+##  Funcionalidades do Painel Admin
 
-### 1️⃣ Dashboard de Estatísticas
+### 1⃣ Dashboard de Estatísticas
 - **Total de Empresas:** Quantidade total de empresas cadastradas
 - **Empresas Ativas:** Empresas com status ativo
 - **Segmento Mais Popular:** Setor com mais empresas
 - **Cadastros Hoje:** Novos registros do dia
 
-### 2️⃣ Gestão de Empresas
+### 2⃣ Gestão de Empresas
 - **Visualizar:** Lista completa de todas as empresas
 - **Buscar:** Pesquisa por nome ou email
 - **Filtrar:** Por segmento de negócio
 - **Detalhes:** Ver informações completas da empresa
 - **Ativar/Desativar:** Controlar acesso das empresas
 
-### 3️⃣ Exportação de Dados
+### 3⃣ Exportação de Dados
 - **Exportar CSV:** Download de todas as empresas em formato CSV
 - **Dados incluídos:** Nome, email, segmento, status, data de cadastro
 
 ---
 
-## 🎨 Segmentos Disponíveis
+##  Segmentos Disponíveis
 
 O sistema suporta 10 segmentos diferentes:
 
 | Segmento | Cor | Descrição |
 |----------|-----|-----------|
-| 🏗️ Construção | Verde | Construtoras e obras |
-| 🏥 Saúde | Azul claro | Clínicas e hospitais |
-| 🍽️ Alimentação | Laranja | Restaurantes e delivery |
-| 🛒 Varejo | Rosa | Lojas e comércio |
-| 🚗 Automotivo | Roxo | Oficinas e autopeças |
-| 🎓 Educação | Azul escuro | Escolas e cursos |
-| 🏭 Indústria | Cinza | Fábricas e produção |
-| 🚚 Logística | Amarelo | Transportes e entregas |
-| 💻 Tecnologia | Verde limão | TI e software |
-| 💼 Serviços | Marrom | Consultoria e outros |
+|  Construção | Verde | Construtoras e obras |
+|  Saúde | Azul claro | Clínicas e hospitais |
+|  Alimentação | Laranja | Restaurantes e delivery |
+|  Varejo | Rosa | Lojas e comércio |
+|  Automotivo | Roxo | Oficinas e autopeças |
+|  Educação | Azul escuro | Escolas e cursos |
+|  Indústria | Cinza | Fábricas e produção |
+|  Logística | Amarelo | Transportes e entregas |
+|  Tecnologia | Verde limão | TI e software |
+|  Serviços | Marrom | Consultoria e outros |
 
 ---
 
-## 🔧 Troubleshooting
+##  Troubleshooting
 
-### ❌ "Usuário ou senha incorretos"
+###  "Usuário ou senha incorretos"
 
 **Solução 1: Resetar Usuários Demo**
-1. Na tela de login, clique em "🔄 Resetar Usuários Demo"
+1. Na tela de login, clique em " Resetar Usuários Demo"
 2. Confirme a operação
 3. A página será recarregada com usuários padrão restaurados
 
@@ -88,7 +88,7 @@ localStorage.clear();
 location.reload();
 ```
 
-### 🔍 Verificar Usuários Carregados
+###  Verificar Usuários Carregados
 
 Abra o Console do navegador (F12) e digite:
 ```javascript
@@ -99,7 +99,7 @@ JSON.parse(localStorage.getItem('localUsers')).forEach(u => {
 
 ---
 
-## 📱 Responsividade
+##  Responsividade
 
 O painel de administração é totalmente responsivo:
 
@@ -109,30 +109,30 @@ O painel de administração é totalmente responsivo:
 
 ---
 
-## 🔒 Segurança
+##  Segurança
 
 ### Níveis de Acesso
 
 1. **Super Admin (`superadmin`)**
-   - ✅ Acesso ao painel de administração
-   - ✅ Visualizar todas as empresas
-   - ✅ Ativar/desativar empresas
-   - ✅ Exportar dados
-   - ✅ Acesso a todos os módulos
+   -  Acesso ao painel de administração
+   -  Visualizar todas as empresas
+   -  Ativar/desativar empresas
+   -  Exportar dados
+   -  Acesso a todos os módulos
 
 2. **Admin (`admin`)**
-   - ✅ Acesso aos módulos da própria empresa
-   - ✅ Gerenciar estoque próprio
-   - ✅ Visualizar relatórios próprios
-   - ❌ Sem acesso ao painel de administração
+   -  Acesso aos módulos da própria empresa
+   -  Gerenciar estoque próprio
+   -  Visualizar relatórios próprios
+   -  Sem acesso ao painel de administração
 
 3. **Usuário (`user`)**
-   - ✅ Acesso limitado aos módulos permitidos
-   - ❌ Sem funções administrativas
+   -  Acesso limitado aos módulos permitidos
+   -  Sem funções administrativas
 
 ---
 
-## 🎯 Boas Práticas
+##  Boas Práticas
 
 1. **Não compartilhe as credenciais do Super Admin**
 2. **Faça backups regulares** usando o botão "Exportar CSV"
@@ -142,7 +142,7 @@ O painel de administração é totalmente responsivo:
 
 ---
 
-## 📞 Suporte
+##  Suporte
 
 Em caso de dúvidas ou problemas:
 1. Verifique o Console do navegador (F12)
@@ -151,19 +151,19 @@ Em caso de dúvidas ou problemas:
 
 ---
 
-## 🔄 Atualizações
+##  Atualizações
 
 **Versão:** 2.0.0  
 **Data:** 29/11/2025  
 **Última Modificação:** Sistema de Super Admin implementado
 
 ### Novidades v2.0:
-- ✨ Painel de Super Administrador
-- 📊 Dashboard de estatísticas
-- 🔍 Busca e filtros avançados
-- 📥 Exportação de dados CSV
-- 🎨 Layout responsivo profissional
-- 🛡️ Sistema de roles (superadmin, admin, user)
+-  Painel de Super Administrador
+-  Dashboard de estatísticas
+-  Busca e filtros avançados
+-  Exportação de dados CSV
+-  Layout responsivo profissional
+-  Sistema de roles (superadmin, admin, user)
 
 ---
 

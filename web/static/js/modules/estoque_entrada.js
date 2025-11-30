@@ -93,7 +93,7 @@ async function cadastrarProduto(event) {
         
         await salvarProdutoEstoque(formData);
         
-        showToast('✅ Produto cadastrado com sucesso!', 'success');
+        showToast('Produto cadastrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
         
     } catch (error) {

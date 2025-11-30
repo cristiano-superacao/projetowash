@@ -1,39 +1,39 @@
-# 🎨 Implementação do Layout Híbrido - Quatro Cantos
+#  Implementação do Layout Híbrido - Quatro Cantos
 
-## ✅ Status: CONCLUÍDO
+##  Status: CONCLUÍDO
 
 Data: 2025
 Sistema: Quatro Cantos - Sistema de Gestão Empresarial
 
 ---
 
-## 📋 Resumo Executivo
+##  Resumo Executivo
 
 Sistema agora possui **layout híbrido** que se adapta automaticamente ao segmento de negócio da empresa cadastrada. Cada segmento tem:
-- 🎨 **Cor personalizada** (tema dinâmico)
-- 📦 **Categorias específicas** da indústria
-- 📏 **Unidades de medida** relevantes
-- 🏷️ **Classificação de materiais** (10 tipos)
+-  **Cor personalizada** (tema dinâmico)
+-  **Categorias específicas** da indústria
+-  **Unidades de medida** relevantes
+-  **Classificação de materiais** (10 tipos)
 
 ---
 
-## 🎯 Funcionalidades Implementadas
+##  Funcionalidades Implementadas
 
 ### 1. **Sistema de Segmentos Empresariais**
 10 segmentos de negócio disponíveis:
 
 | Segmento | Cor | Ícone | Categorias |
 |----------|-----|-------|------------|
-| 🏗️ Construção Civil | Laranja (#d97706) | fa-building | 11 categorias |
-| 🚗 Automotivo | Vermelho (#dc2626) | fa-car | 10 categorias |
-| ⚙️ Industrial | Verde Escuro (#059669) | fa-industry | 10 categorias |
-| 🍎 Alimentício | Verde (#16a34a) | fa-apple-alt | 10 categorias |
-| 💊 Farmacêutico | Azul (#2563eb) | fa-pills | 10 categorias |
-| ⚡ Eletroeletrônico | Roxo (#7c3aed) | fa-bolt | 10 categorias |
-| 👕 Têxtil | Rosa (#ec4899) | fa-tshirt | 10 categorias |
-| 🌾 Agrícola | Verde Lima (#65a30d) | fa-tractor | 10 categorias |
-| 🧪 Químico | Ciano (#0891b2) | fa-flask | 10 categorias |
-| ✏️ Papelaria | Âmbar (#f59e0b) | fa-pen | 10 categorias |
+|  Construção Civil | Laranja (#d97706) | fa-building | 11 categorias |
+|  Automotivo | Vermelho (#dc2626) | fa-car | 10 categorias |
+|  Industrial | Verde Escuro (#059669) | fa-industry | 10 categorias |
+|  Alimentício | Verde (#16a34a) | fa-apple-alt | 10 categorias |
+|  Farmacêutico | Azul (#2563eb) | fa-pills | 10 categorias |
+|  Eletroeletrônico | Roxo (#7c3aed) | fa-bolt | 10 categorias |
+|  Têxtil | Rosa (#ec4899) | fa-tshirt | 10 categorias |
+|  Agrícola | Verde Lima (#65a30d) | fa-tractor | 10 categorias |
+|  Químico | Ciano (#0891b2) | fa-flask | 10 categorias |
+|  Papelaria | Âmbar (#f59e0b) | fa-pen | 10 categorias |
 
 ### 2. **Classificação de Materiais**
 10 tipos de materiais para classificação:
@@ -62,9 +62,9 @@ Sistema agora possui **layout híbrido** que se adapta automaticamente ao segmen
 
 ---
 
-## 📂 Arquivos Criados/Modificados
+##  Arquivos Criados/Modificados
 
-### ✨ Novos Arquivos
+###  Novos Arquivos
 
 1. **`web/static/js/segments-config.js`** (300+ linhas)
    - Configuração completa dos 10 segmentos
@@ -78,7 +78,7 @@ Sistema agora possui **layout híbrido** que se adapta automaticamente ao segmen
    - Indicadores de categoria
    - Temas dinâmicos com CSS variables
 
-### 🔧 Arquivos Modificados
+###  Arquivos Modificados
 
 3. **`src/database.py`** (Linhas 107-138)
    ```python
@@ -110,9 +110,9 @@ Sistema agora possui **layout híbrido** que se adapta automaticamente ao segmen
 
 ---
 
-## 🔄 Fluxo de Funcionamento
+##  Fluxo de Funcionamento
 
-### 1️⃣ **Cadastro da Empresa**
+### 1⃣ **Cadastro da Empresa**
 ```
 Usuário preenche formulário
     ↓
@@ -125,7 +125,7 @@ Sistema salva segmento no localStorage
 Firebase armazena segmento no documento do usuário
 ```
 
-### 2️⃣ **Cadastro de Material/Produto**
+### 2⃣ **Cadastro de Material/Produto**
 ```
 Usuário acessa "Estoque Entrada"
     ↓
@@ -142,7 +142,7 @@ Usuário preenche 12 campos incluindo tipo e categoria
 Sistema valida e salva produto completo
 ```
 
-### 3️⃣ **Aplicação do Tema**
+### 3⃣ **Aplicação do Tema**
 ```javascript
 // Ao selecionar segmento:
 aplicarTemaSegmento('construcao');
@@ -156,9 +156,9 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 🎨 Exemplos de Categorias por Segmento
+##  Exemplos de Categorias por Segmento
 
-### 🏗️ Construção Civil
+###  Construção Civil
 - Cimentos e Argamassas
 - Tijolos e Blocos
 - Areia e Pedra
@@ -171,7 +171,7 @@ localStorage.setItem('tema_cor', '#d97706');
 - Acabamentos
 - Ferramentas
 
-### 🚗 Automotivo
+###  Automotivo
 - Peças de Motor
 - Sistema de Suspensão
 - Sistema de Freios
@@ -183,7 +183,7 @@ localStorage.setItem('tema_cor', '#d97706');
 - Acessórios Externos
 - Fluidos e Lubrificantes
 
-### 💊 Farmacêutico
+###  Farmacêutico
 - Medicamentos de Prescrição
 - Medicamentos OTC
 - Vitaminas e Suplementos
@@ -197,7 +197,7 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 🧪 Como Testar
+##  Como Testar
 
 ### Teste 1: Seleção de Segmento
 1. Abra http://localhost:5000
@@ -226,7 +226,7 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 📊 Estatísticas da Implementação
+##  Estatísticas da Implementação
 
 - **10** segmentos empresariais
 - **100+** categorias específicas
@@ -239,23 +239,23 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 🎯 Próximos Passos
+##  Próximos Passos
 
-### 🔥 Configuração Firebase (Produção)
+###  Configuração Firebase (Produção)
 1. Acesse https://console.firebase.google.com
 2. Crie projeto "quatro-cantos"
 3. Copie credenciais reais
 4. Substitua em `firebase-config.js` (linhas 5-11)
 5. Deploy das regras: `firestore.rules`
 
-### 🧪 Testes Recomendados
-- ✅ Cadastrar empresas de todos os 10 segmentos
-- ✅ Verificar mudança de cores em cada segmento
-- ✅ Testar cadastro de produtos com todos os tipos
-- ✅ Verificar persistência do tema após refresh
-- ✅ Testar responsividade em mobile
+###  Testes Recomendados
+-  Cadastrar empresas de todos os 10 segmentos
+-  Verificar mudança de cores em cada segmento
+-  Testar cadastro de produtos com todos os tipos
+-  Verificar persistência do tema após refresh
+-  Testar responsividade em mobile
 
-### 🚀 Melhorias Futuras (Opcional)
+###  Melhorias Futuras (Opcional)
 - [ ] Dashboard com gráficos por categoria
 - [ ] Filtros avançados por tipo de material
 - [ ] Relatórios segmentados por categoria
@@ -264,7 +264,7 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 📝 Notas Técnicas
+##  Notas Técnicas
 
 ### Persistência de Dados
 ```javascript
@@ -301,27 +301,27 @@ localStorage.setItem('tema_cor', '#d97706');
 
 ---
 
-## 🎓 Uso Educacional
+##  Uso Educacional
 
 Este código foi desenvolvido para fins educacionais e inclui:
-- ✅ Comentários explicativos em português
-- ✅ Documentação inline detalhada
-- ✅ Exemplos práticos de uso
-- ✅ Estrutura modular e organizada
-- ✅ Padrões de código profissionais
+-  Comentários explicativos em português
+-  Documentação inline detalhada
+-  Exemplos práticos de uso
+-  Estrutura modular e organizada
+-  Padrões de código profissionais
 
 ---
 
-## ✨ Conclusão
+##  Conclusão
 
 O sistema Quatro Cantos agora possui um **layout híbrido profissional** que se adapta automaticamente ao segmento de negócio da empresa. Cada empresa tem uma experiência personalizada com:
 
-- 🎨 Cores exclusivas do seu segmento
-- 📦 Categorias relevantes para seu negócio
-- 📏 Unidades de medida apropriadas
-- 🏷️ Classificação completa de materiais
+-  Cores exclusivas do seu segmento
+-  Categorias relevantes para seu negócio
+-  Unidades de medida apropriadas
+-  Classificação completa de materiais
 
-**Sistema pronto para uso e teste!** 🚀
+**Sistema pronto para uso e teste!** 
 
 Execute: `python app.py` e acesse http://localhost:5000
 

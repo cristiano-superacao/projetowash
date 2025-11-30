@@ -23,13 +23,13 @@ try {
         db = firebase.firestore();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         firebaseInitialized = true;
-        console.log("✅ Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÃO" : "PRODUÇÃO") + ")");
+        console.log("Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÃO" : "PRODUÇÃO") + ")");
     } else {
-        console.warn("⚠️ Firebase não configurado. Usando modo local offline.");
+        console.warn(" Firebase não configurado. Usando modo local offline.");
         console.info("Para ativar Firebase: Configure em firebase-config.js");
     }
 } catch (e) {
-    console.error("❌ Erro ao inicializar Firebase:", e);
+    console.error(" Erro ao inicializar Firebase:", e);
     console.warn("Usando modo local como fallback");
 }
 

@@ -1,6 +1,6 @@
-# 📚 DOCUMENTAÇÃO COMPLETA - QUATRO CANTOS
+#  DOCUMENTAÇÃO COMPLETA - QUATRO CANTOS
 
-## 📋 Índice
+##  Índice
 
 1. [Visão Geral](#visão-geral)
 2. [Arquitetura do Sistema](#arquitetura)
@@ -13,87 +13,87 @@
 
 ---
 
-## 🎯 VISÃO GERAL
+##  VISÃO GERAL
 
 Sistema completo de gestão empresarial com:
-- ✅ Interface web responsiva
-- ✅ PWA instalável
-- ✅ Modo Local/Demo funcional
-- ✅ Integração Firebase (cloud)
-- ✅ Deploy automático Netlify
-- ✅ Layout profissional
+-  Interface web responsiva
+-  PWA instalável
+-  Modo Local/Demo funcional
+-  Integração Firebase (cloud)
+-  Deploy automático Netlify
+-  Layout profissional
 
 ---
 
-## 🏗️ ARQUITETURA DO SISTEMA
+##  ARQUITETURA DO SISTEMA
 
 ### Estrutura de Arquivos Necessários
 
 ```
 projetowash/
-├── app.py                    # ⚙️ Servidor Flask (backend)
-├── requirements.txt          # 📦 Dependências Python
-├── runtime.txt              # 🐍 Versão do Python
-├── Procfile                 # 🚀 Config Heroku/Render
-├── netlify.toml             # 🌐 Config Netlify
-├── package.json             # 📦 Scripts NPM
-│
-├── firebase.json            # 🔥 Config Firebase
-├── firestore.rules          # 🔒 Regras Firestore
-├── firestore.indexes.json   # 📊 Índices Firestore
-├── .firebaserc              # 🔥 Projeto Firebase
-│
-├── .gitignore              # 🚫 Arquivos ignorados
-├── .env.example            # 🔐 Template variáveis
-│
-├── src/                    # 🐍 Módulos Python
-│   ├── main.py            # Console principal
-│   ├── database.py        # Banco de dados local
-│   ├── operacional.py     # Cálculos operacionais
-│   ├── financeiro.py      # Cálculos financeiros
-│   ├── rh.py              # Folha de pagamento
-│   ├── estoque_entrada.py # Entrada produtos
-│   └── estoque_saida.py   # Saída produtos
-│
-└── web/                    # 🌐 Aplicação Web
-    ├── index.html         # Página principal
-    │
-    └── static/
-        ├── manifest.json     # PWA manifest
-        ├── service-worker.js # Service worker
-        │
-        ├── css/
-        │   ├── style.css        # Estilos principais
-        │   └── dashboard.css    # Estilos dashboard
-        │
-        ├── js/
-        │   ├── app.js               # Core da aplicação
-        │   ├── auth.js              # Autenticação UI
-        │   ├── dashboard.js         # Dashboard
-        │   ├── pwa.js               # PWA features
-        │   │
-        │   ├── firebase-config.js   # Config Firebase
-        │   ├── firestore-service.js # Serviços Firestore
-        │   ├── local-auth.js        # Auth local
-        │   ├── local-firestore.js   # DB local
-        │   │
-        │   └── modules/
-        │       ├── operacional.js
-        │       ├── financeiro.js
-        │       ├── rh.js
-        │       ├── estoque_entrada.js
-        │       ├── estoque_saida.js
-        │       ├── visualizar_estoque.js
-        │       └── historico.js
-        │
-        └── icons/
-            ├── icon.svg    # Ícone SVG
-            └── README.md   # Guia ícones
+ app.py                    #  Servidor Flask (backend)
+ requirements.txt          #  Dependências Python
+ runtime.txt              #  Versão do Python
+ Procfile                 #  Config Heroku/Render
+ netlify.toml             #  Config Netlify
+ package.json             #  Scripts NPM
+
+ firebase.json            #  Config Firebase
+ firestore.rules          #  Regras Firestore
+ firestore.indexes.json   #  Índices Firestore
+ .firebaserc              #  Projeto Firebase
+
+ .gitignore              #  Arquivos ignorados
+ .env.example            #  Template variáveis
+
+ src/                    #  Módulos Python
+    main.py            # Console principal
+    database.py        # Banco de dados local
+    operacional.py     # Cálculos operacionais
+    financeiro.py      # Cálculos financeiros
+    rh.py              # Folha de pagamento
+    estoque_entrada.py # Entrada produtos
+    estoque_saida.py   # Saída produtos
+
+ web/                    #  Aplicação Web
+     index.html         # Página principal
+    
+     static/
+         manifest.json     # PWA manifest
+         service-worker.js # Service worker
+        
+         css/
+            style.css        # Estilos principais
+            dashboard.css    # Estilos dashboard
+        
+         js/
+            app.js               # Core da aplicação
+            auth.js              # Autenticação UI
+            dashboard.js         # Dashboard
+            pwa.js               # PWA features
+           
+            firebase-config.js   # Config Firebase
+            firestore-service.js # Serviços Firestore
+            local-auth.js        # Auth local
+            local-firestore.js   # DB local
+           
+            modules/
+                operacional.js
+                financeiro.js
+                rh.js
+                estoque_entrada.js
+                estoque_saida.js
+                visualizar_estoque.js
+                historico.js
+        
+         icons/
+             icon.svg    # Ícone SVG
+             README.md   # Guia ícones
 ```
 
 ---
 
-## 🚀 GUIA DE INSTALAÇÃO
+##  GUIA DE INSTALAÇÃO
 
 ### Pré-requisitos
 
@@ -149,9 +149,9 @@ Acesse: **http://localhost:5000**
 
 ---
 
-## ⚙️ FUNCIONALIDADES DETALHADAS
+##  FUNCIONALIDADES DETALHADAS
 
-### 1️⃣ MÓDULO OPERACIONAL
+### 1⃣ MÓDULO OPERACIONAL
 
 **Objetivo:** Calcular capacidade de produção da fábrica
 
@@ -183,7 +183,7 @@ Saída:
 
 ---
 
-### 2️⃣ MÓDULO ESTOQUE - ENTRADA
+### 2⃣ MÓDULO ESTOQUE - ENTRADA
 
 **Objetivo:** Cadastrar novos produtos no estoque
 
@@ -201,10 +201,10 @@ Saída:
 4. Continue adicionando ou finalize com "Salvar Estoque"
 
 **Validações:**
-- ✅ Código único (não permite duplicados)
-- ✅ Quantidade > 0
-- ✅ Data válida
-- ✅ Valor unitário > 0
+-  Código único (não permite duplicados)
+-  Quantidade > 0
+-  Data válida
+-  Valor unitário > 0
 
 **Comportamento Especial:**
 - Se o código já existe, **atualiza a quantidade**
@@ -221,12 +221,12 @@ Fornecedor: Fornecedor X
 Local: A1
 Valor: R$ 50,00
 
-Resultado: ✅ Produto cadastrado com sucesso!
+Resultado:  Produto cadastrado com sucesso!
 ```
 
 ---
 
-### 3️⃣ MÓDULO ESTOQUE - SAÍDA
+### 3⃣ MÓDULO ESTOQUE - SAÍDA
 
 **Objetivo:** Registrar vendas e movimentações
 
@@ -239,37 +239,37 @@ Resultado: ✅ Produto cadastrado com sucesso!
 
 **Tipos de Resultado:**
 
-**✅ Pedido Completo** (estoque suficiente)
+** Pedido Completo** (estoque suficiente)
 ```
 Produto: Pallet Tipo A
 Solicitado: 50
 Disponível: 100
-Resultado: ✅ Venda completa!
+Resultado:  Venda completa!
 Valor: R$ 2.500,00
 Estoque restante: 50
 ```
 
-**⚠️ Pedido Parcial** (estoque insuficiente)
+** Pedido Parcial** (estoque insuficiente)
 ```
 Produto: Pallet Tipo A
 Solicitado: 120
 Disponível: 100
-Resultado: ⚠️ Venda parcial!
+Resultado:  Venda parcial!
 Fornecido: 100 (máximo disponível)
 Valor: R$ 5.000,00
 Estoque restante: 0
 ```
 
-**❌ Produto Esgotado**
+** Produto Esgotado**
 ```
 Produto: Pallet Tipo A
 Disponível: 0
-Resultado: ❌ Produto esgotado!
+Resultado:  Produto esgotado!
 ```
 
 ---
 
-### 4️⃣ MÓDULO FINANCEIRO
+### 4⃣ MÓDULO FINANCEIRO
 
 **Objetivo:** Calcular custos operacionais e precificação
 
@@ -345,7 +345,7 @@ RESULTADO:
 
 ---
 
-### 5️⃣ MÓDULO RH (RECURSOS HUMANOS)
+### 5⃣ MÓDULO RH (RECURSOS HUMANOS)
 
 **Objetivo:** Calcular folha de pagamento completa
 
@@ -363,10 +363,10 @@ RESULTADO:
 
 | Cargo       | Valor/Hora | Horas/Mês | Recebe HE? |
 |-------------|------------|-----------|------------|
-| Operário    | R$ 15,00   | 220       | ✅ Sim     |
-| Supervisor  | R$ 40,00   | 220       | ✅ Sim     |
-| Gerente     | R$ 60,00   | 220       | ❌ Não     |
-| Diretor     | R$ 80,00   | 220       | ❌ Não     |
+| Operário    | R$ 15,00   | 220       |  Sim     |
+| Supervisor  | R$ 40,00   | 220       |  Sim     |
+| Gerente     | R$ 60,00   | 220       |  Não     |
+| Diretor     | R$ 80,00   | 220       |  Não     |
 
 **Cálculos por Funcionário:**
 
@@ -447,7 +447,7 @@ CÁLCULOS:
 
 ---
 
-## 🔥 INTEGRAÇÃO FIREBASE (CLOUD)
+##  INTEGRAÇÃO FIREBASE (CLOUD)
 
 ### Configuração do Firebase
 
@@ -527,24 +527,24 @@ firebase deploy --only firestore:rules
 
 ### Funcionalidades Cloud
 
-✅ **Autenticação Real**
+ **Autenticação Real**
 - Login/Cadastro com email e senha
 - Recuperação de senha
 - Controle de sessão
 
-✅ **Banco de Dados Real-Time**
+ **Banco de Dados Real-Time**
 - Sincronização automática
 - Dados persistem na nuvem
 - Acesso de qualquer dispositivo
 
-✅ **Multi-usuário**
+ **Multi-usuário**
 - Cada usuário vê seus dados
 - Compartilhamento configurável
 - Controle de permissões
 
 ---
 
-## 🚀 DEPLOY AUTOMÁTICO
+##  DEPLOY AUTOMÁTICO
 
 ### Deploy no Netlify
 
@@ -579,7 +579,7 @@ As configurações já estão no `netlify.toml`:
 
 **Passo 4: Deploy Automático**
 
-✅ Toda vez que você fizer `git push`:
+ Toda vez que você fizer `git push`:
 1. GitHub recebe o código
 2. Netlify detecta a mudança
 3. Inicia build automaticamente
@@ -606,12 +606,12 @@ Build automático
    ↓
 Deploy em produção
    ↓
-✅ Site atualizado!
+ Site atualizado!
 ```
 
 ---
 
-## 📖 MANUAL DO USUÁRIO
+##  MANUAL DO USUÁRIO
 
 ### Primeiro Acesso
 
@@ -669,14 +669,14 @@ Após login, você verá:
 - Menu do usuário (email, sair)
 
 **Lateral Esquerda (Sidebar):**
-- 🏠 Dashboard (início)
-- 📊 Operacional
-- 📥 Entrada Estoque
-- 📤 Saída Estoque
-- 👁️ Visualizar Estoque
-- 💰 Financeiro
-- 👥 RH
-- 📜 Histórico
+-  Dashboard (início)
+-  Operacional
+-  Entrada Estoque
+-  Saída Estoque
+-  Visualizar Estoque
+-  Financeiro
+-  RH
+-  Histórico
 
 **Centro (Conteúdo):**
 - Cards de estatísticas
@@ -752,7 +752,7 @@ Após login, você verá:
 
 ---
 
-## 🐛 TROUBLESHOOTING
+##  TROUBLESHOOTING
 
 ### Servidor não inicia
 
@@ -845,7 +845,7 @@ python app.py --port 8000
 
 ---
 
-## 📞 SUPORTE E CONTATO
+##  SUPORTE E CONTATO
 
 ### Documentação Adicional
 
@@ -869,7 +869,7 @@ python app.py --port 8000
 
 ---
 
-## ✅ CHECKLIST DE PRODUÇÃO
+##  CHECKLIST DE PRODUÇÃO
 
 Antes de colocar em produção:
 
@@ -888,7 +888,7 @@ Antes de colocar em produção:
 
 ---
 
-## 🎯 PRÓXIMOS PASSOS
+##  PRÓXIMOS PASSOS
 
 ### Melhorias Futuras
 
@@ -919,13 +919,13 @@ Antes de colocar em produção:
 
 ---
 
-## 📄 LICENÇA
+##  LICENÇA
 
 MIT License - Livre para uso, modificação e distribuição
 
 ---
 
-## 👨‍💻 CRÉDITOS
+## ‍ CRÉDITOS
 
 **Desenvolvido por:** Quatro Cantos  
 **Versão:** 2.0  
@@ -934,9 +934,9 @@ MIT License - Livre para uso, modificação e distribuição
 
 ---
 
-## 👥 EQUIPE DE DESENVOLVIMENTO
+##  EQUIPE DE DESENVOLVIMENTO
 
-### 📚 Informações Acadêmicas
+###  Informações Acadêmicas
 
 **Instituição:** SENAI - Serviço Nacional de Aprendizagem Industrial  
 **Disciplina:** Lógica de Programação  
@@ -944,7 +944,7 @@ MIT License - Livre para uso, modificação e distribuição
 **Data de Início:** 22 de novembro de 2025  
 **Data de Conclusão:** 28 de novembro de 2025
 
-### 🎓 Integrantes da Equipe
+###  Integrantes da Equipe
 
 | # | Nome Completo | Email | Função |
 |---|---------------|-------|--------|
@@ -953,56 +953,56 @@ MIT License - Livre para uso, modificação e distribuição
 | 3 | **Joel Macena Costa** | joel.c@ba.estudante.senai.br | Desenvolvedor / Contribuidor |
 | 4 | **Josilton José Almeida Santos** | josilton.santos@aluno.senai.br | Desenvolvedor / Contribuidor |
 
-### 📋 Responsabilidades Detalhadas
+###  Responsabilidades Detalhadas
 
 #### Gabriela M. N. Silva
-- 🎯 **Desenvolvedora Principal**
-- 📦 **Gestora do Repositório GitHub**
-- 🔗 **Integração com Repositório Remoto**
-- 🚀 **Deploy e Configuração Netlify**
-- 📚 **Documentação Principal**
+-  **Desenvolvedora Principal**
+-  **Gestora do Repositório GitHub**
+-  **Integração com Repositório Remoto**
+-  **Deploy e Configuração Netlify**
+-  **Documentação Principal**
 
 #### Cristiano Silva Santos
-- 💻 **Desenvolvimento de Funcionalidades**
-- 🧪 **Testes de Backend (Python/Flask)**
-- 📊 **Módulos Operacional e Financeiro**
+-  **Desenvolvimento de Funcionalidades**
+-  **Testes de Backend (Python/Flask)**
+-  **Módulos Operacional e Financeiro**
 
 #### Joel Macena Costa
-- 🎨 **Desenvolvimento Frontend**
-- 📱 **Implementação PWA**
-- 🖼️ **Design Responsivo**
+-  **Desenvolvimento Frontend**
+-  **Implementação PWA**
+-  **Design Responsivo**
 
 #### Josilton José Almeida Santos
-- 🔧 **Desenvolvimento de Módulos**
-- ✅ **Validação e Testes**
-- 📖 **Revisão de Código**
+-  **Desenvolvimento de Módulos**
+-  **Validação e Testes**
+-  **Revisão de Código**
 
-### 🤝 Contribuições da Equipe
+###  Contribuições da Equipe
 
 Todos os integrantes contribuem colaborativamente para:
 
-✅ **Implementação de Funcionalidades**
+ **Implementação de Funcionalidades**
 - Desenvolvimento dos módulos principais
 - Integração entre frontend e backend
 - Criação de componentes reutilizáveis
 
-✅ **Testes e Validação**
+ **Testes e Validação**
 - Testes unitários e de integração
 - Validação de inputs e outputs
 - Testes de responsividade mobile
 
-✅ **Documentação**
+ **Documentação**
 - Comentários no código
 - Documentação técnica
 - Guias de usuário
 
-✅ **Revisão de Código**
+ **Revisão de Código**
 - Code review em pares
 - Padronização de código
 - Boas práticas de programação
 
 ---
 
-**✨ Sistema desenvolvido com ❤️ pela equipe SENAI para facilitar a gestão empresarial!**
+** Sistema desenvolvido com  pela equipe SENAI para facilitar a gestão empresarial!**
 
 **Versão da Documentação:** 1.1 - 28/11/2025

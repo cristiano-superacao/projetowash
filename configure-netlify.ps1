@@ -27,8 +27,9 @@ if (-not $ghInstalled) {
     Write-Host "===================================" -ForegroundColor Cyan
     Write-Host ""
     
-    Write-Host "1. Acesse: https://app.netlify.com/sites/projetowash/settings/general" -ForegroundColor White
+    Write-Host "1. Acesse: https://app.netlify.com/sites/[SEU-SITE]/settings/general" -ForegroundColor White
     Write-Host "2. Role ate 'Site information'" -ForegroundColor White
+    Write-Host "   IMPORTANTE: Substitua [SEU-SITE] pelo nome do seu site no Netlify" -ForegroundColor Yellow
     Write-Host "3. Copie o 'Site ID'" -ForegroundColor White
     Write-Host ""
     

@@ -1,6 +1,6 @@
-# 🔥 Guia de Configuração Firebase
+#  Guia de Configuração Firebase
 
-## 📋 Índice
+##  Índice
 
 1. [Criar Projeto Firebase](#1-criar-projeto-firebase)
 2. [Ativar Firestore Database](#2-ativar-firestore-database)
@@ -62,7 +62,7 @@
 
 ## 4. Obter Credenciais
 
-1. Clique no ícone de **engrenagem** ⚙️ no canto superior esquerdo
+1. Clique no ícone de **engrenagem**  no canto superior esquerdo
 2. Selecione **"Configurações do projeto"** ou **"Project settings"**
 3. Role para baixo até **"Seus aplicativos"** ou **"Your apps"**
 4. Clique no ícone **"</>"** (Web)
@@ -118,7 +118,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-console.log("✅ Firebase inicializado com sucesso!");
+console.log(" Firebase inicializado com sucesso!");
 ```
 
 ### Passo 2: Salvar o arquivo
@@ -162,7 +162,7 @@ firebase deploy --only firestore:rules
 
 Aguarde a mensagem:
 ```
-✔ Deploy complete!
+ Deploy complete!
 ```
 
 ---
@@ -183,7 +183,7 @@ Acesse: http://localhost:5000
 
 Abra o console do navegador (F12) e procure por:
 ```
-✅ Firebase inicializado com sucesso!
+ Firebase inicializado com sucesso!
 ```
 
 ### Passo 4: Criar Conta
@@ -194,7 +194,7 @@ Abra o console do navegador (F12) e procure por:
 
 Se tudo estiver correto, você verá:
 ```
-✅ Cadastro realizado com sucesso!
+ Cadastro realizado com sucesso!
 ```
 
 ### Passo 5: Verificar no Firebase
@@ -210,7 +210,7 @@ Se tudo estiver correto, você verá:
 
 ---
 
-## 🔒 Regras de Segurança Configuradas (Multi-Tenancy)
+##  Regras de Segurança Configuradas (Multi-Tenancy)
 
 O arquivo `firestore.rules` já contém regras com **isolamento por empresa**:
 
@@ -256,11 +256,11 @@ service cloud.firestore {
 
 ### Significado das Regras:
 
-- **✅ Isolamento Total:** Cada empresa (companyId) só acessa seus próprios dados
-- **✅ Multi-Tenancy Seguro:** Empresas não veem dados de outras empresas
-- **✅ Acesso Multi-Computador:** Mesma conta acessa de qualquer lugar
-- **✅ Autenticação Obrigatória:** Apenas usuários logados podem acessar
-- **✅ Validação Automática:** Firebase valida companyId em toda operação
+- ** Isolamento Total:** Cada empresa (companyId) só acessa seus próprios dados
+- ** Multi-Tenancy Seguro:** Empresas não veem dados de outras empresas
+- ** Acesso Multi-Computador:** Mesma conta acessa de qualquer lugar
+- ** Autenticação Obrigatória:** Apenas usuários logados podem acessar
+- ** Validação Automática:** Firebase valida companyId em toda operação
 
 ### Como Funciona:
 
@@ -272,7 +272,7 @@ service cloud.firestore {
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### Erro: "Firebase não configurado. Usando modo local."
 
@@ -286,9 +286,9 @@ service cloud.firestore {
 **Solução:**
 1. Execute: `firebase deploy --only firestore:rules`
 2. Aguarde 1-2 minutos para propagar
-## 📊 Estrutura de Dados no Firestore (Multi-Tenancy)
+##  Estrutura de Dados no Firestore (Multi-Tenancy)
 
-### 🔑 Campo Obrigatório: `companyId`
+###  Campo Obrigatório: `companyId`
 
 **IMPORTANTE:** Todos os documentos devem incluir `companyId` para isolamento.
 
@@ -359,7 +359,7 @@ service cloud.firestore {
 }
 ```
 
-### 🛡️ Validação de companyId
+###  Validação de companyId
 
 O sistema **sempre** inclui `companyId` automaticamente:
 
@@ -375,7 +375,7 @@ const produto = {
 db.collection('produtos').add(produto);
 ```
 
-### 🔍 Consultas com Filtro
+###  Consultas com Filtro
 
 Todas as consultas filtram por `companyId`:
 
@@ -408,20 +408,20 @@ db.collection('produtos')
 
 ---
 
-## 🎯 Próximos Passos
+##  Próximos Passos
 
 Após configurar o Firebase:
 
-1. ✅ Teste todas as funcionalidades
-2. ✅ Cadastre produtos de exemplo
-3. ✅ Faça movimentações de teste
-4. ✅ Verifique persistência dos dados
-5. ✅ Teste em diferentes dispositivos
-6. ✅ Configure backup automático (opcional)
+1.  Teste todas as funcionalidades
+2.  Cadastre produtos de exemplo
+3.  Faça movimentações de teste
+4.  Verifique persistência dos dados
+5.  Teste em diferentes dispositivos
+6.  Configure backup automático (opcional)
 
 ---
 
-## 📞 Recursos Adicionais
+##  Recursos Adicionais
 
 - **Documentação Firebase:** https://firebase.google.com/docs
 - **Firestore Guides:** https://firebase.google.com/docs/firestore
@@ -430,4 +430,4 @@ Após configurar o Firebase:
 
 ---
 
-**✨ Configuração completa! Seu sistema agora está 100% integrado à nuvem!**
+** Configuração completa! Seu sistema agora está 100% integrado à nuvem!**

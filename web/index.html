@@ -49,7 +49,7 @@
             <!-- Login Form -->
             <div id="loginForm" class="auth-card">
                 <div class="auth-header">
-                    <i class="fas fa-warehouse" style="color: #2D5016; font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <i class="fas fa-warehouse auth-icon-large"></i>
                     <h2>Bem-vindo de volta</h2>
                     <p>Acesse sua conta para continuar</p>
                 </div>
@@ -75,11 +75,11 @@
                         Entrar no Sistema
                     </button>
                     
-                    <div style="display: flex; gap: 10px; margin-top: 10px;">
-                        <button type="button" onclick="loginRapido('superadmin')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s;">
+                    <div class="login-buttons-container">
+                        <button type="button" onclick="loginRapido('superadmin')" class="btn-login-superadmin" aria-label="Login rápido como Super Administrador">
                             <i class="fas fa-shield-alt"></i> Super Admin
                         </button>
-                        <button type="button" onclick="loginRapido('admin')" style="flex: 1; padding: 10px; background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all 0.3s;">
+                        <button type="button" onclick="loginRapido('admin')" class="btn-login-admin" aria-label="Login rápido como Administrador">
                             <i class="fas fa-user-shield"></i> Admin
                         </button>
                     </div>
@@ -87,14 +87,14 @@
                 
                 <div class="auth-links">
                     <a href="#" onclick="showForgotPassword()">Esqueceu a senha?</a>
-                    <span style="margin: 0 10px; color: #cbd5e1;">|</span>
+                    <span class="auth-separator">|</span>
                     Não tem conta? <a href="#" onclick="showRegister()">Criar conta</a>
                 </div>
                 
                 <div class="admin-login-hint">
                     <i class="fas fa-info-circle"></i>
                     <p><strong>Modo Demo:</strong> Admin: admin@local.com / admin123 | Super Admin: superadmin@quatrocantos.com / admin@2025</p>
-                    <button onclick="resetLocalStorage()" style="margin-top: 10px; padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 0.75rem;">
+                    <button onclick="resetLocalStorage()" class="btn-reset-storage" aria-label="Resetar usuários de demonstração">
                         <i class="fas fa-sync-alt"></i> Resetar Usuários Demo
                     </button>
                 </div>
@@ -148,7 +148,7 @@
                         <div class="form-group">
                             <label for="regSegmento">Segmento da Empresa</label>
                             <div class="input-group">
-                                <select id="regSegmento" required class="form-select" style="padding-left: 2.75rem;" onchange="aplicarTemaSegmento(this.value)">
+                                <select id="regSegmento" required class="form-select select-with-icon" onchange="aplicarTemaSegmento(this.value)">
                                     <option value="" disabled selected>Selecione o segmento</option>
                                     <option value="construcao">Construção Civil</option>
                                     <option value="varejo">Varejo</option>
@@ -159,7 +159,7 @@
                                 </select>
                                 <i class="fas fa-industry"></i>
                             </div>
-                            <small style="display: block; margin-top: 5px; color: #64748b; font-style: italic; font-size: 0.85em;">
+                            <small class="segmento-info-text">
                                 O layout se adaptará ao seu segmento
                             </small>
                         </div>
@@ -237,27 +237,27 @@
                     <div class="logo">
                         <i class="fas fa-bolt"></i>
                         <h1>Quatro Cantos</h1>
-                        <p style="margin-top: 0; font-size: 0.9em; opacity: 0.8;">Sistema de Gestão Empresarial</p>
+                        <p class="system-subtitle">Sistema de Gestão Empresarial</p>
                     </div>
                     
                     <!-- Global Search -->
-                    <div class="global-search desktop-only" style="flex: 1; max-width: 400px; margin: 0 2rem;">
-                        <div class="input-group" style="margin-bottom: 0;">
-                            <input type="text" placeholder="Buscar peça, lote ou serial..." style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding-left: 2.5rem;">
-                            <i class="fas fa-search" style="color: rgba(255,255,255,0.6);"></i>
+                    <div class="global-search desktop-only global-search-container">
+                        <div class="input-group global-search-input-group">
+                            <input type="text" placeholder="Buscar peça, lote ou serial..." class="global-search-input">
+                            <i class="fas fa-search global-search-icon"></i>
                         </div>
                     </div>
                     
                     <div class="header-actions">
                         <!-- Mobile Menu Button -->
-                        <button class="mobile-menu-btn hidden-desktop" onclick="toggleMobileMenu()">
+                        <button class="mobile-menu-btn hidden-desktop" onclick="toggleMobileMenu()" aria-label="Abrir menu de navegação">
                             <i class="fas fa-bars"></i>
                         </button>
 
                         <!-- Notifications -->
-                        <button class="nav-btn" style="background: transparent; border: none; position: relative;">
+                        <button class="nav-btn btn-notifications" aria-label="Notificações">
                             <i class="fas fa-bell"></i>
-                            <span style="position: absolute; top: 0; right: 0; width: 8px; height: 8px; background: var(--danger-color); border-radius: 50%;"></span>
+                            <span class="notification-badge"></span>
                         </button>
 
                         <button id="installBtn" class="install-btn hidden">
@@ -290,7 +290,7 @@
         </header>
 
         <!-- Layout Wrapper -->
-        <div class="dashboard-layout container-fluid" style="margin-top: 2rem;">
+        <div class="dashboard-layout container-fluid dashboard-spacing">
             
             <!-- Desktop Sidebar -->
             <aside class="dashboard-sidebar desktop-only">
@@ -385,9 +385,9 @@
                     </div>
                 </div>
 
-                <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid #e2e8f0; margin-top: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--success-color); font-size: 0.8rem; font-weight: 600;">
-                        <span style="width: 8px; height: 8px; background: var(--success-color); border-radius: 50%; display: block;"></span>
+                <div class="sidebar-footer">
+                    <div class="sidebar-status-container">
+                        <span class="status-indicator"></span>
                         SISTEMA ONLINE
                     </div>
                 </div>
@@ -397,7 +397,7 @@
             <div id="mobileSidebar" class="mobile-sidebar hidden-desktop">
                 <div class="sidebar-header">
                     <h3>Menu</h3>
-                    <button class="close-sidebar-btn" onclick="toggleMobileMenu()">
+                    <button class="close-sidebar-btn" onclick="toggleMobileMenu()" aria-label="Fechar menu de navegação">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -431,7 +431,7 @@
                         <i class="fas fa-database"></i> Backup
                     </button>
                     <!-- Super Admin Only -->
-                    <button class="sidebar-btn module-nav-btn superadmin-only hidden" data-module="admin" onclick="showModule('admin'); toggleMobileMenu()" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); margin-top: 1rem;">
+                    <button class="sidebar-btn module-nav-btn superadmin-only hidden btn-admin-module" data-module="admin" onclick="showModule('admin'); toggleMobileMenu()">
                         <i class="fas fa-shield-alt"></i> Administração
                     </button>
                 </div>
@@ -439,7 +439,7 @@
             <div id="sidebarOverlay" class="sidebar-overlay hidden-desktop" onclick="toggleMobileMenu()"></div>
 
             <!-- Main Content Area -->
-            <main class="main-content" style="padding: 0;">
+            <main class="main-content main-content-no-padding">
                 
                 <!-- Dashboard Section -->
                 <section id="dashboardSection" class="dashboard-section">
@@ -532,7 +532,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2 id="modalTitle">Modulo</h2>
-                    <button class="close-btn" onclick="closeModule()">
+                    <button class="close-btn" onclick="closeModule()" aria-label="Fechar modal">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>

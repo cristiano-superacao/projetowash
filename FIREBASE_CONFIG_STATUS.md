@@ -1,12 +1,12 @@
-# 🔥 Firebase - Configuração e Status
+#  Firebase - Configuração e Status
 
-## 📊 Status Atual: DEMO MODE
+##  Status Atual: DEMO MODE
 
 O sistema está configurado com **credenciais demo** para testes imediatos.
 
 ---
 
-## 🎯 Configuração Atual (Demo)
+##  Configuração Atual (Demo)
 
 ### Arquivo: `web/static/js/firebase-config.js`
 
@@ -21,13 +21,13 @@ const firebaseConfig = {
 };
 ```
 
-### ⚠️ Importante
+###  Importante
 
 Estas são **credenciais fictícias** para fins de desenvolvimento e teste local. O sistema funcionará com `localStorage` como fallback.
 
 ---
 
-## 🚀 Como Configurar Firebase Real (Quando Necessário)
+##  Como Configurar Firebase Real (Quando Necessário)
 
 ### Passo 1: Criar Projeto no Firebase
 
@@ -41,7 +41,7 @@ Estas são **credenciais fictícias** para fins de desenvolvimento e teste local
 
 1. No console do Firebase, clique no ícone **Web** (`</>`)
 2. Apelido do app: `Quatro Cantos Web`
-3. Marque: ✅ **"Configurar Firebase Hosting"**
+3. Marque:  **"Configurar Firebase Hosting"**
 4. Clique em **"Registrar app"**
 
 ### Passo 3: Copiar Credenciais
@@ -59,7 +59,7 @@ const firebaseConfig = {
 };
 ```
 
-**Copie estas credenciais!** 📋
+**Copie estas credenciais!** 
 
 ### Passo 4: Substituir no Código
 
@@ -85,8 +85,8 @@ authDomain: "seu-projeto.firebaseapp.com",
 2. Clique em **"Começar"**
 3. Aba **"Sign-in method"**
 4. Ative: **Email/Password**
-   - Email/senha: ✅ **Ativar**
-   - Link de email (sem senha): ❌ Desativar
+   - Email/senha:  **Ativar**
+   - Link de email (sem senha):  Desativar
 
 ### Passo 6: Criar Firestore Database
 
@@ -129,7 +129,7 @@ Clique em **"Publicar"**
 
 ---
 
-## 📁 Estrutura do Firestore
+##  Estrutura do Firestore
 
 ### Collection: `users`
 ```javascript
@@ -179,7 +179,7 @@ Clique em **"Publicar"**
 
 ---
 
-## 🔐 Segurança Multi-Tenant
+##  Segurança Multi-Tenant
 
 ### Conceito
 
@@ -187,12 +187,12 @@ Cada empresa (usuário) tem seu próprio `company_id` (igual ao `uid` do Firebas
 
 ```
 Empresa A (uid: abc123)
-  ├── Produtos com company_id: abc123
-  └── Funcionários com company_id: abc123
+   Produtos com company_id: abc123
+   Funcionários com company_id: abc123
 
 Empresa B (uid: xyz789)
-  ├── Produtos com company_id: xyz789
-  └── Funcionários com company_id: xyz789
+   Produtos com company_id: xyz789
+   Funcionários com company_id: xyz789
 ```
 
 ### Implementação
@@ -204,7 +204,7 @@ Ao salvar dados, o sistema automaticamente adiciona `company_id`:
 const user = firebase.auth().currentUser;
 const productData = {
     ...formData,
-    company_id: user.uid,  // 🔒 Isolamento automático
+    company_id: user.uid,  //  Isolamento automático
     createdAt: new Date().toISOString()
 };
 ```
@@ -215,34 +215,34 @@ Ao consultar dados, filtra por `company_id`:
 // Em firestore-service.js:
 const snapshot = await firebase.firestore()
     .collection('produtos')
-    .where('company_id', '==', user.uid)  // 🔒 Só vê os próprios
+    .where('company_id', '==', user.uid)  //  Só vê os próprios
     .get();
 ```
 
 ---
 
-## 🧪 Testando Firebase Local vs Real
+##  Testando Firebase Local vs Real
 
 ### Modo Local (Atual - Demo)
 
-- ✅ Funciona imediatamente
-- ✅ Dados em `localStorage`
-- ✅ Sem necessidade de internet
-- ❌ Não sincroniza entre dispositivos
-- ❌ Dados perdidos ao limpar cache
+-  Funciona imediatamente
+-  Dados em `localStorage`
+-  Sem necessidade de internet
+-  Não sincroniza entre dispositivos
+-  Dados perdidos ao limpar cache
 
 ### Modo Real (Após Configuração)
 
-- ✅ Sincronização em nuvem
-- ✅ Acesso de múltiplos dispositivos
-- ✅ Dados persistentes
-- ✅ Backup automático
-- ❌ Requer internet
-- ❌ Custos após uso gratuito
+-  Sincronização em nuvem
+-  Acesso de múltiplos dispositivos
+-  Dados persistentes
+-  Backup automático
+-  Requer internet
+-  Custos após uso gratuito
 
 ---
 
-## 💰 Plano Gratuito Firebase
+##  Plano Gratuito Firebase
 
 ### Limites Generosos:
 
@@ -256,15 +256,15 @@ const snapshot = await firebase.firestore()
 
 ### Estimativa para Uso Educacional:
 
-- 👥 **20 alunos** testando simultaneamente
-- 📝 **100 produtos** cadastrados por aluno
-- 📊 **1.000 operações** por dia
+-  **20 alunos** testando simultaneamente
+-  **100 produtos** cadastrados por aluno
+-  **1.000 operações** por dia
 
-**Resultado:** Bem dentro do plano gratuito! ✅
+**Resultado:** Bem dentro do plano gratuito! 
 
 ---
 
-## 🔄 Ativação do Firebase no Código
+##  Ativação do Firebase no Código
 
 ### Atualmente Desativado
 
@@ -299,7 +299,7 @@ No arquivo `web/index.html`, as configurações Firebase estão em modo LOCAL:
 
 ---
 
-## 📋 Checklist de Configuração
+##  Checklist de Configuração
 
 Use este checklist quando for configurar Firebase real:
 
@@ -318,7 +318,7 @@ Use este checklist quando for configurar Firebase real:
 
 ---
 
-## 🐛 Troubleshooting Firebase
+##  Troubleshooting Firebase
 
 ### Erro: "Firebase: Error (auth/api-key-not-valid)"
 **Solução:** Verifique se copiou a API Key corretamente
@@ -337,7 +337,7 @@ Use este checklist quando for configurar Firebase real:
 
 ---
 
-## 📚 Documentação Oficial
+##  Documentação Oficial
 
 - **Firebase Docs:** https://firebase.google.com/docs
 - **Authentication:** https://firebase.google.com/docs/auth
@@ -346,17 +346,17 @@ Use este checklist quando for configurar Firebase real:
 
 ---
 
-## ✅ Resumo
+##  Resumo
 
 | Item | Status Atual | Produção |
 |------|-------------|----------|
-| **Código** | ✅ Pronto | ✅ Pronto |
-| **Credenciais** | 🟡 Demo | ⚪ Configurar |
-| **Authentication** | ✅ Implementado | ⚪ Ativar |
-| **Firestore** | ✅ Implementado | ⚪ Criar |
-| **Regras** | ✅ Definidas | ⚪ Publicar |
-| **Multi-Tenant** | ✅ Implementado | ✅ Pronto |
-| **Testes** | ✅ Local OK | ⚪ Testar Cloud |
+| **Código** |  Pronto |  Pronto |
+| **Credenciais** | 🟡 Demo |  Configurar |
+| **Authentication** |  Implementado |  Ativar |
+| **Firestore** |  Implementado |  Criar |
+| **Regras** |  Definidas |  Publicar |
+| **Multi-Tenant** |  Implementado |  Pronto |
+| **Testes** |  Local OK |  Testar Cloud |
 
 ### Próximo Passo
 

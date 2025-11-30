@@ -2,9 +2,13 @@
 // SERVICE WORKER - PWA OFFLINE SUPPORT
 // Arquivo: service-worker.js
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
+// Versão: 10 (com estratégia de cleanup automático)
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v9';
+const CACHE_NAME = 'estoque-certo-v10';
+const CACHE_MAX_AGE_DAYS = 30; // Cache expira após 30 dias
+const CACHE_MAX_ITEMS = 50; // Máximo de itens no cache
+
 const urlsToCache = [
     '/',
     '/static/css/style.css',
@@ -23,10 +27,56 @@ const urlsToCache = [
 ];
 
 // ============================================================================
+// FUNÇÕES AUXILIARES DE LIMPEZA DE CACHE
+// ============================================================================
+
+/**
+ * Remove caches expirados baseado em timestamp
+ */
+async function cleanExpiredCache() {
+    const cache = await caches.open(CACHE_NAME);
+    const requests = await cache.keys();
+    const now = Date.now();
+    const maxAge = CACHE_MAX_AGE_DAYS * 24 * 60 * 60 * 1000; // Dias em ms
+    
+    for (const request of requests) {
+        const response = await cache.match(request);
+        if (response) {
+            const dateHeader = response.headers.get('date');
+            if (dateHeader) {
+                const responseDate = new Date(dateHeader).getTime();
+                if (now - responseDate > maxAge) {
+                    console.log('Service Worker: Removendo cache expirado:', request.url);
+                    await cache.delete(request);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Limita o número de itens no cache (LRU - Least Recently Used)
+ */
+async function limitCacheSize() {
+    const cache = await caches.open(CACHE_NAME);
+    const requests = await cache.keys();
+    
+    if (requests.length > CACHE_MAX_ITEMS) {
+        const itemsToDelete = requests.length - CACHE_MAX_ITEMS;
+        console.log(`Service Worker: Removendo ${itemsToDelete} itens antigos do cache`);
+        
+        // Remove os primeiros N itens (mais antigos)
+        for (let i = 0; i < itemsToDelete; i++) {
+            await cache.delete(requests[i]);
+        }
+    }
+}
+
+// ============================================================================
 // INSTALAÇÃO DO SERVICE WORKER
 // ============================================================================
 self.addEventListener('install', (event) => {
-    console.log('Service Worker: Instalando...');
+    console.log('Service Worker v10: Instalando...');
     
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -45,24 +95,30 @@ self.addEventListener('install', (event) => {
 });
 
 // ============================================================================
-// ATIVAÇÃO DO SERVICE WORKER
+// ATIVAÇÃO DO SERVICE WORKER (COM LIMPEZA DE CACHES ANTIGOS)
 // ============================================================================
 self.addEventListener('activate', (event) => {
-    console.log('Service Worker: Ativando...');
+    console.log('Service Worker v10: Ativando...');
     
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cacheName) => {
-                    // Remove caches antigos
-                    if (cacheName !== CACHE_NAME) {
-                        console.log('Service Worker: Removendo cache antigo:', cacheName);
-                        return caches.delete(cacheName);
-                    }
-                })
-            );
-        }).then(() => {
-            console.log('Service Worker: Ativado');
+        Promise.all([
+            // Remove todas as versões antigas de cache
+            caches.keys().then((cacheNames) => {
+                return Promise.all(
+                    cacheNames.map((cacheName) => {
+                        if (cacheName !== CACHE_NAME) {
+                            console.log('Service Worker: Removendo cache antigo:', cacheName);
+                            return caches.delete(cacheName);
+                        }
+                    })
+                );
+            }),
+            // Executa limpeza de cache expirado
+            cleanExpiredCache(),
+            // Limita tamanho do cache
+            limitCacheSize()
+        ]).then(() => {
+            console.log('Service Worker: Ativado e caches limpos');
             return self.clients.claim();
         })
     );

@@ -158,7 +158,7 @@ function filtrarFuncionarios() {
 
 async function removerFuncionarioAPI(id) {
     // Solicitar senha de admin
-    const senha = prompt("🔒 Área Restrita\nDigite a senha de administrador para excluir:");
+    const senha = prompt(" Área Restrita\nDigite a senha de administrador para excluir:");
     
     if (!senha) return; // Cancelado
     
@@ -290,7 +290,7 @@ function exibirResultadoRH(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3">📊 Resumo da Folha</h5>
+            <h5 class="mt-3"> Resumo da Folha</h5>
             <div class="table-container">
                 <table>
                     <tr>

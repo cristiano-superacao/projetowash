@@ -349,4 +349,4 @@ document.addEventListener('DOMContentLoaded', () => {
     carregarTemaSalvo();
 });
 
-console.log("✅ Módulo de segmentos carregado com sucesso!");
+console.log("Módulo de segmentos carregado com sucesso!");
