@@ -1,125 +1,146 @@
-# ============================================================================
-# SCRIPT DE CONFIGURAÇÃO AUTOMÁTICA - NETLIFY DEPLOY
-# ============================================================================
+# Configuracao Netlify Deploy
+# Uso: .\configure-netlify.ps1
 
-Write-Host "`n========================================" -ForegroundColor Cyan
-Write-Host "   CONFIGURAÇÃO NETLIFY DEPLOY" -ForegroundColor Cyan
-Write-Host "========================================`n" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host "   CONFIGURACAO NETLIFY DEPLOY" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
 
-Write-Host "Este script irá ajudá-lo a configurar o deploy automático no Netlify.`n" -ForegroundColor White
+Write-Host "Este script ira ajuda-lo a configurar o deploy automatico no Netlify." -ForegroundColor White
+Write-Host ""
 
-# Verificar se gh CLI está instalado
+# Verificar se gh CLI esta instalado
 $ghInstalled = Get-Command gh -ErrorAction SilentlyContinue
 
 if (-not $ghInstalled) {
-    Write-Host "❌ GitHub CLI (gh) não está instalado." -ForegroundColor Red
-    Write-Host "📦 Instale com: winget install --id GitHub.cli" -ForegroundColor Yellow
-    Write-Host "Ou baixe em: https://cli.github.com/`n" -ForegroundColor Yellow
+    Write-Host "GitHub CLI (gh) nao esta instalado." -ForegroundColor Red
+    Write-Host "Instale com: winget install --id GitHub.cli" -ForegroundColor Yellow
+    Write-Host "Ou baixe em: https://cli.github.com/" -ForegroundColor Yellow
+    Write-Host ""
     
-    Write-Host "Continuando com instruções manuais...`n" -ForegroundColor Yellow
+    Write-Host "Continuando com instrucoes manuais..." -ForegroundColor Yellow
+    Write-Host ""
     
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "   PASSO 1: OBTER SITE ID DO NETLIFY" -ForegroundColor Cyan
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host "   PASSO 1: OBTER SITE ID" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host ""
     
     Write-Host "1. Acesse: https://app.netlify.com/sites/projetowash/settings/general" -ForegroundColor White
-    Write-Host "2. Role até 'Site information'" -ForegroundColor White
-    Write-Host "3. Copie o 'Site ID' (formato: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)`n" -ForegroundColor White
+    Write-Host "2. Role ate 'Site information'" -ForegroundColor White
+    Write-Host "3. Copie o 'Site ID'" -ForegroundColor White
+    Write-Host ""
     
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
     Write-Host "   PASSO 2: GERAR AUTH TOKEN" -ForegroundColor Cyan
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host ""
     
     Write-Host "1. Acesse: https://app.netlify.com/user/applications#personal-access-tokens" -ForegroundColor White
     Write-Host "2. Clique em 'New access token'" -ForegroundColor White
     Write-Host "3. Nome: 'GitHub Actions Deploy'" -ForegroundColor White
-    Write-Host "4. Copie o token gerado (começa com 'nfp_...')`n" -ForegroundColor White
+    Write-Host "4. Copie o token gerado" -ForegroundColor White
+    Write-Host ""
     
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
-    Write-Host "   PASSO 3: CONFIGURAR SECRETS NO GITHUB" -ForegroundColor Cyan
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host "   PASSO 3: CONFIGURAR SECRETS" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host ""
     
     Write-Host "1. Acesse: https://github.com/cristiano-superacao/projetowash/settings/secrets/actions" -ForegroundColor White
     Write-Host "2. Clique em 'New repository secret'" -ForegroundColor White
-    Write-Host "3. Adicione o primeiro secret:" -ForegroundColor White
+    Write-Host "3. Adicione:" -ForegroundColor White
     Write-Host "   - Name: NETLIFY_SITE_ID" -ForegroundColor Yellow
     Write-Host "   - Value: [Cole o Site ID]" -ForegroundColor Yellow
-    Write-Host "4. Adicione o segundo secret:" -ForegroundColor White
+    Write-Host "4. Adicione:" -ForegroundColor White
     Write-Host "   - Name: NETLIFY_AUTH_TOKEN" -ForegroundColor Yellow
-    Write-Host "   - Value: [Cole o Auth Token]`n" -ForegroundColor Yellow
+    Write-Host "   - Value: [Cole o Auth Token]" -ForegroundColor Yellow
+    Write-Host ""
     
-    Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
     Write-Host "   PASSO 4: TESTAR O DEPLOY" -ForegroundColor Cyan
-    Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+    Write-Host "===================================" -ForegroundColor Cyan
+    Write-Host ""
     
-    Write-Host "Após configurar os secrets:" -ForegroundColor White
-    Write-Host "1. Faça uma pequena alteração no código" -ForegroundColor White
+    Write-Host "Apos configurar os secrets:" -ForegroundColor White
+    Write-Host "1. Faca uma pequena alteracao no codigo" -ForegroundColor White
     Write-Host "2. Commit e push:" -ForegroundColor White
     Write-Host "   git add ." -ForegroundColor Yellow
-    Write-Host "   git commit -m 'test: Testar deploy automático'" -ForegroundColor Yellow
+    Write-Host "   git commit -m 'test: Testar deploy automatico'" -ForegroundColor Yellow
     Write-Host "   git push origin main" -ForegroundColor Yellow
-    Write-Host "3. Acompanhe em: https://github.com/cristiano-superacao/projetowash/actions`n" -ForegroundColor White
+    Write-Host "3. Acompanhe em: https://github.com/cristiano-superacao/projetowash/actions" -ForegroundColor White
+    Write-Host ""
     
     exit
 }
 
-# Se gh CLI estiver instalado, tentar configuração automática
-Write-Host "✅ GitHub CLI detectado!`n" -ForegroundColor Green
+# Se gh CLI estiver instalado
+Write-Host "GitHub CLI detectado!" -ForegroundColor Green
+Write-Host ""
 
 # Login no GitHub
-Write-Host "🔐 Fazendo login no GitHub..." -ForegroundColor Cyan
+Write-Host "Fazendo login no GitHub..." -ForegroundColor Cyan
 gh auth login
 
-# Verificar se está logado
+# Verificar se esta logado
 $authStatus = gh auth status 2>&1
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Erro ao fazer login no GitHub." -ForegroundColor Red
+    Write-Host "Erro ao fazer login no GitHub." -ForegroundColor Red
     exit 1
 }
 
-Write-Host "✅ Login realizado com sucesso!`n" -ForegroundColor Green
+Write-Host "Login realizado com sucesso!" -ForegroundColor Green
+Write-Host ""
 
 # Solicitar Site ID
-Write-Host "═══════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "===================================" -ForegroundColor Cyan
 Write-Host "   CONFIGURAR NETLIFY_SITE_ID" -ForegroundColor Cyan
-Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+Write-Host "===================================" -ForegroundColor Cyan
+Write-Host ""
 
 Write-Host "Para obter o Site ID:" -ForegroundColor Yellow
 Write-Host "1. Acesse: https://app.netlify.com/sites/projetowash/settings/general" -ForegroundColor White
-Write-Host "2. Copie o 'Site ID' em 'Site information'`n" -ForegroundColor White
+Write-Host "2. Copie o 'Site ID' em 'Site information'" -ForegroundColor White
+Write-Host ""
 
 $siteId = Read-Host "Cole o NETLIFY_SITE_ID aqui"
 
 if ([string]::IsNullOrWhiteSpace($siteId)) {
-    Write-Host "❌ Site ID não pode estar vazio." -ForegroundColor Red
+    Write-Host "Site ID nao pode estar vazio." -ForegroundColor Red
     exit 1
 }
 
-Write-Host "`n✅ Site ID recebido: $siteId" -ForegroundColor Green
+Write-Host ""
+Write-Host "Site ID recebido: $siteId" -ForegroundColor Green
 
 # Solicitar Auth Token
-Write-Host "`n═══════════════════════════════════════" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "===================================" -ForegroundColor Cyan
 Write-Host "   CONFIGURAR NETLIFY_AUTH_TOKEN" -ForegroundColor Cyan
-Write-Host "═══════════════════════════════════════`n" -ForegroundColor Cyan
+Write-Host "===================================" -ForegroundColor Cyan
+Write-Host ""
 
 Write-Host "Para gerar o Auth Token:" -ForegroundColor Yellow
 Write-Host "1. Acesse: https://app.netlify.com/user/applications#personal-access-tokens" -ForegroundColor White
 Write-Host "2. Clique em 'New access token'" -ForegroundColor White
 Write-Host "3. Nome: 'GitHub Actions Deploy'" -ForegroundColor White
-Write-Host "4. Copie o token gerado`n" -ForegroundColor White
+Write-Host "4. Copie o token gerado" -ForegroundColor White
+Write-Host ""
 
-$authToken = Read-Host "Cole o NETLIFY_AUTH_TOKEN aqui" -AsSecureString
-$authTokenPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto([Runtime.InteropServices.Marshal]::SecureStringToBSTR($authToken))
+$authToken = Read-Host "Cole o NETLIFY_AUTH_TOKEN aqui"
 
-if ([string]::IsNullOrWhiteSpace($authTokenPlain)) {
-    Write-Host "❌ Auth Token não pode estar vazio." -ForegroundColor Red
+if ([string]::IsNullOrWhiteSpace($authToken)) {
+    Write-Host "Auth Token nao pode estar vazio." -ForegroundColor Red
     exit 1
 }
 
-Write-Host "`n✅ Auth Token recebido" -ForegroundColor Green
+Write-Host ""
+Write-Host "Auth Token recebido" -ForegroundColor Green
 
 # Configurar secrets no GitHub
-Write-Host "`n🔧 Configurando secrets no GitHub..." -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Configurando secrets no GitHub..." -ForegroundColor Cyan
 
 try {
     # Configurar NETLIFY_SITE_ID
@@ -128,28 +149,35 @@ try {
     
     # Configurar NETLIFY_AUTH_TOKEN
     Write-Host "Configurando NETLIFY_AUTH_TOKEN..." -ForegroundColor White
-    echo $authTokenPlain | gh secret set NETLIFY_AUTH_TOKEN --repo cristiano-superacao/projetowash
+    echo $authToken | gh secret set NETLIFY_AUTH_TOKEN --repo cristiano-superacao/projetowash
     
-    Write-Host "`n✅ Secrets configurados com sucesso!" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Secrets configurados com sucesso!" -ForegroundColor Green
     
 } catch {
-    Write-Host "`n❌ Erro ao configurar secrets: $_" -ForegroundColor Red
+    Write-Host ""
+    Write-Host "Erro ao configurar secrets: $_" -ForegroundColor Red
     exit 1
 }
 
 # Sucesso
-Write-Host "`n========================================" -ForegroundColor Green
-Write-Host "   CONFIGURAÇÃO CONCLUÍDA!" -ForegroundColor Green
-Write-Host "========================================`n" -ForegroundColor Green
+Write-Host ""
+Write-Host "========================================" -ForegroundColor Green
+Write-Host "   CONFIGURACAO CONCLUIDA!" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Green
+Write-Host ""
 
-Write-Host "🎉 Deploy automático configurado com sucesso!" -ForegroundColor White
-Write-Host "`nPróximos passos:" -ForegroundColor Cyan
-Write-Host "1. Faça um commit e push para testar:" -ForegroundColor White
+Write-Host "Deploy automatico configurado com sucesso!" -ForegroundColor White
+Write-Host ""
+Write-Host "Proximos passos:" -ForegroundColor Cyan
+Write-Host "1. Faca um commit e push para testar:" -ForegroundColor White
 Write-Host "   git add ." -ForegroundColor Yellow
-Write-Host "   git commit -m 'test: Testar deploy automático'" -ForegroundColor Yellow
+Write-Host "   git commit -m 'test: Testar deploy automatico'" -ForegroundColor Yellow
 Write-Host "   git push origin main" -ForegroundColor Yellow
-Write-Host "`n2. Acompanhe o deploy em:" -ForegroundColor White
+Write-Host ""
+Write-Host "2. Acompanhe o deploy em:" -ForegroundColor White
 Write-Host "   https://github.com/cristiano-superacao/projetowash/actions" -ForegroundColor Cyan
-Write-Host "`n3. Seu site estará disponível em:" -ForegroundColor White
+Write-Host ""
+Write-Host "3. Seu site estara disponivel em:" -ForegroundColor White
 Write-Host "   https://projetowash.netlify.app" -ForegroundColor Cyan
 Write-Host ""
