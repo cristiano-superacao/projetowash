@@ -13,7 +13,7 @@
     <title>Quatro Cantos - Sistema de Gestao</title>
     
     <!-- CSS -->
-    <link rel="stylesheet" href="/static/css/style.css?v=6">
+    <link rel="stylesheet" href="/static/css/style.css?v=7">
     
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,7 +27,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
     
     <!-- Segments Config -->
-    <script src="/static/js/segments-config.js?v=6"></script>
+    <script src="/static/js/segments-config.js?v=7"></script>
 </head>
 <body>
     
@@ -47,7 +47,7 @@
             <!-- Login Form -->
             <div id="loginForm" class="auth-card">
                 <div class="auth-header">
-                    <i class="fas fa-warehouse" style="color: #2D5016; font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <i class="fas fa-warehouse auth-icon-large"></i>
                     <h2>Bem-vindo de volta</h2>
                     <p>Acesse sua conta para continuar</p>
                 </div>
@@ -76,7 +76,7 @@
                 
                 <div class="auth-links">
                     <a href="#" onclick="showForgotPassword()">Esqueceu a senha?</a>
-                    <span style="margin: 0 10px; color: #cbd5e1;">|</span>
+                    <span class="auth-separator">|</span>
                     Não tem conta? <a href="#" onclick="showRegister()">Criar conta</a>
                 </div>
                 
@@ -110,24 +110,24 @@
                     <div class="form-group">
                         <label for="regNome">Nome Completo</label>
                         <div class="input-group">
-                            <input type="text" id="regNome" required placeholder="Seu nome completo">
                             <i class="fas fa-user"></i>
+                            <input type="text" id="regNome" required placeholder="Seu nome completo">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="regEmail">Email</label>
                         <div class="input-group">
-                            <input type="email" id="regEmail" required placeholder="seu@email.com">
                             <i class="fas fa-envelope"></i>
+                            <input type="email" id="regEmail" required placeholder="cris@gmail.com">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="regContato">Contato</label>
                         <div class="input-group">
-                            <input type="tel" id="regContato" required placeholder="(00) 00000-0000">
                             <i class="fas fa-phone"></i>
+                            <input type="tel" id="regContato" required placeholder="(00) 00000-0000">
                         </div>
                     </div>
 
@@ -136,15 +136,16 @@
                         <div class="form-group">
                             <label for="regNomeEmpresa">Nome da Empresa</label>
                             <div class="input-group">
-                                <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
                                 <i class="fas fa-building"></i>
+                                <input type="text" id="regNomeEmpresa" required placeholder="Nome da sua empresa">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="regSegmento">Segmento da Empresa</label>
                             <div class="input-group">
-                                <select id="regSegmento" required class="form-select" style="padding-left: 2.75rem;" onchange="aplicarTemaSegmento(this.value)">
+                                <i class="fas fa-briefcase"></i>
+                                <select id="regSegmento" required class="form-select" onchange="aplicarTemaSegmento(this.value)">
                                     <option value="" disabled selected>Selecione o segmento</option>
                                     <option value="construcao">Construção Civil</option>
                                     <option value="varejo">Varejo</option>
@@ -153,9 +154,8 @@
                                     <option value="logistica">Logística</option>
                                     <option value="outros">Outros</option>
                                 </select>
-                                <i class="fas fa-industry"></i>
                             </div>
-                            <small style="display: block; margin-top: 5px; color: #64748b; font-style: italic; font-size: 0.85em;">
+                            <small class="segment-help">
                                 O layout se adaptará ao seu segmento
                             </small>
                         </div>
@@ -164,28 +164,28 @@
                     <div class="form-group">
                         <label for="regLogin">Login de Usuário</label>
                         <div class="input-group">
+                            <i class="fas fa-user-circle"></i>
                             <input type="text" id="regLogin" required placeholder="usuario123">
-                            <i class="fas fa-id-card"></i>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="regPassword">Senha</label>
                         <div class="input-group">
-                            <input type="password" id="regPassword" required placeholder="Minimo 6 caracteres">
                             <i class="fas fa-lock"></i>
+                            <input type="password" id="regPassword" required placeholder="••••••••">
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label for="regPasswordConfirm">Confirmar Senha</label>
                         <div class="input-group">
-                            <input type="password" id="regPasswordConfirm" required placeholder="Digite novamente">
                             <i class="fas fa-lock"></i>
+                            <input type="password" id="regPasswordConfirm" required placeholder="Digite novamente">
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn-block">
+                    <button type="submit" class="btn-block btn-register-gradient">
                         <span id="btnRegisterText">Cadastrar Empresa</span>
                     </button>
                 </form>
@@ -565,18 +565,18 @@
 
     <!-- JavaScript -->
     <!-- MODO LOCAL (comentar essas 2 linhas quando configurar Firebase) -->
-    <script src="/static/js/local-auth.js?v=6"></script>
-    <script src="/static/js/local-firestore.js?v=6"></script>
+    <script src="/static/js/local-auth.js?v=7"></script>
+    <script src="/static/js/local-firestore.js?v=7"></script>
     
     <!-- MODO FIREBASE (descomentar essas 2 linhas quando configurar Firebase) -->
-    <!-- <script src="/static/js/firebase-config.js?v=6"></script> -->
-    <!-- <script src="/static/js/firestore-service.js?v=6"></script> -->
+    <!-- <script src="/static/js/firebase-config.js?v=7"></script> -->
+    <!-- <script src="/static/js/firestore-service.js?v=7"></script> -->
     
     <!-- Scripts comuns (sempre carregados) -->
-    <script src="/static/js/auth.js?v=6"></script>
-    <script src="/static/js/app.js?v=6"></script>
-    <script src="/static/js/modules.js?v=6"></script>
-    <script src="/static/js/dashboard.js?v=6"></script>
-    <script src="/static/js/pwa.js?v=6"></script>
+    <script src="/static/js/auth.js?v=7"></script>
+    <script src="/static/js/app.js?v=7"></script>
+    <script src="/static/js/modules.js?v=7"></script>
+    <script src="/static/js/dashboard.js?v=7"></script>
+    <script src="/static/js/pwa.js?v=7"></script>
 </body>
 </html>

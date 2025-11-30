@@ -44,10 +44,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 # IMPORTAÇÃO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
 # ============================================================================
 # Importa as classes e funções dos módulos do sistema
-from database import init_db, Produto, Funcionario, SessionLocal
-from operacional import calcular_metricas_capacidade
-from financeiro import calcular_metricas_financeiras
-from rh import processar_funcionario
+from database import init_db, Produto, Funcionario, SessionLocal # Funções para gerenciar o banco de dados
+from operacional import calcular_metricas_capacidade # Função refatorada do módulo operacional
+from financeiro import calcular_metricas_financeiras # Função refatorada do módulo financeiro
+from rh import processar_funcionario # Função refatorada do módulo RH
+from estoque_entrada import registrar_entrada_produto # Função refatorada do módulo estoque entrada
+from estoque_saida import registrar_saida_produto # Função refatorada do módulo estoque saída
 
 # ============================================================================
 # CRIAÇÃO E CONFIGURAÇÃO DA APLICAÇÃO FLASK
@@ -295,31 +297,23 @@ def cadastrar_produto_api():
         quantidade = int(data.get('quantidade'))
         valor = float(data.get('valor', 0))
         
-        if not nome or quantidade <= 0:
-            return jsonify({'success': False, 'error': 'Dados inválidos'}), 400
+        # Usar função refatorada do módulo estoque_entrada
+        produto, is_novo = registrar_entrada_produto(
+            db, 
+            codigo, 
+            nome, 
+            quantidade, 
+            valor, 
+            data.get('data', ''), 
+            data.get('fornecedor', ''), 
+            data.get('local', '')
+        )
         
-        # Verificar se existe
-        produto = db.query(Produto).filter(Produto.codigo == codigo).first()
-        
-        if produto:
-            produto.quantidade += quantidade
-            msg = 'Produto atualizado com sucesso'
-        else:
-            produto = Produto(
-                codigo=codigo,
-                nome=nome,
-                quantidade=quantidade,
-                data_fabricacao=data.get('data', ''),
-                fornecedor=data.get('fornecedor', ''),
-                local_armazem=data.get('local', ''),
-                valor_unitario=valor
-            )
-            db.add(produto)
-            msg = 'Produto cadastrado com sucesso'
-            
-        db.commit()
+        msg = 'Produto cadastrado com sucesso' if is_novo else 'Produto atualizado com sucesso'
         return jsonify({'success': True, 'message': msg, 'data': produto.to_dict()})
             
+    except ValueError as ve:
+        return jsonify({'success': False, 'error': str(ve)}), 400
     except Exception as e:
         db.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500
@@ -336,43 +330,25 @@ def vender_produto_api():
         nome = data.get('nome', '').strip()
         quantidade = int(data.get('quantidade'))
         
-        if not nome or quantidade <= 0:
-            return jsonify({'success': False, 'error': 'Dados inválidos'}), 400
-            
-        # Busca case-insensitive no banco (PostgreSQL ILIKE ou func.lower)
-        # Para compatibilidade geral, vamos buscar todos e filtrar ou usar func.lower
-        from sqlalchemy import func
-        produto = db.query(Produto).filter(func.lower(Produto.nome) == nome.lower()).first()
+        # Usar função refatorada do módulo estoque_saida
+        resultado = registrar_saida_produto(db, nome, quantidade)
         
-        if not produto:
-            return jsonify({'success': False, 'error': 'Produto não encontrado'}), 404
+        if resultado['status'] == 'erro':
+            return jsonify({'success': False, 'error': resultado['mensagem']}), 400
             
-        if produto.quantidade >= quantidade:
-            produto.quantidade -= quantidade
-            valor_venda = quantidade * produto.valor_unitario
-            tipo = 'completo'
-            qtd_vendida = quantidade
-        elif produto.quantidade > 0:
-            valor_venda = produto.quantidade * produto.valor_unitario
-            qtd_vendida = produto.quantidade
-            produto.quantidade = 0
-            tipo = 'parcial'
-        else:
-            return jsonify({'success': False, 'error': 'Produto esgotado'}), 400
-            
-        db.commit()
-        
         return jsonify({
             'success': True,
-            'message': f'Pedido atendido ({tipo})',
+            'message': f"Pedido atendido ({resultado['tipo']})",
             'data': {
-                'tipo': tipo,
-                'quantidade_vendida': qtd_vendida,
-                'valor_venda': round(valor_venda, 2),
-                'estoque_restante': produto.quantidade
+                'tipo': resultado['tipo'],
+                'quantidade_vendida': resultado['qtd_vendida'],
+                'valor_venda': round(resultado['valor_venda'], 2),
+                'estoque_restante': resultado['saldo_restante']
             }
         })
             
+    except ValueError as ve:
+        return jsonify({'success': False, 'error': str(ve)}), 400
     except Exception as e:
         db.rollback()
         return jsonify({'success': False, 'error': str(e)}), 500

@@ -626,12 +626,6 @@ p { margin-bottom: var(--spacing-md); }
     font-size: 0.875rem;
 }
 
-.btn-block {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -1555,65 +1549,83 @@ table tbody tr:hover {
     display: block;
     font-size: 0.875rem;
     font-weight: 600;
-    color: var(--primary-dark);
+    color: #3b82f6;
     margin-bottom: 0.5rem;
 }
 
 .input-group {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .input-group i {
     position: absolute;
     left: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #A4AC86;
+    color: #9ca3af;
+    font-size: 1rem;
     transition: color 0.2s ease;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .input-group input {
     width: 100%;
     padding: 0.875rem 1rem 0.875rem 2.75rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     font-size: 0.95rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #f8fafc;
+    transition: all 0.3s ease;
+    background: #f9fafb;
     font-family: inherit;
+    color: #111827;
+}
+
+.input-group input::placeholder {
+    color: #9ca3af;
 }
 
 .input-group input:focus {
-    background: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), 0 4px 12px rgba(37, 99, 235, 0.08);
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
-    transform: translateY(-1px);
 }
 
-.input-group input:focus + i {
-    color: var(--primary-color);
+.input-group input:focus ~ i {
+    color: #3b82f6;
 }
 
 .form-select {
     width: 100%;
-    padding: 0.875rem 1rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
     font-size: 0.95rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #f8fafc;
-    color: var(--text-primary);
+    transition: all 0.3s ease;
+    background: #f9fafb;
+    color: #111827;
     cursor: pointer;
     font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25rem 1.25rem;
+    padding-right: 2.5rem;
 }
 
 .form-select:focus {
-    background: white;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1), 0 4px 12px rgba(37, 99, 235, 0.08);
+    background-color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     outline: none;
-    transform: translateY(-1px);
+}
+
+.form-select option {
+    color: #111827;
 }
 
 .btn-block {
@@ -1622,16 +1634,19 @@ table tbody tr:hover {
     font-size: 1rem;
     font-weight: 700;
     margin-top: 1rem;
-    border-radius: 12px;
+    border-radius: 8px;
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
     color: white;
     border: none;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s ease;
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
     letter-spacing: 0.5px;
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-block::before {
@@ -1651,11 +1666,20 @@ table tbody tr:hover {
 
 .btn-block:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
 }
 
 .btn-block:active {
     transform: translateY(0);
+}
+
+.btn-register-gradient {
+    background: linear-gradient(90deg, #3b82f6 0%, #ef4444 50%, #f97316 100%);
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+}
+
+.btn-register-gradient:hover {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
 /* Links e Dicas */
@@ -2601,5 +2625,30 @@ select {
 
 .badge-tipo-material i {
     font-size: 1rem;
+}
+
+/* ============================================================================
+   REFINAMENTOS PROFISSIONAIS (AUTH FORM)
+   ============================================================================ */
+
+.auth-icon-large {
+    color: #2D5016;
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.auth-separator {
+    margin: 0 10px;
+    color: #cbd5e1;
+}
+
+
+
+.segment-help {
+    display: block;
+    margin-top: 5px;
+    color: #64748b;
+    font-style: italic;
+    font-size: 0.85em;
 }
 

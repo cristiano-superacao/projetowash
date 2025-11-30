@@ -66,15 +66,20 @@ async function handleLogin(event) {
     showLoading('Entrando...');
     
     try {
-        // Tentar modo local primeiro
-        if (typeof loginLocal !== 'undefined') {
+        // Verificar qual modo está ativo
+        const isFirebaseActive = typeof firebaseInitialized !== 'undefined' && firebaseInitialized;
+        
+        if (isFirebaseActive && typeof login !== 'undefined') {
+            // Modo Firebase
+            await login(email, password);
+        } else if (typeof loginLocal !== 'undefined') {
+            // Modo Local
             await loginLocal(email, password);
             // Recarregar a página para inicializar o app corretamente com o usuário logado
             window.location.reload();
             return;
         } else {
-            // Modo Firebase
-            await login(email, password);
+            throw new Error('Nenhum sistema de autenticação disponível');
         }
         
     } catch (error) {

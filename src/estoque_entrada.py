@@ -1,6 +1,6 @@
-# estoque_entrada.py
+﻿# estoque_entrada.py
 # ============================================================================
-# MÓDULO 2: ESTOQUE - ENTRADA DE PRODUTOS
+# MÓDULO 1: ESTOQUE - ENTRADA DE PRODUTOS
 # ============================================================================
 # Este módulo é responsável por cadastrar novos produtos no estoque.
 # Utiliza BANCO DE DADOS (SQLAlchemy) para armazenar os dados.
@@ -14,218 +14,139 @@
 
 from src.database import Produto
 
-def cadastrar_produto(db_session):
+# ============================================================================
+# FUNÇÕES DE LÓGICA PURA (PARA API E CLI)
+# ============================================================================
+
+def registrar_entrada_produto(db_session, codigo, nome, quantidade, valor=0.0, data=None, fornecedor=None, local=None):
     """
-    Cadastra novos produtos no banco de dados.
+    Registra a entrada de um produto no estoque (Lógica Pura).
     
-    Parâmetros:
-    -----------
-    db_session : Session
-        Sessão do banco de dados SQLAlchemy
-    
-    Funcionalidades:
-    ----------------
-    1. Permite cadastrar múltiplos produtos em sequência
-    2. Verifica duplicidade pelo código do produto no banco
-    3. Se o produto já existe, apenas atualiza a quantidade (soma)
-    4. Se é novo, solicita todas as informações e adiciona ao banco
+    Retorna:
+        tuple: (produto_objeto, is_novo_produto)
     """
+    if not nome:
+        raise ValueError("Nome do produto é obrigatório")
+    if quantidade <= 0:
+        raise ValueError("Quantidade deve ser maior que zero")
     
+    # Verifica se o produto já existe pelo código
+    produto = db_session.query(Produto).filter_by(codigo=codigo).first() # Busca por código único
+    
+    if produto:
+        # Atualizar produto existente
+        produto.quantidade += quantidade # Incrementa quantidade
+        produto.valor = valor if valor > 0 else produto.valor # Atualiza valor se fornecido
+        if data:
+            produto.data = data
+        if fornecedor:
+            produto.fornecedor = fornecedor
+        if local:
+            produto.local = local
+        
+        db_session.commit()
+        return (produto, False)
+    else:
+        # Criar novo produto
+        novo_produto = Produto(
+            codigo=codigo,
+            nome=nome,
+            quantidade=quantidade,
+            valor=valor,
+            data=data or "",
+            fornecedor=fornecedor or "",
+            local=local or ""
+        )
+        
+        db_session.add(novo_produto)
+        db_session.commit()
+        return (novo_produto, True)
+
+
+# ============================================================================
+# FUNÇÕES INTERATIVAS (CLI)
+# ============================================================================
+
+def cadastrar_produtos(db_session):
+    """
+    Cadastra múltiplos produtos no estoque (Interface Console).
+    """
     print("\n" + "="*50)
-    print("   MODULO 2: ENTRADA DE ESTOQUE")
+    print("   MÓDULO 1: ENTRADA DE ESTOQUE")
     print("="*50)
     
-    # ========================================================================
-    # PASSO 1: DEFINIR QUANTOS PRODUTOS SERÃO CADASTRADOS
-    # ========================================================================
-    # Este módulo permite cadastrar vários produtos de uma vez
     try:
-        qtd_cadastro = int(input("\n Quantos produtos deseja cadastrar agora? "))
-        
-        # Validação: não aceita valores zero ou negativos
-        if qtd_cadastro <= 0:
-            print("\n Quantidade deve ser maior que zero!")
+        qtd_produtos = int(input("\n Quantos produtos deseja cadastrar? "))
+        if qtd_produtos > 10:
+            print(" Aviso: Limitado a 10 produtos conforme regra do sistema.")
+            qtd_produtos = 10
+        if qtd_produtos <= 0:
+            print(" Quantidade deve ser maior que zero!")
             return
-            
     except ValueError:
-        # Tratamento de erro para entradas não numéricas
-        print("\n Erro: Digite apenas numeros inteiros!")
+        print(" Erro: Digite apenas números inteiros!")
         return
     
-    # ========================================================================
-    # PASSO 2: LOOP PARA CADASTRAR CADA PRODUTO
-    # ========================================================================
-    # ========================================================================
-    # PASSO 2: LOOP PARA CADASTRAR CADA PRODUTO
-    # ========================================================================
-    # range(qtd_cadastro) gera números de 0 até qtd_cadastro-1
-    # Exemplo: se qtd_cadastro=3, range gera [0, 1, 2]
-    for i in range(qtd_cadastro):
-        print("\n" + "-"*50)
-        # i+1 mostra "Produto 1, 2, 3..." em vez de "0, 1, 2..."
-        print(f" CADASTRANDO PRODUTO {i+1} DE {qtd_cadastro}")
-        print("-"*50)
+    produtos_novos = 0
+    produtos_atualizados = 0
+    
+    for i in range(qtd_produtos):
+        print("\n" + "="*50)
+        print(f" PRODUTO {i+1} DE {qtd_produtos}")
+        print("="*50)
         
-        # ====================================================================
-        # PASSO 2.1: COLETAR DADOS BÁSICOS (CÓDIGO, NOME, QUANTIDADE)
-        # ====================================================================
-        # Coleta os dados essenciais que todo produto precisa ter
-        try:
-            codigo = int(input(" Codigo do produto: "))
-            # .strip() remove espaços em branco no início e fim
-            nome = input(" Nome do produto: ").strip()
-            
-            # Validação: nome não pode ser vazio
-            if not nome:
-                print(" Nome nao pode estar vazio! Pulando este produto.")
-                continue  # Pula para próxima iteração do loop
-                
-            quantidade_nova = int(input(" Quantidade: "))
-            
-            # Validação: quantidade deve ser positiva
-            if quantidade_nova <= 0:
-                print(" Quantidade deve ser maior que zero! Pulando este produto.")
-                continue
-                
-        except ValueError:
-            # Erro ao converter texto para número
-            print(" Erro: Dados invalidos! Pulando este produto.")
+        codigo = input(" Código do produto: ").strip()
+        if not codigo:
+            print(" Código não pode estar vazio! Pulando este produto.")
             continue
         
-        # ====================================================================
-        # PASSO 2.2: VERIFICAR SE O PRODUTO JÁ EXISTE (EVITAR DUPLICIDADE)
-        # ====================================================================
-        # Consulta SQL: SELECT * FROM produto WHERE codigo = <codigo> LIMIT 1
-        # .first() retorna o primeiro resultado ou None se não encontrar
-        produto_existente = db_session.query(Produto).filter_by(codigo=codigo).first()
+        nome = input(" Nome do produto: ").strip()
+        if not nome:
+            print(" Nome não pode estar vazio! Pulando este produto.")
+            continue
         
-        if produto_existente:
-            # ================================================================
-            # CENÁRIO 1: PRODUTO JÁ CADASTRADO
-            # ================================================================
-            # Em vez de criar duplicata, apenas soma a quantidade (atualização)
-            produto_existente.quantidade += quantidade_nova
-            db_session.commit()  # Salva a alteração no banco de dados
-            
-            print(f"\n Produto '{produto_existente.nome}' ja existe no estoque!")
-            print(f"   Quantidade atualizada: {produto_existente.quantidade} unidades")
+        try:
+            quantidade = int(input(" Quantidade: "))
+            if quantidade <= 0:
+                print(" Quantidade deve ser maior que zero! Pulando este produto.")
+                continue
+        except ValueError:
+            print(" Erro: Quantidade inválida! Pulando este produto.")
+            continue
         
-        # ====================================================================
-        # PASSO 2.3: PRODUTO NOVO - COLETAR DADOS COMPLETOS
-        # ====================================================================
-        else:
-            # Produto não encontrado no banco, precisamos cadastrar do zero
-            print("\n Produto novo! Coletando informacoes adicionais...")
-            
-            # Solicita dados adicionais necessários para cadastro completo
-            data = input(" Data de fabricacao (ex: 26/11/2025): ").strip()
-            fornecedor = input(" Fornecedor: ").strip()
-            local = input(" Local no armazem (ex: Corredor A, Prateleira 3): ").strip()
-            
-            try:
-                # float() converte para número decimal (aceita centavos)
-                valor = float(input(" Valor unitario (R$): "))
-                
-                # Validação: preço não pode ser negativo
-                if valor < 0:
-                    print(" Valor nao pode ser negativo! Usando R$ 0,00")
-                    valor = 0.0
-                    
-            except ValueError:
-                # Se digitar texto em vez de número
-                print(" Valor invalido! Usando R$ 0,00")
-                valor = 0.0
-            
-            # ================================================================
-            # CRIAR O OBJETO DO PRODUTO E SALVAR NO BANCO
-            # ================================================================
-            # Produto() cria uma instância do modelo definido em database.py
-            # Este objeto representa uma linha da tabela 'produtos' no banco
-            novo_produto = Produto(
-                codigo=codigo,
-                nome=nome,
-                quantidade=quantidade_nova,
-                data=data,
-                fornecedor=fornecedor,
-                local=local,
-                valor=valor
+        try:
+            valor = float(input(" Valor unitário (R$): "))
+        except ValueError:
+            print(" Aviso: Valor inválido, será definido como R$ 0.00")
+            valor = 0.0
+        
+        data = input(" Data de fabricação (opcional): ").strip()
+        fornecedor = input(" Fornecedor (opcional): ").strip()
+        local = input(" Local de armazenamento (opcional): ").strip()
+        
+        # Chama a função pura
+        try:
+            produto, is_novo = registrar_entrada_produto(
+                db_session, codigo, nome, quantidade, valor, data, fornecedor, local
             )
             
-            # db_session.add() prepara o objeto para inserção
-            db_session.add(novo_produto)
-            # db_session.commit() efetiva a transação (grava no banco)
-            db_session.commit()
-            
-            print("\n Produto cadastrado com sucesso!")
-            print(f"   Codigo: {codigo}")
-            print(f"   Nome: {nome}")
-            print(f"   Quantidade: {quantidade_nova} unidades")
-            print(f"   Valor: R$ {valor:.2f}")
-    
-    # ========================================================================
-    # PASSO 3: EXIBIR RESUMO DO ESTOQUE
-    # ========================================================================
-    listar_estoque(db_session)
-
-
-def listar_estoque(db_session):
-    """
-    Função auxiliar para listar todos os produtos em estoque.
-    
-    Esta função demonstra:
-    - Consulta de todos os registros de uma tabela (.all())
-    - Funções agregadoras (sum, len)
-    - List comprehension para somatorias
-    - Formatação monetária brasileira
-    
-    Parâmetros:
-    -----------
-    db_session : Session
-        Sessão do banco de dados SQLAlchemy
-    """
-    # Busca TODOS os produtos do banco
-    # SQL equivalente: SELECT * FROM produtos
-    produtos = db_session.query(Produto).all()
-    
-    # Verifica se a consulta retornou algum resultado
-    if not produtos:
-        print("\n Estoque vazio! Nenhum produto cadastrado.")
-        return
+            if is_novo:
+                print(f"\n ✓ Produto '{produto.nome}' cadastrado com sucesso!")
+                produtos_novos += 1
+            else:
+                print(f"\n ✓ Produto '{produto.nome}' atualizado! Nova quantidade: {produto.quantidade}")
+                produtos_atualizados += 1
+                
+        except Exception as e:
+            print(f" Erro ao cadastrar produto: {e}")
     
     print("\n" + "="*50)
-    print("   LISTA COMPLETA DE PRODUTOS")
+    print("   RESUMO DO CADASTRO")
     print("="*50)
-    
-    # len() retorna o número de elementos na lista
-    print(f" Total de produtos diferentes: {len(produtos)}")
-    
-    # sum() com generator expression: soma quantidade de todos os produtos
-    # for p in produtos itera por cada produto, .quantidade acessa o atributo
-    total_itens = sum(p.quantidade for p in produtos)
-    print(f" Total de itens em estoque: {total_itens} unidades")
-    
-    # Cálculo do valor total: quantidade * preço unitário de cada produto
-    valor_total = sum(p.quantidade * p.valor for p in produtos)
-    print(f" Valor total do estoque: R$ {valor_total:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.'))
-    print("="*50)
-    
-    for i, produto in enumerate(produtos, 1):
-        print(f"\n{i}. {produto.nome}")
-        print(f"   Código: {produto.codigo}")
-        print(f"   Quantidade: {produto.quantidade} unidades")
-        print(f"   Valor: R$ {produto.valor:.2f}")
-        print(f"   Local: {produto.local}")
-        print(f"   Fornecedor: {produto.fornecedor}")
-        print(f"   Data: {produto.data}")
-    
+    print(f"\n Produtos novos cadastrados: {produtos_novos}")
+    print(f" Produtos atualizados: {produtos_atualizados}")
     print("="*50)
 
 
-# ============================================================================
-# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
-# ============================================================================
 if __name__ == "__main__":
-    print("🧪 Testando o Módulo de Entrada de Estoque...\n")
-    estoque_teste = []
-    cadastrar_produto(estoque_teste)
-    listar_estoque(estoque_teste)
+    print(" Testando o Módulo de Entrada de Estoque...\n")

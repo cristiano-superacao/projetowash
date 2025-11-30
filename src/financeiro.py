@@ -247,5 +247,5 @@ def calcular_payback():
 # FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
 # ============================================================================
 if __name__ == "__main__":
-    print("🧪 Testando o Módulo Financeiro...\n")
+    print(" Testando o Módulo Financeiro...\n")
     calcular_lucros()
