@@ -333,5 +333,3 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(`  - ${u.email || u.loginUsuario} (${u.role}) - Senha: ${u.senha}`);
     });
 });
-    console.log('Usuario admin padrao: admin@local.com / admin123');
-});

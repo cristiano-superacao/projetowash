@@ -78,8 +78,18 @@
                 </div>
                 
                 <div class="admin-login-hint">
-                    <i class="fas fa-info-circle"></i>
-                    <p><strong>Dica:</strong> Crie sua conta de empresa para começar a usar o sistema.</p>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
+                        <p style="margin: 0; font-size: 0.9rem;"><strong>Acesso Rápido (Demo):</strong></p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" onclick="loginRapido('superadmin')" class="btn btn-sm btn-primary" style="flex: 1; background-color: #1e40af; border: none;">
+                            <i class="fas fa-user-shield"></i> Super Admin
+                        </button>
+                        <button type="button" onclick="loginRapido('admin')" class="btn btn-sm btn-secondary" style="flex: 1; background-color: #475569; border: none;">
+                            <i class="fas fa-user-tie"></i> Admin Local
+                        </button>
+                    </div>
                 </div>
             </div>
             
