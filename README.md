@@ -1,6 +1,18 @@
 # Sistema Quatro Cantos 🏢
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/projetowash/deploys)
+![GitHub last commit](https://img.shields.io/github/last-commit/cristiano-superacao/projetowash)
+![GitHub repo size](https://img.shields.io/github/repo-size/cristiano-superacao/projetowash)
+
 Bem-vindo ao repositório do **Quatro Cantos**, um sistema de gestão empresarial (ERP) moderno, versátil e com interface profissional responsiva.
+
+## 🌐 Deploy Automático
+
+🚀 **Deploy contínuo configurado!** Toda alteração na branch `main` é automaticamente publicada no Netlify.
+
+- **URL Produção**: https://projetowash.netlify.app
+- **Painel Netlify**: https://app.netlify.com/sites/projetowash
+- **Configuração**: Veja [DEPLOY_GUIDE.md](./DEPLOY_GUIDE.md) para instruções detalhadas
 
 ## 🚀 Visão Geral
 
