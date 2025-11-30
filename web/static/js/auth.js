@@ -390,10 +390,25 @@ async function listarUsuarios() {
         return;
     }
 
+    // Obter informações da empresa do usuário atual
+    const currentUserData = (typeof localCurrentUser !== 'undefined' && localCurrentUser) 
+        ? localCurrentUser 
+        : (currentUser || {});
+    
+    const nomeEmpresa = currentUserData.nomeEmpresa || 'Empresa';
+    const companyId = currentUserData.companyId || '';
+
     const html = `
         <div class="users-manager">
             <div class="manager-header">
-                <h3>Gerenciar Usuários</h3>
+                <div>
+                    <h3>Gerenciar Usuários</h3>
+                    <p class="company-info">
+                        <i class="fas fa-building"></i> 
+                        <strong>${nomeEmpresa}</strong>
+                        ${users.length > 0 ? `<span class="user-count">(${users.length} ${users.length === 1 ? 'usuário' : 'usuários'})</span>` : ''}
+                    </p>
+                </div>
                 <button class="btn btn-success btn-sm" onclick="showAddUser()">
                     <i class="fas fa-plus"></i> Novo Usuário
                 </button>
