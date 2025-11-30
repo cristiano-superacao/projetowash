@@ -109,6 +109,28 @@ p { margin-bottom: var(--spacing-md); }
     box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
 }
 
+/* Estilos para o módulo estoque entrada */
+.btn-estoque-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+}
+
+.btn-estoque-gradient:active {
+    transform: translateY(0);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+/* Focus states para inputs e selects dos formulários */
+#formOperacional input:focus,
+#formOperacional select:focus,
+#formEstoqueEntrada input:focus,
+#formEstoqueEntrada select:focus {
+    outline: none;
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+    background: #ffffff !important;
+}
+
 #turnos:focus {
     outline: none;
     border-color: #3b82f6 !important;

@@ -196,91 +196,174 @@ function loadEstoqueEntradaModule(container) {
     
     const html = `
         <div class="card">
-            <div class="card-header">
-                <i class="fas fa-box-open"></i> ${titulo}
+            <div class="card-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0;">
+                <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fas fa-box-open" style="font-size: 1.5rem;"></i>
+                    <span>Módulo Estoque - Entrada de Produtos</span>
+                </h3>
             </div>
             
-            <form id="formEstoqueEntrada" onsubmit="cadastrarProduto(event)">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="codigo"><i class="fas fa-barcode"></i> Código SKU</label>
-                        <input type="number" id="codigo" name="codigo" required min="1" placeholder="Ex: 1001">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="nome"><i class="fas fa-tag"></i> Nome do ${segmento ? (segmento.nome === 'Construção Civil' ? 'Material' : 'Produto') : 'Produto'}</label>
-                        <input type="text" id="nome" name="nome" required placeholder="Ex: Cimento CP-II 50kg">
-                    </div>
-                </div>
+            <div style="padding: 2rem;">
+                <h4 style="color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-cube" style="color: #10b981;"></i>
+                    ${titulo}
+                </h4>
                 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="tipoMaterial"><i class="fas fa-layer-group"></i> Tipo de Material</label>
-                        <select id="tipoMaterial" name="tipoMaterial" required>
-                            <option value="">Selecione o tipo</option>
-                        </select>
+                <form id="formEstoqueEntrada" onsubmit="cadastrarProduto(event)">
+                    <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label for="codigo" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-barcode" style="font-size: 0.9rem;"></i>
+                                Código SKU
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-barcode" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="number" id="codigo" name="codigo" required min="1" placeholder="Ex: 1001" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="nome" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-tag" style="font-size: 0.9rem;"></i>
+                                Nome do ${segmento ? (segmento.nome === 'Construção Civil' ? 'Material' : 'Produto') : 'Produto'}
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-tag" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="text" id="nome" name="nome" required placeholder="Ex: Cimento CP-II 50kg" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="categoria"><i class="fas fa-folder"></i> Categoria</label>
-                        <select id="categoria" name="categoria" required>
-                            <option value="">Selecione a categoria</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="lote"><i class="fas fa-archive"></i> Lote de Produção</label>
-                        <input type="text" id="lote" name="lote" required placeholder="Ex: BAT-2023-X99">
+                    <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="tipoMaterial" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-layer-group" style="font-size: 0.9rem;"></i>
+                                Tipo de Material
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-layer-group" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <select id="tipoMaterial" name="tipoMaterial" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
+                                    <option value="">Selecione o tipo</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="categoria" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-folder" style="font-size: 0.9rem;"></i>
+                                Categoria
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-folder" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <select id="categoria" name="categoria" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
+                                    <option value="">Selecione a categoria</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="serial"><i class="fas fa-fingerprint"></i> Número de Série</label>
-                        <input type="text" id="serial" name="serial" required placeholder="Ex: SN-99887766">
+                    <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="lote" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-archive" style="font-size: 0.9rem;"></i>
+                                Lote de Produção
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-archive" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="text" id="lote" name="lote" required placeholder="Ex: BAT-2023-X99" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="serial" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-fingerprint" style="font-size: 0.9rem;"></i>
+                                Número de Série
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-fingerprint" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="text" id="serial" name="serial" required placeholder="Ex: SN-99887766" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="quantidade"><i class="fas fa-cubes"></i> Quantidade</label>
-                        <input type="number" id="quantidade" name="quantidade" required min="1" placeholder="Ex: 100">
+                    <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="quantidade" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-cubes" style="font-size: 0.9rem;"></i>
+                                Quantidade
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-cubes" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="number" id="quantidade" name="quantidade" required min="1" placeholder="Ex: 100" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="unidadeMedida" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-balance-scale" style="font-size: 0.9rem;"></i>
+                                Unidade de Medida
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-balance-scale" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <select id="unidadeMedida" name="unidadeMedida" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
+                                    <option value="">Selecione</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="data" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-calendar" style="font-size: 0.9rem;"></i>
+                                Data de Fabricação
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-calendar" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="date" id="data" name="data" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="unidadeMedida"><i class="fas fa-balance-scale"></i> Unidade de Medida</label>
-                        <select id="unidadeMedida" name="unidadeMedida" required>
-                            <option value="">Selecione</option>
-                        </select>
+                    <div class="form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div class="form-group">
+                            <label for="fornecedor" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-truck" style="font-size: 0.9rem;"></i>
+                                Fornecedor/Origem
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-truck" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="text" id="fornecedor" name="fornecedor" required placeholder="Ex: Fornecedor ABC" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="local" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-map-marker-alt" style="font-size: 0.9rem;"></i>
+                                Local no Armazém
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-map-marker-alt" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                                <input type="text" id="local" name="local" required placeholder="Ex: Setor B, Rua 4" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="data"><i class="fas fa-calendar"></i> Data de Fabricação</label>
-                        <input type="date" id="data" name="data" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="fornecedor"><i class="fas fa-truck"></i> Fornecedor/Origem</label>
-                        <input type="text" id="fornecedor" name="fornecedor" required placeholder="Ex: Fornecedor ABC">
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label for="valor" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fas fa-dollar-sign" style="font-size: 0.9rem;"></i>
+                            Custo Unitário (R$)
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fas fa-dollar-sign" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
+                            <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 32.50" style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease;">
+                        </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="local"><i class="fas fa-map-marker-alt"></i> Local no Armazém</label>
-                        <input type="text" id="local" name="local" required placeholder="Ex: Setor B, Rua 4">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="valor"><i class="fas fa-dollar-sign"></i> Custo Unitário (R$)</label>
-                    <input type="number" id="valor" name="valor" required min="0" step="0.01" placeholder="Ex: 32.50">
-                </div>
-                
-                <button type="submit" class="btn btn-success btn-block">
-                    <i class="fas fa-save"></i> Registrar Entrada
-                </button>
-            </form>
+                    <button type="submit" class="btn btn-estoque-gradient" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 600; border: none; border-radius: 8px; background: linear-gradient(90deg, #10b981 0%, #059669 100%); color: white; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem;">
+                        <i class="fas fa-save" style="font-size: 1.25rem;"></i>
+                        Registrar Entrada
+                    </button>
+                </form>
+            </div>
         </div>
     `;
     
@@ -290,6 +373,37 @@ function loadEstoqueEntradaModule(container) {
     popularSelectTipoMaterial('tipoMaterial');
     popularSelectCategoria(segmentoSalvo, 'categoria');
     popularSelectUnidadeMedida('unidadeMedida', segmentoSalvo);
+    
+    // Adicionar event listeners para interatividade
+    setTimeout(() => {
+        // Botão submit
+        const btn = document.querySelector('.btn-estoque-gradient');
+        if (btn) {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+                this.style.boxShadow = '0 10px 25px rgba(16, 185, 129, 0.4)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = 'none';
+            });
+        }
+        
+        // Inputs focus/blur
+        const inputs = document.querySelectorAll('#formEstoqueEntrada input, #formEstoqueEntrada select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.borderColor = '#3b82f6';
+                this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.1)';
+                this.style.background = '#ffffff';
+            });
+            input.addEventListener('blur', function() {
+                this.style.borderColor = '#e5e7eb';
+                this.style.boxShadow = 'none';
+                this.style.background = '#f9fafb';
+            });
+        });
+    }, 100);
 }
 
 async function cadastrarProduto(event) {
