@@ -171,7 +171,7 @@ Project Console: https://console.firebase.google.com/...
 2. **Computador C:**
    - Criar conta `empresa2@teste.com`
    - Verificar lista de produtos
-   -  NÃO deve ver "Produto A" (isolamento)
+   -  NÁO deve ver "Produto A" (isolamento)
 
 ---
 
@@ -224,7 +224,7 @@ O backend Python (`app.py`, `estoque_entrada.py`, etc.) é opcional e serve apen
 
        COMPUTADOR C (Empresa XYZ)             
   Browser → Firebase Auth → companyId=xyz789  
-   NÃO VÊ dados da Empresa ABC              
+   NÁO VÊ dados da Empresa ABC              
 
 ```
 
@@ -311,7 +311,7 @@ O backend Python (`app.py`, `estoque_entrada.py`, etc.) é opcional e serve apen
 
 ---
 
-##  EXPLICAÇÃO PARA SALA DE AULA
+##  EXPLICAÇÁO PARA SALA DE AULA
 
 ### Como funciona o Multi-Tenancy?
 
@@ -363,9 +363,9 @@ db.collection('produtos')
 // 5⃣ Firestore Rules valida:
 // "companyId == request.auth.uid?" 
 //  SIM → Libera acesso
-//  NÃO → Bloqueia (Permission denied)
+//  NÁO → Bloqueia (Permission denied)
 ```
 
 ---
 
-** SISTEMA PRONTO PARA APRESENTAÇÃO E USO EM PRODUÇÃO! **
+** SISTEMA PRONTO PARA APRESENTAÇÁO E USO EM PRODUÇÁO! **

@@ -1,9 +1,9 @@
 # ============================================================================
 # ARQUIVO: app.py
-# SISTEMA DE GESTÃO EMPRESARIAL - API REST COM FLASK
+# SISTEMA DE GESTÁO EMPRESARIAL - API REST COM FLASK
 # ============================================================================
 # 
-# DESCRIÇÃO:
+# DESCRIÇÁO:
 # Este arquivo é o servidor principal da aplicação web. Ele cria uma API REST
 # (Representational State Transfer) usando o framework Flask do Python.
 # A API conecta o backend (Python) com o frontend (HTML/CSS/JavaScript).
@@ -34,14 +34,14 @@ import os
 from functools import wraps
 
 # ============================================================================
-# CONFIGURAÇÃO DO PATH DO SISTEMA
+# CONFIGURAÇÁO DO PATH DO SISTEMA
 # ============================================================================
 # Adiciona o diretório 'src' ao caminho de busca do Python
 # Isso permite importar os módulos localizados na pasta src/
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # ============================================================================
-# IMPORTAÇÃO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
+# IMPORTAÇÁO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
 # ============================================================================
 # Importa as classes e funções dos módulos do sistema
 from database import init_db, Produto, Funcionario, SessionLocal # Funções para gerenciar o banco de dados
@@ -52,7 +52,7 @@ from estoque_entrada import registrar_entrada_produto # Função refatorada do m
 from estoque_saida import registrar_saida_produto # Função refatorada do módulo estoque saída
 
 # ============================================================================
-# CRIAÇÃO E CONFIGURAÇÃO DA APLICAÇÃO FLASK
+# CRIAÇÁO E CONFIGURAÇÁO DA APLICAÇÁO FLASK
 # ============================================================================
 # Cria a instância principal da aplicação Flask
 # template_folder: define onde estão os arquivos HTML
@@ -62,20 +62,20 @@ app = Flask(__name__,
             static_folder='web/static')
 
 # ============================================================================
-# CONFIGURAÇÃO DE CORS (Cross-Origin Resource Sharing)
+# CONFIGURAÇÁO DE CORS (Cross-Origin Resource Sharing)
 # ============================================================================
 # CORS permite que o frontend (rodando em uma URL) acesse o backend (rodando
 # em outra URL). Essencial para APIs REST e aplicações PWA.
 CORS(app)
 
 # ============================================================================
-# INICIALIZAÇÃO DO BANCO DE DADOS
+# INICIALIZAÇÁO DO BANCO DE DADOS
 # ============================================================================
 # Chama a função que cria as tabelas no banco de dados caso não existam
 init_db()
 
 # ============================================================================
-# MIDDLEWARE DE SEGURANÇA: VALIDAÇÃO DE API KEY
+# MIDDLEWARE DE SEGURANÇA: VALIDAÇÁO DE API KEY
 # ============================================================================
 # Este decorator (função que decora outra função) adiciona uma camada de
 # segurança às rotas da API. Exige que o cliente envie uma chave de API
@@ -117,7 +117,7 @@ def require_api_key(f):
     return decorated_function
 
 # ============================================================================
-# MIDDLEWARE DE CONTROLE DE ACESSO BASEADO EM FUNÇÃO (RBAC)
+# MIDDLEWARE DE CONTROLE DE ACESSO BASEADO EM FUNÇÁO (RBAC)
 # ============================================================================
 # RBAC = Role-Based Access Control (Controle de Acesso Baseado em Função)
 # 
@@ -541,7 +541,7 @@ def excluir_funcionario(id):
         db.close()
 
 # ============================================================================
-# INICIALIZAÇÃO DO SERVIDOR WEB
+# INICIALIZAÇÁO DO SERVIDOR WEB
 # ============================================================================
 # Este bloco é executado quando o arquivo app.py é executado diretamente
 # (não quando é importado como módulo)

@@ -67,7 +67,7 @@
 3. Role para baixo até **"Seus aplicativos"** ou **"Your apps"**
 4. Clique no ícone **"</>"** (Web)
 5. **Apelido do app:** Digite `quatro-cantos-web`
-6. **NÃO marque** "Configure Firebase Hosting"
+6. **NÁO marque** "Configure Firebase Hosting"
 7. Clique em **"Registrar app"**
 8. **COPIE** todo o objeto `firebaseConfig`:
 
@@ -98,7 +98,7 @@ t:\Sistemas_Desenvolvimento\projetowash\web\static\js\firebase-config.js
 Substitua as credenciais:
 
 ```javascript
-// ===== CONFIGURAÇÃO DO FIREBASE =====
+// ===== CONFIGURAÇÁO DO FIREBASE =====
 // Obtenha suas credenciais em: https://console.firebase.google.com
 // Configurações do projeto > Aplicativo web
 

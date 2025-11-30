@@ -25,7 +25,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 // ============================================================================
-// INSTALAÇÃO DO APP
+// INSTALAÇÁO DO APP
 // ============================================================================
 
 installButton.addEventListener('click', async () => {
@@ -118,7 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================================================
-// VERIFICAR STATUS DA CONEXÃO
+// VERIFICAR STATUS DA CONEXÁO
 // ============================================================================
 
 function updateOnlineStatus() {

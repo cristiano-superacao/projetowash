@@ -1,4 +1,4 @@
-#  DOCUMENTAÇÃO COMPLETA - QUATRO CANTOS
+#  DOCUMENTAÇÁO COMPLETA - QUATRO CANTOS
 
 ##  Índice
 
@@ -13,7 +13,7 @@
 
 ---
 
-##  VISÃO GERAL
+##  VISÁO GERAL
 
 Sistema completo de gestão empresarial com:
 -  Interface web responsiva
@@ -93,7 +93,7 @@ projetowash/
 
 ---
 
-##  GUIA DE INSTALAÇÃO
+##  GUIA DE INSTALAÇÁO
 
 ### Pré-requisitos
 
@@ -447,7 +447,7 @@ CÁLCULOS:
 
 ---
 
-##  INTEGRAÇÃO FIREBASE (CLOUD)
+##  INTEGRAÇÁO FIREBASE (CLOUD)
 
 ### Configuração do Firebase
 
@@ -869,7 +869,7 @@ python app.py --port 8000
 
 ---
 
-##  CHECKLIST DE PRODUÇÃO
+##  CHECKLIST DE PRODUÇÁO
 
 Antes de colocar em produção:
 

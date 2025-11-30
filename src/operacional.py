@@ -1,6 +1,6 @@
 # operacional.py
 # ============================================================================
-# MÓDULO 1: OPERACIONAL - CÁLCULO DE CAPACIDADE DE PRODUÇÃO
+# MÓDULO 1: OPERACIONAL - CÁLCULO DE CAPACIDADE DE PRODUÇÁO
 # ============================================================================
 # Este módulo é responsável por calcular a capacidade de produção da fábrica
 # com base no número de turnos ativos (Manhã, Tarde e/ou Noite).
@@ -66,7 +66,7 @@ def calcular_capacidade():
     print(f"\n Capacidade por turno: {capacidade_por_turno} unidades")
     
     # ========================================================================
-    # PASSO 2: PERGUNTAR QUANTOS TURNOS ESTARÃO ATIVOS
+    # PASSO 2: PERGUNTAR QUANTOS TURNOS ESTARÁO ATIVOS
     # ========================================================================
     # A empresa pode operar em 1, 2 ou 3 turnos dependendo da demanda
     print("\n Turnos disponiveis: Manha, Tarde, Noite")
@@ -77,7 +77,7 @@ def calcular_capacidade():
         turnos = int(input("Quantos turnos estarao ativos (1, 2 ou 3)? "))
         
         # ====================================================================
-        # VALIDAÇÃO: Verificar se o número está entre 1 e 3
+        # VALIDAÇÁO: Verificar se o número está entre 1 e 3
         # ====================================================================
         # Não faz sentido ter 0 turnos ou mais de 3 turnos (máximo possível)
         if turnos < 1 or turnos > 3:
@@ -86,7 +86,7 @@ def calcular_capacidade():
             
     except ValueError:
         # ====================================================================
-        # TRATAMENTO DE EXCEÇÃO
+        # TRATAMENTO DE EXCEÇÁO
         # ====================================================================
         # Se o usuário digitar texto (ex: "abc"), int() gera ValueError
         # O bloco except captura esse erro e exibe mensagem amigável
@@ -94,7 +94,7 @@ def calcular_capacidade():
         return
         
     # ========================================================================
-    # PASSO 3: REALIZAR OS CÁLCULOS DE CAPACIDADE (USANDO FUNÇÃO PURA)
+    # PASSO 3: REALIZAR OS CÁLCULOS DE CAPACIDADE (USANDO FUNÇÁO PURA)
     # ========================================================================
     
     dados = calcular_metricas_capacidade(turnos)
@@ -123,7 +123,7 @@ def calcular_capacidade():
     print(f"\n Percentual de Uso:  {percentual_uso:.1f}% da capacidade maxima")
     
     # ========================================================================
-    # ANÁLISE DA CAPACIDADE (DECISÃO BASEADA EM LÓGICA)
+    # ANÁLISE DA CAPACIDADE (DECISÁO BASEADA EM LÓGICA)
     # ========================================================================
     # Verifica se há capacidade ociosa (não utilizada)
     if diferenca > 0:
@@ -142,7 +142,7 @@ def calcular_capacidade():
 # BLOCO DE TESTE ISOLADO
 # ============================================================================
 # __name__ == "__main__" é True apenas quando este arquivo é executado diretamente
-# Se este módulo for importado em outro arquivo, este bloco NÃO é executado
+# Se este módulo for importado em outro arquivo, este bloco NÁO é executado
 # Isso permite testar o módulo de forma independente
 # ============================================================================
 if __name__ == "__main__":

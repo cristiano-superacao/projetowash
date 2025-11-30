@@ -377,7 +377,7 @@ Computador C (Empresa Diferente)
   > Cria conta: outra@empresa.com
       > Firebase gera uid: "xyz789"
           > companyId = "xyz789"
-              > NÃO vê produtos de "abc123" 
+              > NÁO vê produtos de "abc123" 
 ```
 
 ---

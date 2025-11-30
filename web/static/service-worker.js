@@ -73,7 +73,7 @@ async function limitCacheSize() {
 }
 
 // ============================================================================
-// INSTALAÇÃO DO SERVICE WORKER
+// INSTALAÇÁO DO SERVICE WORKER
 // ============================================================================
 self.addEventListener('install', (event) => {
     console.log('Service Worker v10: Instalando...');
@@ -95,7 +95,7 @@ self.addEventListener('install', (event) => {
 });
 
 // ============================================================================
-// ATIVAÇÃO DO SERVICE WORKER (COM LIMPEZA DE CACHES ANTIGOS)
+// ATIVAÇÁO DO SERVICE WORKER (COM LIMPEZA DE CACHES ANTIGOS)
 // ============================================================================
 self.addEventListener('activate', (event) => {
     console.log('Service Worker v10: Ativando...');
@@ -188,7 +188,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 // ============================================================================
-// SINCRONIZAÇÃO EM BACKGROUND (OPCIONAL)
+// SINCRONIZAÇÁO EM BACKGROUND (OPCIONAL)
 // ============================================================================
 self.addEventListener('sync', (event) => {
     console.log('Service Worker: Sincronização em background');
@@ -232,7 +232,7 @@ self.addEventListener('push', (event) => {
 });
 
 // ============================================================================
-// CLIQUE EM NOTIFICAÇÃO
+// CLIQUE EM NOTIFICAÇÁO
 // ============================================================================
 self.addEventListener('notificationclick', (event) => {
     console.log('Service Worker: Notificação clicada');

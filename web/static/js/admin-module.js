@@ -1,11 +1,11 @@
 // ============================================================================
-// MÓDULO DE ADMINISTRAÇÃO - SUPER ADMIN
+// MÓDULO DE ADMINISTRAÇÁO - SUPER ADMIN
 // ============================================================================
 // Este módulo permite ao super administrador visualizar todas as empresas
 // cadastradas no sistema, seus dados e estatísticas gerais.
 
 // ============================================================================
-// FUNÇÃO PRINCIPAL - CARREGAR PAINEL ADMINISTRATIVO
+// FUNÇÁO PRINCIPAL - CARREGAR PAINEL ADMINISTRATIVO
 // ============================================================================
 
 function loadAdminModule() {

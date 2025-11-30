@@ -1,5 +1,5 @@
 ﻿// ============================================================================
-// MÃ“DULO OPERACIONAL
+// MÁ“DULO OPERACIONAL
 // ============================================================================
 
 function loadOperacionalModule(container) {
@@ -8,29 +8,29 @@ function loadOperacionalModule(container) {
             <div class="card-header" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0;">
                 <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
                     <i class="fas fa-industry" style="font-size: 1.5rem;"></i>
-                    <span>MÃ³dulo Operacional - Capacidade de Producao</span>
+                    <span>Módulo Operacional - Capacidade de Producao</span>
                 </h3>
             </div>
             
             <div style="padding: 2rem;">
                 <h4 style="color: #1e293b; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-calculator" style="color: #667eea;"></i>
-                    CÃ¡lculo de Capacidade de ProduÃ§Ã£o
+                    Cálculo de Capacidade de ProduÁ§Á£o
                 </h4>
                 
                 <form id="formOperacional" onsubmit="calcularOperacional(event)">
                     <div class="form-group">
                         <label for="turnos" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                             <i class="fas fa-clock" style="font-size: 0.9rem;"></i>
-                            NÃºmero de Turnos Ativos
+                            Número de Turnos Ativos
                         </label>
                         <div class="input-group" style="position: relative;">
                             <i class="fas fa-clock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
                             <select id="turnos" name="turnos" required style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; background: #f9fafb; transition: all 0.3s ease; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%239ca3af%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.25rem;">
                                 <option value="">Selecione...</option>
-                                <option value="1">1 Turno (ManhÃ£ ou Tarde ou Noite)</option>
-                                <option value="2">2 Turnos (ManhÃ£ + Tarde ou ManhÃ£ + Noite, etc)</option>
-                                <option value="3">3 Turnos (ManhÃ£ + Tarde + Noite - 24h)</option>
+                                <option value="1">1 Turno (ManhÁ£ ou Tarde ou Noite)</option>
+                                <option value="2">2 Turnos (ManhÁ£ + Tarde ou ManhÁ£ + Noite, etc)</option>
+                                <option value="3">3 Turnos (ManhÁ£ + Tarde + Noite - 24h)</option>
                             </select>
                         </div>
                     </div>
@@ -48,7 +48,7 @@ function loadOperacionalModule(container) {
     
     container.innerHTML = html;
     
-    // Adicionar evento de hover no botÃ£o
+    // Adicionar evento de hover no botÁ£o
     setTimeout(() => {
         const btn = document.querySelector('.btn-operacional-gradient');
         if (btn) {
@@ -87,9 +87,9 @@ async function calcularOperacional(event) {
     showLoading('Calculando capacidade...');
     
     try {
-        // CÃ¡lculo local de capacidade
-        const capacidade_por_turno = 1666; // unidades por turno (padrÃ£o da empresa)
-        const dias_mes = 22; // dias Ãºteis
+        // Cálculo local de capacidade
+        const capacidade_por_turno = 1666; // unidades por turno (padrÁ£o da empresa)
+        const dias_mes = 22; // dias úteis
         const horas_por_turno = 8;
         
         const capacidade_diaria = capacidade_por_turno * turnos;
@@ -113,7 +113,7 @@ async function calcularOperacional(event) {
         };
         
         exibirResultadoOperacional(data);
-        showToast('CÃ¡lculo realizado com sucesso!', 'success');
+        showToast('Cálculo realizado com sucesso!', 'success');
         
     } catch (error) {
         console.error('Erro ao calcular:', error);
@@ -141,7 +141,7 @@ function exibirResultadoOperacional(data) {
                         <td>${data.horas_por_turno}h/dia</td>
                     </tr>
                     <tr>
-                        <td><strong>Capacidade DiÃ¡ria:</strong></td>
+                        <td><strong>Capacidade Diária:</strong></td>
                         <td>${formatNumber(data.capacidade_diaria)} unidades (${data.horas_dia}h/dia)</td>
                     </tr>
                     <tr>
@@ -153,7 +153,7 @@ function exibirResultadoOperacional(data) {
                         <td>${formatNumber(data.capacidade_anual)} unidades</td>
                     </tr>
                     <tr>
-                        <td><strong>Capacidade MÃ¡xima (3 turnos):</strong></td>
+                        <td><strong>Capacidade Máxima (3 turnos):</strong></td>
                         <td>${formatNumber(data.capacidade_maxima)} unidades</td>
                     </tr>
                     <tr>
@@ -161,7 +161,7 @@ function exibirResultadoOperacional(data) {
                         <td>${data.percentual_uso}%</td>
                     </tr>
                     <tr>
-                        <td><strong>Capacidade Ociosa (DiÃ¡ria):</strong></td>
+                        <td><strong>Capacidade Ociosa (Diária):</strong></td>
                         <td>${formatNumber(data.diferenca_diaria)} unidades</td>
                     </tr>
                 </table>
@@ -170,11 +170,11 @@ function exibirResultadoOperacional(data) {
             ${data.percentual_uso < 100 ? 
                 `<div class="alert alert-warning mt-2">
                     <i class="fas fa-exclamation-triangle"></i>
-                    A fÃ¡brica estÃ¡ operando abaixo da capacidade mÃ¡xima. HÃ¡ oportunidade de aumento produtivo.
+                    A fábrica está operando abaixo da capacidade máxima. Há oportunidade de aumento produtivo.
                 </div>` : 
                 `<div class="alert alert-success mt-2">
                     <i class="fas fa-check-circle"></i>
-                    A fÃ¡brica estÃ¡ operando em capacidade TOTAL!
+                    A fábrica está operando em capacidade TOTAL!
                 </div>`
             }
         </div>
@@ -185,21 +185,21 @@ function exibirResultadoOperacional(data) {
 }
 
 // ============================================================================
-// MÃ“DULO ESTOQUE ENTRADA
+// MÁ“DULO ESTOQUE ENTRADA
 // ============================================================================
 
 function loadEstoqueEntradaModule(container) {
     // Carregar segmento da empresa
     const segmentoSalvo = localStorage.getItem('segmento_empresa') || '';
     const segmento = SEGMENTOS_EMPRESARIAIS[segmentoSalvo];
-    const titulo = segmento ? `Cadastrar ${segmento.nome === 'ConstruÃ§Ã£o Civil' ? 'Material' : 'Produto'}` : 'Cadastrar Produto';
+    const titulo = segmento ? `Cadastrar ${segmento.nome === 'ConstruÁ§Á£o Civil' ? 'Material' : 'Produto'}` : 'Cadastrar Produto';
     
     const html = `
         <div class="card">
             <div class="card-header" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 1.5rem; border-radius: 12px 12px 0 0;">
                 <h3 style="margin: 0; display: flex; align-items: center; gap: 0.75rem;">
                     <i class="fas fa-box-open" style="font-size: 1.5rem;"></i>
-                    <span>MÃ³dulo Estoque - Entrada de Produtos</span>
+                    <span>Módulo Estoque - Entrada de Produtos</span>
                 </h3>
             </div>
             
@@ -214,7 +214,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="codigo" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-barcode" style="font-size: 0.9rem;"></i>
-                                CÃ³digo SKU
+                                Código SKU
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-barcode" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -225,7 +225,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="nome" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-tag" style="font-size: 0.9rem;"></i>
-                                Nome do ${segmento ? (segmento.nome === 'ConstruÃ§Ã£o Civil' ? 'Material' : 'Produto') : 'Produto'}
+                                Nome do ${segmento ? (segmento.nome === 'ConstruÁ§Á£o Civil' ? 'Material' : 'Produto') : 'Produto'}
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-tag" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -266,7 +266,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="lote" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-archive" style="font-size: 0.9rem;"></i>
-                                Lote de ProduÃ§Ã£o
+                                Lote de ProduÁ§Á£o
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-archive" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -277,7 +277,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="serial" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-fingerprint" style="font-size: 0.9rem;"></i>
-                                NÃºmero de SÃ©rie
+                                Número de Série
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-fingerprint" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -314,7 +314,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="data" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-calendar" style="font-size: 0.9rem;"></i>
-                                Data de FabricaÃ§Ã£o
+                                Data de FabricaÁ§Á£o
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-calendar" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -338,7 +338,7 @@ function loadEstoqueEntradaModule(container) {
                         <div class="form-group">
                             <label for="local" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                                 <i class="fas fa-map-marker-alt" style="font-size: 0.9rem;"></i>
-                                Local no ArmazÃ©m
+                                Local no Armazém
                             </label>
                             <div style="position: relative;">
                                 <i class="fas fa-map-marker-alt" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -350,7 +350,7 @@ function loadEstoqueEntradaModule(container) {
                     <div class="form-group" style="margin-top: 1rem;">
                         <label for="valor" style="color: #3b82f6; font-weight: 600; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem;">
                             <i class="fas fa-dollar-sign" style="font-size: 0.9rem;"></i>
-                            Custo UnitÃ¡rio (R$)
+                            Custo Unitário (R$)
                         </label>
                         <div style="position: relative;">
                             <i class="fas fa-dollar-sign" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; z-index: 10;"></i>
@@ -376,7 +376,7 @@ function loadEstoqueEntradaModule(container) {
     
     // Adicionar event listeners para interatividade
     setTimeout(() => {
-        // BotÃ£o submit
+        // BotÁ£o submit
         const btn = document.querySelector('.btn-estoque-gradient');
         if (btn) {
             btn.addEventListener('mouseenter', function() {
@@ -409,7 +409,7 @@ function loadEstoqueEntradaModule(container) {
 async function cadastrarProduto(event) {
     event.preventDefault();
     
-    // ValidaÃ§Ã£o dos campos
+    // ValidaÁ§Á£o dos campos
     const codigo = document.getElementById('codigo').value.trim();
     const nome = document.getElementById('nome').value.trim();
     const tipoMaterial = document.getElementById('tipoMaterial').value.trim();
@@ -451,7 +451,7 @@ async function cadastrarProduto(event) {
         showToast('Produto registrado com sucesso!', 'success');
         document.getElementById('formEstoqueEntrada').reset();
         
-        // Repopular selects apÃ³s reset
+        // Repopular selects após reset
         const segmentoSalvo = localStorage.getItem('segmento_empresa') || '';
         popularSelectTipoMaterial('tipoMaterial');
         popularSelectCategoria(segmentoSalvo, 'categoria');
@@ -466,14 +466,14 @@ async function cadastrarProduto(event) {
 }
 
 // ============================================================================
-// MÃ“DULO ESTOQUE SAÃDA
+// MÁ“DULO ESTOQUE SAÁDA
 // ============================================================================
 
 function loadEstoqueSaidaModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-truck-loading"></i> Registrar Venda/SaÃ­da
+                <i class="fas fa-truck-loading"></i> Registrar Venda/Saída
             </div>
             
             <form id="formEstoqueSaida" onsubmit="venderProduto(event)">
@@ -519,18 +519,18 @@ async function venderProduto(event) {
         const produto = produtos.find(p => p.nome.toLowerCase() === nomeProduto.toLowerCase());
         
         if (!produto) {
-            showToast(` Produto "${nomeProduto}" nÃ£o encontrado`, 'error');
+            showToast(` Produto "${nomeProduto}" nÁ£o encontrado`, 'error');
             hideLoading();
             return;
         }
         
         if (produto.quantidade < quantidadeVenda) {
-            showToast(` Estoque insuficiente. DisponÃ­vel: ${produto.quantidade}`, 'warning');
+            showToast(` Estoque insuficiente. Disponível: ${produto.quantidade}`, 'warning');
             hideLoading();
             return;
         }
         
-        // Registrar saÃ­da
+        // Registrar saída
         const valorVenda = produto.valor * 1.3; // Margem de 30%
         await registrarSaidaEstoque(produto.nome, quantidadeVenda, produto.id, valorVenda);
         
@@ -573,7 +573,7 @@ function exibirResultadoVenda(data) {
                         <td>${formatNumber(data.quantidade)} unidades</td>
                     </tr>
                     <tr>
-                        <td><strong>Valor UnitÃ¡rio:</strong></td>
+                        <td><strong>Valor Unitário:</strong></td>
                         <td>${formatCurrency(data.valorUnitario)}</td>
                     </tr>
                     <tr>
@@ -598,20 +598,20 @@ function exibirResultadoVenda(data) {
 }
 
 // ============================================================================
-// MÃ“DULO FINANCEIRO
+// MÁ“DULO FINANCEIRO
 // ============================================================================
 
 function loadFinanceiroModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-chart-line"></i> CÃ¡lculo Financeiro
+                <i class="fas fa-chart-line"></i> Cálculo Financeiro
             </div>
             
             <form id="formFinanceiro" onsubmit="calcularFinanceiro(event)">
                 <div class="financeiro-form-grid">
                     <div class="form-group">
-                        <label for="agua"><i class="fas fa-water"></i> Conta de Ãgua (R$)</label>
+                        <label for="agua"><i class="fas fa-water"></i> Conta de Água (R$)</label>
                         <input type="number" id="agua" name="agua" required min="0" step="0.01" placeholder="Ex: 1000.00">
                     </div>
                     
@@ -626,12 +626,12 @@ function loadFinanceiroModule(container) {
                     </div>
                     
                     <div class="form-group">
-                        <label for="salarios"><i class="fas fa-money-bill-wave"></i> SalÃ¡rios (R$)</label>
+                        <label for="salarios"><i class="fas fa-money-bill-wave"></i> Salários (R$)</label>
                         <input type="number" id="salarios" name="salarios" required min="0" step="0.01" placeholder="Ex: 20000.00">
                     </div>
                     
                     <div class="form-group full-width">
-                        <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/MÃªs</label>
+                        <label for="totalPallets"><i class="fas fa-boxes"></i> Total de Pallets/MÁªs</label>
                         <input type="number" id="totalPallets" name="totalPallets" required min="1" placeholder="Ex: 1000">
                     </div>
                 </div>
@@ -658,7 +658,7 @@ async function calcularFinanceiro(event) {
     const totalPallets = parseInt(document.getElementById('totalPallets').value);
     
     if (agua < 0 || luz < 0 || impostos < 0 || salarios < 0 || totalPallets <= 0) {
-        showToast('Valores invÃ¡lidos. Verifique os dados inseridos', 'error');
+        showToast('Valores inválidos. Verifique os dados inseridos', 'error');
         return;
     }
     
@@ -725,13 +725,13 @@ function exibirResultadoFinanceiro(data) {
     
     const html = `
         <div class="card">
-            <h4><i class="fas fa-chart-pie"></i> RelatÃ³rio Financeiro</h4>
+            <h4><i class="fas fa-chart-pie"></i> Relatório Financeiro</h4>
             
             <h5 class="mt-3"> Custos Mensais</h5>
             <div class="table-container">
                 <table>
                     <tr>
-                        <td>Ãgua:</td>
+                        <td>Água:</td>
                         <td>${formatCurrency(data.custos.agua)}</td>
                     </tr>
                     <tr>
@@ -743,7 +743,7 @@ function exibirResultadoFinanceiro(data) {
                         <td>${formatCurrency(data.custos.impostos)}</td>
                     </tr>
                     <tr>
-                        <td>SalÃ¡rios:</td>
+                        <td>Salários:</td>
                         <td>${formatCurrency(data.custos.salarios)}</td>
                     </tr>
                     <tr style="font-weight: bold; background: #f0f0f0;">
@@ -753,7 +753,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3"> PrecificaÃ§Ã£o</h5>
+            <h5 class="mt-3"> PrecificaÁ§Á£o</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -761,7 +761,7 @@ function exibirResultadoFinanceiro(data) {
                         <td>${formatCurrency(data.precificacao.custo_por_pallet)}</td>
                     </tr>
                     <tr>
-                        <td>PreÃ§o de Venda:</td>
+                        <td>PreÁ§o de Venda:</td>
                         <td>${formatCurrency(data.precificacao.preco_venda)}</td>
                     </tr>
                     <tr>
@@ -775,7 +775,7 @@ function exibirResultadoFinanceiro(data) {
                 </table>
             </div>
             
-            <h5 class="mt-3"> ProjeÃ§Ãµes</h5>
+            <h5 class="mt-3"> ProjeÁ§Áµes</h5>
             <div class="table-container">
                 <table>
                     <tr>
@@ -801,8 +801,8 @@ function exibirResultadoFinanceiro(data) {
             <div class="table-container">
                 <table>
                     <tr>
-                        <td>Ponto de EquilÃ­brio:</td>
-                        <td>${formatNumber(data.indicadores.ponto_equilibrio)} pallets/mÃªs</td>
+                        <td>Ponto de Equilíbrio:</td>
+                        <td>${formatNumber(data.indicadores.ponto_equilibrio)} pallets/mÁªs</td>
                     </tr>
                     <tr>
                         <td>ROI (Retorno):</td>
@@ -818,63 +818,63 @@ function exibirResultadoFinanceiro(data) {
 }
 
 // ============================================================================
-// MÃ“DULO RH (COM PERSISTÃŠNCIA E PESQUISA)
+// MÁ“DULO RH (COM PERSISTÁŠNCIA E PESQUISA)
 // ============================================================================
 
-let funcionariosCache = []; // Cache local para pesquisa e cÃ¡lculo
-let lastCalculatedFolha = null; // Cache para exportaÃ§Ã£o PDF
+let funcionariosCache = []; // Cache local para pesquisa e cálculo
+let lastCalculatedFolha = null; // Cache para exportaÁ§Á£o PDF
 
 function loadRHModule(container) {
     const html = `
         <div class="card">
             <div class="card-header">
-                <i class="fas fa-users"></i> GestÃ£o de RH e Folha de Pagamento
+                <i class="fas fa-users"></i> GestÁ£o de RH e Folha de Pagamento
             </div>
             
-            <!-- FormulÃ¡rio de Cadastro -->
+            <!-- Formulário de Cadastro -->
             <div class="card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
-                <h5 class="mb-3"><i class="fas fa-user-plus"></i> Novo FuncionÃ¡rio</h5>
+                <h5 class="mb-3"><i class="fas fa-user-plus"></i> Novo Funcionário</h5>
                 <form id="formCadastroFuncionario" onsubmit="cadastrarFuncionarioAPI(event)">
                     <div class="form-row">
                         <div class="form-group">
                             <label>Nome Completo</label>
-                            <input type="text" id="novoNome" required placeholder="Ex: JoÃ£o da Silva">
+                            <input type="text" id="novoNome" required placeholder="Ex: JoÁ£o da Silva">
                         </div>
                         <div class="form-group">
                             <label>Cargo</label>
                             <select id="novoCargo" required>
                                 <option value="">Selecione...</option>
-                                <option value="OperÃ¡rio">OperÃ¡rio (R$ 15/h)</option>
+                                <option value="Operário">Operário (R$ 15/h)</option>
                                 <option value="Supervisor">Supervisor (R$ 40/h)</option>
                                 <option value="Gerente">Gerente (R$ 60/h)</option>
                                 <option value="Diretor">Diretor (R$ 80/h)</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>AdmissÃ£o</label>
+                            <label>AdmissÁ£o</label>
                             <input type="date" id="novoAdmissao">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success btn-sm">
-                        <i class="fas fa-save"></i> Salvar FuncionÃ¡rio
+                        <i class="fas fa-save"></i> Salvar Funcionário
                     </button>
                 </form>
             </div>
 
             <!-- Barra de Pesquisa -->
             <div class="form-group">
-                <label><i class="fas fa-search"></i> Pesquisar FuncionÃ¡rio</label>
+                <label><i class="fas fa-search"></i> Pesquisar Funcionário</label>
                 <input type="text" id="searchFuncionario" onkeyup="filtrarFuncionarios()" placeholder="Digite o nome para buscar...">
             </div>
             
-            <!-- Lista de FuncionÃ¡rios -->
+            <!-- Lista de Funcionários -->
             <div id="listaFuncionariosContainer" class="mb-3">
-                <p class="text-center text-muted">Carregando funcionÃ¡rios...</p>
+                <p class="text-center text-muted">Carregando funcionários...</p>
             </div>
             
             <div class="button-group">
                 <button class="btn btn-primary" onclick="calcularFolhaPagamentoAPI()">
-                    <i class="fas fa-calculator"></i> Calcular Folha (MÃªs Atual)
+                    <i class="fas fa-calculator"></i> Calcular Folha (MÁªs Atual)
                 </button>
             </div>
             
@@ -894,11 +894,11 @@ async function cadastrarFuncionarioAPI(event) {
     const admissao = document.getElementById('novoAdmissao').value;
     
     if (!nome || !cargo) {
-        showToast('Nome e Cargo sÃ£o obrigatÃ³rios', 'warning');
+        showToast('Nome e Cargo sÁ£o obrigatórios', 'warning');
         return;
     }
     
-    showLoading('Salvando funcionÃ¡rio...');
+    showLoading('Salvando funcionário...');
     
     try {
         await apiRequest('/rh/funcionarios', {
@@ -906,13 +906,13 @@ async function cadastrarFuncionarioAPI(event) {
             body: JSON.stringify({ nome, cargo, admissao })
         });
         
-        showToast('FuncionÃ¡rio cadastrado com sucesso!', 'success');
+        showToast('Funcionário cadastrado com sucesso!', 'success');
         document.getElementById('formCadastroFuncionario').reset();
         listarFuncionariosAPI(); // Recarrega a lista
         
     } catch (error) {
         console.error('Erro ao cadastrar:', error);
-        showToast('Erro ao cadastrar funcionÃ¡rio', 'error');
+        showToast('Erro ao cadastrar funcionário', 'error');
     } finally {
         hideLoading();
     }
@@ -929,7 +929,7 @@ async function listarFuncionariosAPI() {
         
     } catch (error) {
         console.error('Erro ao listar:', error);
-        container.innerHTML = '<p class="text-danger">Erro ao carregar funcionÃ¡rios.</p>';
+        container.innerHTML = '<p class="text-danger">Erro ao carregar funcionários.</p>';
     }
 }
 
@@ -937,7 +937,7 @@ function renderizarListaFuncionarios(lista) {
     const container = document.getElementById('listaFuncionariosContainer');
     
     if (lista.length === 0) {
-        container.innerHTML = '<p class="text-muted text-center">Nenhum funcionÃ¡rio cadastrado.</p>';
+        container.innerHTML = '<p class="text-muted text-center">Nenhum funcionário cadastrado.</p>';
         return;
     }
     
@@ -977,23 +977,23 @@ function filtrarFuncionarios() {
 
 async function removerFuncionarioAPI(id) {
     // Solicitar senha de admin
-    const senha = prompt(" Ãrea Restrita\nDigite a senha de administrador para excluir:");
+    const senha = prompt(" Área Restrita\nDigite a senha de administrador para excluir:");
     
     if (!senha) return; // Cancelado
     
     showLoading('Excluindo...');
     
     try {
-        // Headers personalizados precisam ser passados de forma especÃ­fica
-        // Adicionamos X-User-Role: admin para permitir a exclusÃ£o no backend
-        // (Simulando elevaÃ§Ã£o de privilÃ©gio via senha)
+        // Headers personalizados precisam ser passados de forma específica
+        // Adicionamos X-User-Role: admin para permitir a exclusÁ£o no backend
+        // (Simulando elevaÁ§Á£o de privilégio via senha)
         
         const token = localStorage.getItem('api_key');
         const headers = {
             'Content-Type': 'application/json',
             'X-API-KEY': token,
             'X-Admin-Pass': senha,
-            'X-User-Role': 'admin' // NecessÃ¡rio para passar no middleware @require_role('admin')
+            'X-User-Role': 'admin' // Necessário para passar no middleware @require_role('admin')
         };
 
         const response = await fetch(`${API_BASE_URL}/rh/funcionarios/${id}`, {
@@ -1004,7 +1004,7 @@ async function removerFuncionarioAPI(id) {
         const data = await response.json();
         
         if (response.ok && data.success) {
-            showToast('FuncionÃ¡rio excluÃ­do com sucesso!', 'success');
+            showToast('Funcionário excluído com sucesso!', 'success');
             listarFuncionariosAPI();
         } else {
             showToast(data.error || 'Erro ao excluir (Senha incorreta?)', 'error');
@@ -1012,7 +1012,7 @@ async function removerFuncionarioAPI(id) {
         
     } catch (error) {
         console.error('Erro ao excluir:', error);
-        showToast('Erro de conexÃ£o ao excluir', 'error');
+        showToast('Erro de conexÁ£o ao excluir', 'error');
     } finally {
         hideLoading();
     }
@@ -1035,7 +1035,7 @@ async function calcularFolhaPagamentoAPI() {
     }));
     
     if (funcionariosParaCalculo.length === 0) {
-        showToast('Nenhum funcionÃ¡rio para calcular', 'warning');
+        showToast('Nenhum funcionário para calcular', 'warning');
         return;
     }
     
@@ -1059,7 +1059,7 @@ async function calcularFolhaPagamentoAPI() {
 }
 
 function exibirResultadoRH(data) {
-    lastCalculatedFolha = data; // Salvar para exportaÃ§Ã£o
+    lastCalculatedFolha = data; // Salvar para exportaÁ§Á£o
     const resultado = document.getElementById('resultadoRH');
     
     let tabelaHTML = '';
@@ -1097,10 +1097,10 @@ function exibirResultadoRH(data) {
                             <th>Cargo</th>
                             <th>Valor/h</th>
                             <th>HE</th>
-                            <th>SalÃ¡rio Bruto</th>
+                            <th>Salário Bruto</th>
                             <th>INSS</th>
                             <th>IR</th>
-                            <th>LÃ­quido</th>
+                            <th>Líquido</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1113,7 +1113,7 @@ function exibirResultadoRH(data) {
             <div class="table-container">
                 <table>
                     <tr>
-                        <td>Total de FuncionÃ¡rios:</td>
+                        <td>Total de Funcionários:</td>
                         <td>${data.totais.total_funcionarios}</td>
                     </tr>
                     <tr style="font-weight: bold;">
@@ -1129,7 +1129,7 @@ function exibirResultadoRH(data) {
                         <td>${formatCurrency(data.totais.total_ir)}</td>
                     </tr>
                     <tr style="font-weight: bold; background: #e8f5e9;">
-                        <td>Total LÃ­quido:</td>
+                        <td>Total Líquido:</td>
                         <td>${formatCurrency(data.totais.total_liquido)}</td>
                     </tr>
                     <tr>
@@ -1161,16 +1161,16 @@ async function exportarFolhaPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // CabeÃ§alho
+    // CabeÁ§alho
     doc.setFontSize(18);
     doc.text('Quatro Cantos', 14, 22);
     doc.setFontSize(14);
-    doc.text('RelatÃ³rio de Folha de Pagamento', 14, 32);
+    doc.text('Relatório de Folha de Pagamento', 14, 32);
     doc.setFontSize(10);
-    doc.text(`Data de EmissÃ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
+    doc.text(`Data de EmissÁ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 40);
     
-    // Tabela de FuncionÃ¡rios
-    const tableColumn = ["Nome", "Cargo", "Valor/h", "HE", "Bruto", "INSS", "IR", "LÃ­quido"];
+    // Tabela de Funcionários
+    const tableColumn = ["Nome", "Cargo", "Valor/h", "HE", "Bruto", "INSS", "IR", "Líquido"];
     const tableRows = [];
 
     lastCalculatedFolha.funcionarios.forEach(func => {
@@ -1204,7 +1204,7 @@ async function exportarFolhaPDF() {
     const totais = lastCalculatedFolha.totais;
     doc.setFontSize(10);
     doc.text(`Total Bruto: ${formatCurrency(totais.total_bruto)}`, 14, finalY + 10);
-    doc.text(`Total LÃ­quido: ${formatCurrency(totais.total_liquido)}`, 14, finalY + 16);
+    doc.text(`Total Líquido: ${formatCurrency(totais.total_liquido)}`, 14, finalY + 16);
     doc.text(`Encargos Patronais: ${formatCurrency(totais.encargos_patronais)}`, 14, finalY + 22);
     doc.text(`Custo Total Empresa: ${formatCurrency(totais.custo_total_empresa)}`, 14, finalY + 28);
     
@@ -1213,7 +1213,7 @@ async function exportarFolhaPDF() {
 }
 
 // ============================================================================
-// MÃ“DULO VISUALIZAR ESTOQUE
+// MÁ“DULO VISUALIZAR ESTOQUE
 // ============================================================================
 
 async function loadVisualizarModule(container) {
@@ -1276,7 +1276,7 @@ async function loadVisualizarModule(container) {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>CÃ³digo</th>
+                                    <th>Código</th>
                                     <th>Nome</th>
                                     <th>Lote</th>
                                     <th>Serial</th>
@@ -1300,7 +1300,7 @@ async function loadVisualizarModule(container) {
                 <div class="card text-center">
                     <i class="fas fa-box-open" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
                     <h3>Estoque Vazio</h3>
-                    <p>Nenhum produto cadastrado ainda. Use o mÃ³dulo de Entrada de Estoque para comeÃ§ar.</p>
+                    <p>Nenhum produto cadastrado ainda. Use o módulo de Entrada de Estoque para comeÁ§ar.</p>
                 </div>
             `;
         }
@@ -1327,18 +1327,18 @@ async function exportarEstoquePDF() {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
         
-        // CabeÃ§alho
+        // CabeÁ§alho
         doc.setFontSize(18);
         doc.text('Quatro Cantos', 14, 22);
         doc.setFontSize(14);
-        doc.text('RelatÃ³rio de Rastreabilidade', 14, 32);
+        doc.text('Relatório de Rastreabilidade', 14, 32);
         doc.setFontSize(12);
-        doc.text('InventÃ¡rio de Componentes e Produtos', 14, 40);
+        doc.text('Inventário de Componentes e Produtos', 14, 40);
         doc.setFontSize(10);
-        doc.text(`Data de EmissÃ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 48);
+        doc.text(`Data de EmissÁ£o: ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR')}`, 14, 48);
         
         // Tabela
-        const tableColumn = ["CÃ³d", "Produto", "Lote", "Serial", "Qtd", "Valor Unit.", "Total", "Local"];
+        const tableColumn = ["Cód", "Produto", "Lote", "Serial", "Qtd", "Valor Unit.", "Total", "Local"];
         const tableRows = [];
         
         let valorTotalEstoque = 0;
@@ -1389,11 +1389,11 @@ async function exportarEstoquePDF() {
 }
 
 // ============================================================================
-// MÃ“DULO HISTÃ“RICO
+// MÁ“DULO HISTÁ“RICO
 // ============================================================================
 
 async function loadHistoricoModule(container) {
-    showLoading('Carregando histÃ³rico...');
+    showLoading('Carregando histórico...');
     
     try {
         const movimentacoes = await obterHistoricoMovimentacoes();
@@ -1412,7 +1412,7 @@ async function loadHistoricoModule(container) {
                 const dataFormatada = formatDateTime(mov.timestamp);
                 const tipoBadge = mov.tipo === 'entrada' 
                     ? '<span class="status-badge active">Entrada</span>' 
-                    : '<span class="status-badge inactive">SaÃ­da</span>';
+                    : '<span class="status-badge inactive">Saída</span>';
                 
                 const quantidade = mov.quantidade || mov.quantidadeVendida || 0;
                 const valor = mov.valorVenda ? formatCurrency(mov.valorVenda) : '-';
@@ -1432,7 +1432,7 @@ async function loadHistoricoModule(container) {
             const html = `
                 <div class="card">
                     <div class="card-header">
-                        <i class="fas fa-history"></i> HistÃ³rico de MovimentaÃ§Ãµes
+                        <i class="fas fa-history"></i> Histórico de MovimentaÁ§Áµes
                     </div>
                     
                     <div class="table-container">
@@ -1444,7 +1444,7 @@ async function loadHistoricoModule(container) {
                                     <th>Produto</th>
                                     <th>Qtd</th>
                                     <th>Valor Venda</th>
-                                    <th>UsuÃ¡rio</th>
+                                    <th>Usuário</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1460,15 +1460,15 @@ async function loadHistoricoModule(container) {
             container.innerHTML = `
                 <div class="card text-center">
                     <i class="fas fa-history" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
-                    <h3>Sem HistÃ³rico</h3>
-                    <p>Nenhuma movimentaÃ§Ã£o registrada ainda.</p>
+                    <h3>Sem Histórico</h3>
+                    <p>Nenhuma movimentaÁ§Á£o registrada ainda.</p>
                 </div>
             `;
         }
     } catch (error) {
-        console.error('Erro ao carregar histÃ³rico:', error);
-        showToast('Erro ao carregar histÃ³rico', 'error');
-        container.innerHTML = `<div class="card alert alert-error"><p>Erro ao carregar histÃ³rico</p></div>`;
+        console.error('Erro ao carregar histórico:', error);
+        showToast('Erro ao carregar histórico', 'error');
+        container.innerHTML = `<div class="card alert alert-error"><p>Erro ao carregar histórico</p></div>`;
     } finally {
         hideLoading();
     }

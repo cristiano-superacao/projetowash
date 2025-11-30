@@ -1,5 +1,5 @@
-// ===== CONFIGURAÇÃO DO FIREBASE =====
-// IMPORTANTE: Estas são credenciais de DEMONSTRAÇÃO
+// ===== CONFIGURAÇÁO DO FIREBASE =====
+// IMPORTANTE: Estas são credenciais de DEMONSTRAÇÁO
 // Para usar em produção, crie seu projeto em: https://console.firebase.google.com
 // e substitua pelas suas credenciais reais
 const firebaseConfig = {
@@ -23,7 +23,7 @@ try {
         db = firebase.firestore();
         auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         firebaseInitialized = true;
-        console.log("Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÃO" : "PRODUÇÃO") + ")");
+        console.log("Firebase inicializado! (Modo: " + (firebaseConfig.apiKey.includes("Demo") ? "DEMONSTRAÇÁO" : "PRODUÇÁO") + ")");
     } else {
         console.warn(" Firebase não configurado. Usando modo local offline.");
         console.info("Para ativar Firebase: Configure em firebase-config.js");

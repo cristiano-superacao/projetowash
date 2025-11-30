@@ -95,7 +95,7 @@ def calcular_lucros():
         return
     
     # ========================================================================
-    # PASSO 2: CALCULAR O CUSTO TOTAL E MÉTRICAS (USANDO FUNÇÃO PURA)
+    # PASSO 2: CALCULAR O CUSTO TOTAL E MÉTRICAS (USANDO FUNÇÁO PURA)
     # ========================================================================
     total_pallets = 1000  # Volume de movimentação mensal padrão
     print(f"\n Volume de movimentacao mensal: {total_pallets} pallets")
@@ -244,7 +244,7 @@ def calcular_payback():
 
 
 # ============================================================================
-# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
+# FUNÇÁO AUXILIAR PARA TESTES (OPCIONAL)
 # ============================================================================
 if __name__ == "__main__":
     print(" Testando o Módulo Financeiro...\n")

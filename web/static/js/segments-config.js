@@ -1,5 +1,5 @@
 // ============================================================================
-// CONFIGURAÇÃO DE SEGMENTOS E TIPOS DE MATERIAIS
+// CONFIGURAÇÁO DE SEGMENTOS E TIPOS DE MATERIAIS
 // ============================================================================
 // Define categorias e tipos de materiais baseados no segmento da empresa
 

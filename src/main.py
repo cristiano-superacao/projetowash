@@ -1,9 +1,9 @@
 # ============================================================================
 # ARQUIVO: main.py
-# SISTEMA DE GESTÃO - QUATRO CANTOS
+# SISTEMA DE GESTÁO - QUATRO CANTOS
 # ============================================================================
 #
-# DESCRIÇÃO:
+# DESCRIÇÁO:
 # Este é o arquivo principal do sistema em modo console/terminal.
 # Ele gerencia o menu interativo e permite que o usuário navegue entre
 # os diferentes módulos do sistema através de opções numeradas.
@@ -25,20 +25,20 @@
 # ============================================================================
 
 # ============================================================================
-# IMPORTAÇÕES DE BIBLIOTECAS PADRÃO DO PYTHON
+# IMPORTAÇÕES DE BIBLIOTECAS PADRÁO DO PYTHON
 # ============================================================================
 import sys  # Módulo para manipulação de sistema e paths
 import os   # Módulo para operações com sistema operacional
 
 # ============================================================================
-# CONFIGURAÇÃO DO CAMINHO DE IMPORTAÇÃO
+# CONFIGURAÇÁO DO CAMINHO DE IMPORTAÇÁO
 # ============================================================================
 # Adiciona o diretório pai ao path de busca do Python
 # Isso permite que o Python encontre os módulos na pasta 'src'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # ============================================================================
-# IMPORTAÇÃO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
+# IMPORTAÇÁO DOS MÓDULOS CUSTOMIZADOS DO SISTEMA
 # ============================================================================
 # Cada módulo representa uma funcionalidade específica do sistema
 from src import operacional       # Módulo para cálculos operacionais e produtivos
@@ -49,7 +49,7 @@ from src import rh                # Módulo de Recursos Humanos (RH)
 from src.database import init_db, SessionLocal  # Funções para gerenciar o banco de dados
 
 # ============================================================================
-# FUNÇÃO PRINCIPAL DO SISTEMA
+# FUNÇÁO PRINCIPAL DO SISTEMA
 # ============================================================================
 
 def iniciar_sistema():
@@ -72,14 +72,14 @@ def iniciar_sistema():
     """
     
     # ========================================================================
-    # INICIALIZAÇÃO DO BANCO DE DADOS
+    # INICIALIZAÇÁO DO BANCO DE DADOS
     # ========================================================================
     print(" Inicializando banco de dados...")
     init_db()  # Chama a função que cria as tabelas caso não existam
     print(" Banco de dados conectado!")
     
     # ========================================================================
-    # CRIAÇÃO DA SESSÃO DO BANCO DE DADOS
+    # CRIAÇÁO DA SESSÁO DO BANCO DE DADOS
     # ========================================================================
     # SessionLocal() cria uma sessão que permite executar operações no banco
     # (consultas, inserções, atualizações, exclusões)
@@ -92,7 +92,7 @@ def iniciar_sistema():
         # Este loop mantém o sistema rodando até o usuário decidir sair
         while True:
             # ================================================================
-            # EXIBIÇÃO DO MENU PRINCIPAL
+            # EXIBIÇÁO DO MENU PRINCIPAL
             # ================================================================
             print("\n" + "="*50)
             print("   QUATRO CANTOS")
@@ -113,47 +113,47 @@ def iniciar_sistema():
             opcao = input("Digite a opcao desejada: ")
 
             # ================================================================
-            # PROCESSAMENTO DA OPÇÃO ESCOLHIDA
+            # PROCESSAMENTO DA OPÇÁO ESCOLHIDA
             # ================================================================
             # Estrutura condicional if/elif/else para determinar qual
             # módulo chamar baseado na opção digitada
             
             if opcao == "1":
-                # OPÇÃO 1: Módulo Operacional
+                # OPÇÁO 1: Módulo Operacional
                 # Calcula a capacidade de produção baseada em turnos de trabalho
                 operacional.calcular_capacidade()
                 
             elif opcao == "2":
-                # OPÇÃO 2: Módulo Estoque - Entrada
+                # OPÇÁO 2: Módulo Estoque - Entrada
                 # Cadastra novos produtos que entraram no estoque
                 # Passa db_session para o módulo poder acessar o banco
                 estoque_entrada.cadastrar_produto(db_session)
                 
             elif opcao == "3":
-                # OPÇÃO 3: Módulo Estoque - Saída
+                # OPÇÁO 3: Módulo Estoque - Saída
                 # Registra vendas ou saídas de produtos do estoque
                 # Passa db_session para o módulo poder acessar o banco
                 estoque_saida.vender_produto(db_session)
                 
             elif opcao == "4":
-                # OPÇÃO 4: Módulo Financeiro
+                # OPÇÁO 4: Módulo Financeiro
                 # Calcula custos operacionais e margem de lucro
                 financeiro.calcular_lucros()
                 
             elif opcao == "5":
-                # OPÇÃO 5: Módulo RH (Recursos Humanos)
+                # OPÇÁO 5: Módulo RH (Recursos Humanos)
                 # Calcula folha de pagamento dos funcionários
                 rh.calcular_folha_pagamento()
                 
             elif opcao == "0":
-                # OPÇÃO 0: Sair do Sistema
+                # OPÇÁO 0: Sair do Sistema
                 print("\n" + "="*50)
                 print("   Encerrando o sistema... Ate logo!")
                 print("="*50 + "\n")
                 break  # Comando 'break' encerra o loop while e fecha o programa
                 
             else:
-                # OPÇÃO INVÁLIDA: Nenhuma das opções válidas foi digitada
+                # OPÇÁO INVÁLIDA: Nenhuma das opções válidas foi digitada
                 print("\n Opcao invalida! Por favor, tente novamente.")
     
     finally:

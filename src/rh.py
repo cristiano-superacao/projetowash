@@ -104,7 +104,7 @@ def calcular_folha_pagamento():
     lista_funcionarios = []
     
     # ========================================================================
-    # PASSO 1: DEFINIR QUANTOS FUNCIONÁRIOS SERÃO CALCULADOS
+    # PASSO 1: DEFINIR QUANTOS FUNCIONÁRIOS SERÁO CALCULADOS
     # ========================================================================
     try:
         qtd = int(input("\n Quantos funcionarios vai calcular? "))
@@ -168,12 +168,12 @@ def calcular_folha_pagamento():
         elif cargo_opcao == "3":
             cargo = "Gerente"
             valor_hora = 60.00
-            paga_hora_extra = False  # Gerente NÃO RECEBE hora extra (cargo de confiança)
+            paga_hora_extra = False  # Gerente NÁO RECEBE hora extra (cargo de confiança)
             
         elif cargo_opcao == "4":
             cargo = "Diretor"
             valor_hora = 80.00
-            paga_hora_extra = False  # Diretor NÃO RECEBE hora extra (cargo de confiança)
+            paga_hora_extra = False  # Diretor NÁO RECEBE hora extra (cargo de confiança)
             
         else:
             # Opção inválida: usa valores padrão
@@ -300,7 +300,7 @@ def calcular_folha_pagamento():
 
 
 # ============================================================================
-# FUNÇÃO AUXILIAR PARA TESTES (OPCIONAL)
+# FUNÇÁO AUXILIAR PARA TESTES (OPCIONAL)
 # ============================================================================
 if __name__ == "__main__":
     print("🧪 Testando o Módulo de RH...\n")

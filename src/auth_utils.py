@@ -1,5 +1,5 @@
 # ============================================================================
-# MÓDULO AUTH_UTILS - UTILITÁRIOS DE AUTENTICAÇÃO SEGURA
+# MÓDULO AUTH_UTILS - UTILITÁRIOS DE AUTENTICAÇÁO SEGURA
 # ============================================================================
 # Este módulo fornece funções para hash e verificação de senhas usando bcrypt
 # 
@@ -103,6 +103,6 @@ if __name__ == "__main__":
     print(f"Verificação (senha incorreta): {resultado}")  # False
     
     # Gerar API Key
-    print("\n=== GERAÇÃO DE API KEY ===")
+    print("\n=== GERAÇÁO DE API KEY ===")
     api_key = generate_api_key()
     print(f"API Key gerada: {api_key}")

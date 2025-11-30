@@ -10,7 +10,7 @@
 - [ ] **Teste 2:** Login com admin padrão
   - Email: `admin@local.com`
   - Senha: `admin123`
-  -  Esperado: Login bem-sucedido, menu "Administração" NÃO visível
+  -  Esperado: Login bem-sucedido, menu "Administração" NÁO visível
 
 - [ ] **Teste 3:** Login com senha incorreta
   - Email: `superadmin@quatrocantos.com`

@@ -255,7 +255,7 @@ python app.py
 
 ---
 
-##  CONCLUSÃO
+##  CONCLUSÁO
 
 Seu projeto está **100% ORGANIZADO** e **PRONTO PARA USO**!
 
@@ -318,4 +318,4 @@ Seu projeto está **100% ORGANIZADO** e **PRONTO PARA USO**!
  Instituição: SENAI  
  Equipe: Gabriela, Cristiano, Joel e Josilton  
 ‍ Professor: Washington Luis Souza Anunciação  
- Status:  PRONTO PARA PRODUÇÃO
+ Status:  PRONTO PARA PRODUÇÁO
