@@ -181,7 +181,7 @@ function loadLocalUsers() {
                 email: 'alice@gmail.com',
                 contato: '(11) 99999-9999',
                 loginUsuario: 'alice',
-                senha: '123', // Senha padrão simples
+                senha: '$2b$10$Hj/9LieeAMG7gAj2V/VICOxojv/XuMjEBBtjh6sfZjHG0pJ2amsQa', // Senha 'alice123'
                 role: 'admin', // Dando permissão de admin para facilitar testes
                 companyId: 'comp-default',
                 cargo: 'Diretor',
@@ -195,7 +195,7 @@ function loadLocalUsers() {
                 email: 'superacao@gmail.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'superacao',
-                senha: '123',
+                senha: '$2b$10$3RQiGjLP0GxfT1UBQsAoPOPPT4jvKtdKyFMP7rn6hWLAU8rAZyR7G', // Senha 'super123'
                 role: 'admin',
                 companyId: 'comp-superacao',
                 cargo: 'CEO',

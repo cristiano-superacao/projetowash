@@ -37,12 +37,12 @@
     
     <!-- Limpeza de Cache (executar uma vez) -->
     <script>
-        // Limpar localStorage corrompido (v10 - 2025-12-01)
-        if (!localStorage.getItem('auth_fixed_v10')) {
+        // Limpar localStorage corrompido (v11 - 2025-12-01)
+        if (!localStorage.getItem('auth_fixed_v11')) {
             console.log('🧼 Limpando dados corrompidos do localStorage...');
             localStorage.removeItem('localUsers');
             localStorage.removeItem('currentUser');
-            localStorage.setItem('auth_fixed_v10', 'true');
+            localStorage.setItem('auth_fixed_v11', 'true');
             console.log('✅ Cache limpo com sucesso!');
         }
     </script>>
