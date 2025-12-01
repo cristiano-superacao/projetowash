@@ -357,6 +357,16 @@ async function listarUsuarios() {
     try {
         showLoading('Carregando usuários...');
         
+        // Obter companyId do usuário atual PRIMEIRO
+        const currentUserData = (typeof localCurrentUser !== 'undefined' && localCurrentUser) 
+            ? localCurrentUser 
+            : (currentUser || {});
+        
+        const currentCompanyId = currentUserData.companyId;
+        
+        console.log('🔍 Filtrando usuários para empresa:', currentCompanyId);
+        console.log('👤 Usuário atual:', currentUserData.email || currentUserData.nome);
+        
         // Modo Firebase
         if (typeof listarUsuariosDaEmpresa !== 'undefined' && typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
             users = await listarUsuariosDaEmpresa();
@@ -367,16 +377,16 @@ async function listarUsuarios() {
         }
         else if (typeof localUsers !== 'undefined') {
             // Fallback: filtrar pelo companyId manualmente
-            const currentCompanyId = (typeof localCurrentUser !== 'undefined' && localCurrentUser) 
-                ? localCurrentUser.companyId 
-                : (currentUser ? currentUser.companyId : null);
-            
             if (currentCompanyId) {
                 users = localUsers.filter(u => u.companyId === currentCompanyId);
+                console.log(`✅ Filtrado: ${users.length} usuários da empresa ${currentCompanyId}`);
             } else {
+                console.warn('⚠️ CompanyId não encontrado, mostrando todos os usuários');
                 users = localUsers;
             }
         }
+        
+        console.log('📊 Total de usuários retornados:', users.length);
         
         hideLoading();
         

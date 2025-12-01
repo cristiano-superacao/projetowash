@@ -306,11 +306,31 @@ function showApp() {
         ? localCurrentUser 
         : (typeof currentUser !== 'undefined' ? currentUser : null);
         
-    const userName = user ? (user.nome || user.displayName || 'Usuario') : 'Usuario';
+    const userName = user ? (user.email || user.nome || user.displayName || 'Usuario') : 'Usuario';
     
     const userDisplayElement = document.getElementById('userEmail');
     if (userDisplayElement) {
         userDisplayElement.textContent = userName;
+    }
+    
+    // Atualizar informações da empresa
+    if (user) {
+        const companyNameEl = document.getElementById('companyName');
+        const companyIdEl = document.getElementById('companyId');
+        const userCompanyInfoEl = document.getElementById('userCompanyInfo');
+        
+        if (companyNameEl) {
+            companyNameEl.textContent = user.nomeEmpresa || 'Sem empresa';
+        }
+        
+        if (companyIdEl) {
+            const companyId = user.companyId || 'N/A';
+            companyIdEl.textContent = `ID: ${companyId}`;
+        }
+        
+        if (userCompanyInfoEl) {
+            userCompanyInfoEl.textContent = user.nomeEmpresa || 'Empresa não informada';
+        }
     }
     
     // Mostrar/ocultar botoes admin
