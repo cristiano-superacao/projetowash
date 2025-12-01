@@ -263,6 +263,24 @@ async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, 
         newUser.nomeEmpresa = extraData.nomeEmpresa;
         newUser.companyId = 'comp-' + Date.now(); // Gerar ID da empresa
         newUser.allowedModules = ['operacional', 'estoque-entrada', 'estoque-saida', 'financeiro', 'rh', 'visualizar'];
+    } else {
+        // Cadastro de Funcionário (vinculado a uma empresa)
+        newUser.role = extraData.role || 'user';
+        newUser.cargo = extraData.cargo || 'Funcionário';
+        newUser.allowedModules = extraData.allowedModules || [];
+        
+        // Tentar obter dados da empresa do gestor logado
+        if (localCurrentUser && localCurrentUser.companyId) {
+            newUser.companyId = localCurrentUser.companyId;
+            newUser.nomeEmpresa = localCurrentUser.nomeEmpresa;
+        } else if (extraData.companyId) {
+            // Fallback se passado via extraData
+            newUser.companyId = extraData.companyId;
+            newUser.nomeEmpresa = extraData.nomeEmpresa;
+        } else {
+            console.warn('Criando usuário sem empresa vinculada!');
+            newUser.companyId = 'comp-default'; // Fallback para evitar erro
+        }
     }
     
     localUsers.push(newUser);
