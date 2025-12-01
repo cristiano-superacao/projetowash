@@ -58,7 +58,7 @@ from estoque_saida import registrar_saida_produto # Função refatorada do módu
 # template_folder: define onde estão os arquivos HTML
 # static_folder: define onde estão os arquivos CSS, JS, imagens
 app = Flask(__name__,
-            template_folder='web/templates',
+            template_folder='web',
             static_folder='web/static')
 
 # ============================================================================

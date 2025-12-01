@@ -85,58 +85,6 @@ if (firebaseInitialized) {
     });
 }
 
-// Funcao para mostrar tela de autenticacao
-function showAuth() {
-    document.getElementById('authContainer').classList.remove('hidden');
-    document.getElementById('appContainer').classList.add('hidden');
-}
-
-// Funcao para mostrar aplicacao
-async function showApp() {
-    document.getElementById('authContainer').classList.add('hidden');
-    document.getElementById('appContainer').classList.remove('hidden');
-    
-    // Atualizar informacoes do usuario
-    if (currentUser) {
-        document.getElementById('userEmail').textContent = currentUser.email;
-        
-        // Buscar dados completos do usuário para exibir empresa
-        try {
-            const userDoc = await db.collection('usuarios').doc(currentUser.uid).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                
-                // Atualizar informações da empresa
-                const companyNameEl = document.getElementById('companyName');
-                const companyIdEl = document.getElementById('companyId');
-                const userCompanyInfoEl = document.getElementById('userCompanyInfo');
-                
-                if (companyNameEl) {
-                    companyNameEl.textContent = userData.nomeEmpresa || 'Sem empresa';
-                }
-                
-                if (companyIdEl) {
-                    const companyId = userData.companyId || 'N/A';
-                    companyIdEl.textContent = `ID: ${companyId}`;
-                }
-                
-                if (userCompanyInfoEl) {
-                    userCompanyInfoEl.textContent = userData.nomeEmpresa || 'Empresa não informada';
-                }
-            }
-        } catch (error) {
-            console.error('Erro ao buscar dados do usuário:', error);
-        }
-        
-        // Mostrar menu admin se for admin
-        if (isAdmin) {
-            document.querySelectorAll('.admin-only').forEach(el => {
-                el.classList.remove('hidden');
-            });
-        }
-    }
-}
-
 // Funcao de login
 async function login(email, password) {
     if (!firebaseInitialized) {
