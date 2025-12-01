@@ -32,8 +32,20 @@
     <script src="/static/js/segments-config.js?v=6"></script>
     
     <!-- Segurança - Criptografia de Senhas -->
-    <script src="/static/js/bcrypt.min.js?v=9"></script>
-    <script src="/static/js/crypto-utils.js?v=9"></script>
+    <script src="/static/js/bcrypt.min.js?v=10"></script>
+    <script src="/static/js/crypto-utils.js?v=10"></script>
+    
+    <!-- Limpeza de Cache (executar uma vez) -->
+    <script>
+        // Limpar localStorage corrompido (v10 - 2025-12-01)
+        if (!localStorage.getItem('auth_fixed_v10')) {
+            console.log('🧼 Limpando dados corrompidos do localStorage...');
+            localStorage.removeItem('localUsers');
+            localStorage.removeItem('currentUser');
+            localStorage.setItem('auth_fixed_v10', 'true');
+            console.log('✅ Cache limpo com sucesso!');
+        }
+    </script>>
 </head>
 <body>
     
@@ -589,7 +601,7 @@
 
     <!-- JavaScript -->
     <!-- MODO LOCAL/DEMO (ativado) -->
-    <script src="/static/js/local-auth.js?v=8"></script>
+    <script src="/static/js/local-auth.js?v=10"></script>
     <script src="/static/js/local-firestore.js?v=8"></script>
     
     <!-- MODO FIREBASE (descomentar essas 2 linhas quando configurar Firebase) -->
@@ -597,7 +609,7 @@
     <!-- <script src="/static/js/firestore-service.js?v=6"></script> -->
     
     <!-- Scripts comuns (sempre carregados) -->
-    <script src="/static/js/auth.js?v=9"></script>
+    <script src="/static/js/auth.js?v=10"></script>
     <script src="/static/js/admin-module.js?v=9"></script>
     <script src="/static/js/app.js?v=9"></script>
     <script src="/static/js/modules.js?v=9"></script>
