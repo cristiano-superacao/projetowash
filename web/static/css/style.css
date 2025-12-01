@@ -570,10 +570,15 @@ p { margin-bottom: var(--spacing-md); }
 }
 
 .module-card-side:hover, .module-card-side.active {
-    background: #f0fdf4; /* Light green bg */
-    border-color: var(--success-color);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.1) 100%);
+    border-color: var(--primary-color);
     transform: translateX(5px);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+}
+
+.module-card-side.active {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.15) 100%);
+    border-left: 4px solid var(--primary-color);
 }
 
 .module-card-side::before {
@@ -2642,12 +2647,20 @@ table tbody tr:hover {
     color: var(--text-primary);
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
 }
 
 .sidebar-btn:hover {
     background: #f1f5f9;
     color: var(--primary-color);
+}
+
+.sidebar-btn.active {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(37, 99, 235, 0.15) 100%);
+    color: var(--primary-color);
+    border-left-color: var(--primary-color);
+    font-weight: 600;
 }
 
 .sidebar-btn i {
@@ -2656,7 +2669,8 @@ table tbody tr:hover {
     color: var(--text-secondary);
 }
 
-.sidebar-btn:hover i {
+.sidebar-btn:hover i,
+.sidebar-btn.active i {
     color: var(--primary-color);
 }
 

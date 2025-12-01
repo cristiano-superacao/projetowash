@@ -13,6 +13,11 @@ console.log('📦 Modules Loader v2.0 - Carregando módulos individuais...');
 // CONFIGURAÇÃO DE MÓDULOS DISPONÍVEIS
 // ============================================================================
 const AVAILABLE_MODULES = {
+    'dashboard': {
+        path: '/static/js/dashboard.js',
+        loadFunction: 'loadDashboard',
+        isSpecial: true // Dashboard não usa modal, renderiza na seção principal
+    },
     'operacional': {
         path: '/static/js/modules/operacional.js',
         loadFunction: 'loadOperacionalModule'

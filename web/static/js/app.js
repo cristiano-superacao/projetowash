@@ -20,9 +20,43 @@ const API_BASE_URL = isLocalhost
  * @param {string} moduleName - Nome do modulo a ser exibido
  */
 function showModule(moduleName) {
+    // Dashboard é especial - não usa modal, apenas mostra a seção
+    if (moduleName === 'dashboard') {
+        // Esconder modal se estiver aberto
+        const modal = document.getElementById('modalContainer');
+        if (modal) modal.classList.add('hidden');
+        
+        // Mostrar seção do dashboard
+        const dashboardSection = document.getElementById('dashboardSection');
+        if (dashboardSection) {
+            dashboardSection.style.display = 'block';
+        }
+        
+        // Atualizar estados ativos da sidebar
+        updateActiveSidebarItem('dashboard');
+        
+        // Carregar dados do dashboard
+        if (typeof loadDashboard === 'function') {
+            loadDashboard().catch(err => {
+                console.error('❌ Erro ao carregar dashboard:', err);
+                showToast('Erro ao carregar módulo. Tente novamente.', 'error');
+            });
+        } else {
+            console.error('❌ Função loadDashboard não disponível');
+        }
+        return;
+    }
+    
+    // Para outros módulos, usar modal
     const modal = document.getElementById('modalContainer');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
+    
+    // Esconder dashboard section se estiver visível
+    const dashboardSection = document.getElementById('dashboardSection');
+    if (dashboardSection) {
+        dashboardSection.style.display = 'none';
+    }
     
     // Definir titulo baseado no modulo
     const titles = {
@@ -37,6 +71,9 @@ function showModule(moduleName) {
     };
     
     modalTitle.textContent = titles[moduleName] || 'Modulo';
+    
+    // Atualizar estados ativos da sidebar
+    updateActiveSidebarItem(moduleName);
     
     // Carregar conteudo do modulo usando o loader modular
     if (moduleName === 'admin') {
@@ -55,11 +92,40 @@ function showModule(moduleName) {
 }
 
 /**
- * Fecha o modal
+ * Atualiza o item ativo na sidebar
+ * @param {string} moduleName - Nome do módulo ativo
+ */
+function updateActiveSidebarItem(moduleName) {
+    // Desktop sidebar
+    const sidebarItems = document.querySelectorAll('.module-card-side');
+    sidebarItems.forEach(item => {
+        item.classList.remove('active');
+        const itemModule = item.getAttribute('onclick');
+        if (itemModule && itemModule.includes(`'${moduleName}'`)) {
+            item.classList.add('active');
+        }
+    });
+    
+    // Mobile sidebar
+    const mobileButtons = document.querySelectorAll('.module-nav-btn');
+    mobileButtons.forEach(btn => {
+        btn.classList.remove('active');
+        const btnModule = btn.getAttribute('data-module') || btn.getAttribute('onclick');
+        if (btnModule && (btnModule === moduleName || btnModule.includes(`'${moduleName}'`))) {
+            btn.classList.add('active');
+        }
+    });
+}
+
+/**
+ * Fecha o modal e volta para o dashboard
  */
 function closeModule() {
     const modal = document.getElementById('modalContainer');
     modal.classList.add('hidden');
+    
+    // Voltar para o dashboard
+    showModule('dashboard');
 }
 
 // Fechar modal ao clicar fora

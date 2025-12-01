@@ -153,7 +153,17 @@ function loadLocalCurrentUser() {
         console.log('🆔 CompanyId:', localCurrentUser.companyId);
         // updateUserInfoUI(); // Removido: app.js showApp() já faz isso
         showApp();
-        loadDashboard();
+        // Aguardar um momento para garantir que o DOM foi atualizado
+        setTimeout(() => {
+            if (typeof showModule === 'function') {
+                showModule('dashboard');
+            } else {
+                console.warn('⚠️ showModule não disponível, tentando loadDashboard...');
+                if (typeof loadDashboard === 'function') {
+                    loadDashboard();
+                }
+            }
+        }, 100);
     } else {
         showAuth();
     }
