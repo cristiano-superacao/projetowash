@@ -37,6 +37,9 @@
             throw new Error('Senha inválida');
         }
 
+        // Converter para string garantida
+        password = String(password).trim();
+
         if (password.length < SECURITY_CONFIG.minPasswordLength) {
             throw new Error(`Senha deve ter no mínimo ${SECURITY_CONFIG.minPasswordLength} caracteres`);
         }
@@ -46,7 +49,9 @@
         }
 
         try {
-            const salt = bcrypt.genSaltSync(SECURITY_CONFIG.saltRounds);
+            // Garantir que saltRounds é número
+            const saltRounds = Number(SECURITY_CONFIG.saltRounds) || 10;
+            const salt = bcrypt.genSaltSync(saltRounds);
             const hash = bcrypt.hashSync(password, salt);
             console.log('🔐 Hash de senha gerado com sucesso');
             return hash;

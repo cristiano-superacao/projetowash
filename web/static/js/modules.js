@@ -139,7 +139,6 @@ async function loadModuleContent(moduleName, container) {
 // ============================================================================
 /**
  * Pré-carrega módulos mais usados em background
- */Pré-carrega módulos mais usados em background
  */
 function preloadPopularModules() {
     const popularModules = ['operacional', 'rh', 'visualizar'];

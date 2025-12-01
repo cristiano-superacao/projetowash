@@ -38,32 +38,16 @@ function showModule(moduleName) {
     
     modalTitle.textContent = titles[moduleName] || 'Modulo';
     
-    // Carregar conteudo do modulo
-    switch(moduleName) {
-        case 'operacional':
-            loadOperacionalModule(modalBody);
-            break;
-        case 'estoque-entrada':
-            loadEstoqueEntradaModule(modalBody);
-            break;
-        case 'estoque-saida':
-            loadEstoqueSaidaModule(modalBody);
-            break;
-        case 'financeiro':
-            loadFinanceiroModule(modalBody);
-            break;
-        case 'rh':
-            loadRHModule(modalBody);
-            break;
-        case 'visualizar':
-            loadVisualizarModule(modalBody);
-            break;
-        case 'historico':
-            loadHistoricoModule(modalBody);
-            break;
-        case 'admin':
-            loadAdminModule(modalBody);
-            break;
+    // Carregar conteudo do modulo usando o loader modular
+    if (moduleName === 'admin') {
+        // Admin é especial e não está no loader modular
+        loadAdminModule(modalBody);
+    } else if (typeof loadModuleContent === 'function') {
+        // Usar o loader modular para os outros módulos
+        loadModuleContent(moduleName, modalBody);
+    } else {
+        console.error('❌ loadModuleContent não está disponível');
+        modalBody.innerHTML = '<p>Erro ao carregar módulo. Recarregue a página.</p>';
     }
     
     // Mostrar modal
