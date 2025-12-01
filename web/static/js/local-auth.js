@@ -44,6 +44,7 @@ function loadLocalUsers() {
         const defaultAdmin = {
             uid: 'admin-local-001',
             nome: 'Administrador',
+            nomeEmpresa: 'Empresa Local Demo',
             email: 'admin@local.com',
             contato: '(00) 00000-0000',
             loginUsuario: 'admin',
@@ -59,8 +60,10 @@ function loadLocalUsers() {
             saveLocalUsers();
         } else {
             const admin = localUsers[adminIndex];
-            if (!admin.companyId) {
+            // Atualizar campos faltantes se necessário
+            if (!admin.companyId || !admin.nomeEmpresa) {
                 admin.companyId = 'comp-default';
+                admin.nomeEmpresa = 'Empresa Local Demo';
                 localUsers[adminIndex] = admin;
                 saveLocalUsers();
             }
@@ -83,6 +86,7 @@ function loadLocalUsers() {
             {
                 uid: 'admin-local-001',
                 nome: 'Administrador',
+                nomeEmpresa: 'Empresa Local Demo',
                 email: 'admin@local.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'admin',
@@ -95,6 +99,7 @@ function loadLocalUsers() {
             {
                 uid: 'user-local-alice',
                 nome: 'Alice',
+                nomeEmpresa: 'Empresa Local Demo',
                 email: 'alice@gmail.com',
                 contato: '(11) 99999-9999',
                 loginUsuario: 'alice',
@@ -108,6 +113,7 @@ function loadLocalUsers() {
             {
                 uid: 'user-local-superacao',
                 nome: 'Cristiano Superacao',
+                nomeEmpresa: 'Superação Ltda',
                 email: 'superacao@gmail.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'superacao',

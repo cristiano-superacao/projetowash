@@ -381,8 +381,14 @@ async function listarUsuarios() {
                 users = localUsers.filter(u => u.companyId === currentCompanyId);
                 console.log(`✅ Filtrado: ${users.length} usuários da empresa ${currentCompanyId}`);
             } else {
-                console.warn('⚠️ CompanyId não encontrado, mostrando todos os usuários');
-                users = localUsers;
+                console.warn('⚠️ CompanyId não encontrado. Acesso restrito.');
+                // SEGURANÇA: Se não tem companyId, não mostra nada (exceto talvez o próprio usuário se ele estivesse na lista)
+                users = []; 
+                if (currentUserData.uid) {
+                    // Tentar encontrar o próprio usuário pelo menos
+                    const self = localUsers.find(u => u.uid === currentUserData.uid);
+                    if (self) users.push(self);
+                }
             }
         }
         
