@@ -31,21 +31,16 @@
     <!-- Segments Config -->
     <script src="/static/js/segments-config.js?v=6"></script>
     
-    <!-- Segurança - Criptografia de Senhas -->
-    <script src="/static/js/bcrypt.min.js?v=10"></script>
-    <script src="/static/js/crypto-utils.js?v=10"></script>
-    
-    <!-- Limpeza de Cache (executar uma vez) -->
+    <!-- Limpeza de Cache (v13 - remover dados de criptografia antiga) -->
     <script>
-        // Limpar localStorage corrompido (v12 - 2025-12-01)
-        if (!localStorage.getItem('auth_fixed_v12')) {
-            console.log('🧹 Limpando dados corrompidos do localStorage...');
+        if (!localStorage.getItem('auth_restored_v13')) {
+            console.log('🔄 Restaurando sistema - removendo dados de criptografia...');
             localStorage.removeItem('localUsers');
             localStorage.removeItem('localCurrentUser');
-            localStorage.setItem('auth_fixed_v12', 'true');
-            console.log('✅ Cache limpo com sucesso!');
+            localStorage.setItem('auth_restored_v13', 'true');
+            console.log('✅ Sistema restaurado para modo simples!');
         }
-    </script>>
+    </script>
 </head>
 <body>
     
@@ -601,7 +596,7 @@
 
     <!-- JavaScript -->
     <!-- MODO LOCAL/DEMO (ativado) -->
-    <script src="/static/js/local-auth.js?v=11"></script>
+    <script src="/static/js/local-auth.js?v=13"></script>
     <script src="/static/js/local-firestore.js?v=8"></script>
     
     <!-- MODO FIREBASE (descomentar essas 2 linhas quando configurar Firebase) -->
