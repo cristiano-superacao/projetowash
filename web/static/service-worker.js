@@ -5,25 +5,21 @@
 // Versão: 10 (com estratégia de cleanup automático)
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v10';
+const CACHE_NAME = 'estoque-certo-v11';
 const CACHE_MAX_AGE_DAYS = 30; // Cache expira após 30 dias
 const CACHE_MAX_ITEMS = 50; // Máximo de itens no cache
 
+// Lista de URLs essenciais para cache (apenas arquivos que realmente existem)
 const urlsToCache = [
     '/',
     '/static/css/style.css',
-    '/static/css/admin.css',
     '/static/js/app.js',
     '/static/js/modules.js',
     '/static/js/dashboard.js',
     '/static/js/auth.js',
     '/static/js/local-auth.js',
     '/static/js/local-firestore.js',
-    '/static/js/segments-config.js',
-    '/static/js/admin-module.js',
-    '/static/js/pwa.js',
-    '/static/manifest.json',
-    '/static/icons/icon.svg'
+    '/static/js/pwa.js'
 ];
 
 // ============================================================================
@@ -76,20 +72,32 @@ async function limitCacheSize() {
 // INSTALAÇÁO DO SERVICE WORKER
 // ============================================================================
 self.addEventListener('install', (event) => {
-    console.log('Service Worker v10: Instalando...');
+    console.log('Service Worker v11: Instalando...');
     
     event.waitUntil(
         caches.open(CACHE_NAME)
-            .then((cache) => {
+            .then(async (cache) => {
                 console.log('Service Worker: Cache aberto');
-                return cache.addAll(urlsToCache);
+                
+                // Tenta cachear cada arquivo individualmente para evitar falha total
+                const cachePromises = urlsToCache.map(async (url) => {
+                    try {
+                        await cache.add(url);
+                        console.log(`Service Worker: ✅ ${url} cacheado`);
+                    } catch (error) {
+                        console.warn(`Service Worker: ⚠️ Falha ao cachear ${url}:`, error.message);
+                        // Não falha a instalação se um arquivo não existir
+                    }
+                });
+                
+                await Promise.allSettled(cachePromises);
+                console.log('Service Worker: Cache concluído (com possíveis avisos)');
             })
             .then(() => {
-                console.log('Service Worker: Todos os arquivos foram cacheados');
                 return self.skipWaiting();
             })
             .catch((error) => {
-                console.error('Service Worker: Erro ao cachear arquivos:', error);
+                console.error('Service Worker: Erro crítico na instalação:', error);
             })
     );
 });
@@ -98,7 +106,7 @@ self.addEventListener('install', (event) => {
 // ATIVAÇÁO DO SERVICE WORKER (COM LIMPEZA DE CACHES ANTIGOS)
 // ============================================================================
 self.addEventListener('activate', (event) => {
-    console.log('Service Worker v10: Ativando...');
+    console.log('Service Worker v11: Ativando...');
     
     event.waitUntil(
         Promise.all([
@@ -107,19 +115,21 @@ self.addEventListener('activate', (event) => {
                 return Promise.all(
                     cacheNames.map((cacheName) => {
                         if (cacheName !== CACHE_NAME) {
-                            console.log('Service Worker: Removendo cache antigo:', cacheName);
+                            console.log('Service Worker: 🗑️ Removendo cache antigo:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
                 );
             }),
-            // Executa limpeza de cache expirado
-            cleanExpiredCache(),
-            // Limita tamanho do cache
-            limitCacheSize()
+            // Executa limpeza de cache expirado (com tratamento de erro)
+            cleanExpiredCache().catch(err => console.warn('Erro ao limpar cache expirado:', err)),
+            // Limita tamanho do cache (com tratamento de erro)
+            limitCacheSize().catch(err => console.warn('Erro ao limitar cache:', err))
         ]).then(() => {
-            console.log('Service Worker: Ativado e caches limpos');
+            console.log('Service Worker: ✅ Ativado e caches limpos');
             return self.clients.claim();
+        }).catch((error) => {
+            console.error('Service Worker: Erro na ativação:', error);
         })
     );
 });
@@ -153,36 +163,40 @@ self.addEventListener('fetch', (event) => {
             .then((response) => {
                 // Retorna do cache se encontrar
                 if (response) {
-                    console.log('Service Worker: Servindo do cache:', event.request.url);
+                    // Log silencioso para não poluir o console
                     return response;
                 }
                 
                 // Caso contrário, busca da rede
-                console.log('Service Worker: Buscando da rede:', event.request.url);
                 return fetch(event.request).then((response) => {
                     // Não cacheia se não for uma resposta válida
-                    if (!response || response.status !== 200 || response.type !== 'basic') {
+                    if (!response || response.status !== 200) {
+                        return response;
+                    }
+                    
+                    // Apenas cacheia requisições GET
+                    if (event.request.method !== 'GET') {
                         return response;
                     }
                     
                     // Clona a resposta
                     const responseToCache = response.clone();
                     
-                    // Adiciona ao cache
+                    // Adiciona ao cache (silenciosamente)
                     caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, responseToCache);
+                    }).catch(() => {
+                        // Ignora erros de cache
                     });
                     
                     return response;
+                }).catch((error) => {
+                    // Ignora erros de rede para recursos não essenciais
+                    if (event.request.mode === 'navigate') {
+                        return caches.match('/');
+                    }
+                    return new Response('', { status: 408, statusText: 'Request timeout' });
                 });
-            })
-            .catch((error) => {
-                console.error('Service Worker: Erro ao buscar recurso:', error);
-                
-                // Página offline personalizada (opcional)
-                if (event.request.mode === 'navigate') {
-                    return caches.match('/');
-                }
             })
     );
 });
@@ -217,8 +231,8 @@ self.addEventListener('push', (event) => {
     
     const options = {
         body: event.data ? event.data.text() : 'Nova notificação',
-        icon: '/static/icons/icon.svg',
-        badge: '/static/icons/icon.svg',
+        icon: '/static/icons/icon-192x192.png',
+        badge: '/static/icons/icon-192x192.png',
         vibrate: [200, 100, 200],
         data: {
             dateOfArrival: Date.now(),
