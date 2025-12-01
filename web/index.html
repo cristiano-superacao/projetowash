@@ -37,12 +37,12 @@
     
     <!-- Limpeza de Cache (executar uma vez) -->
     <script>
-        // Limpar localStorage corrompido (v11 - 2025-12-01)
-        if (!localStorage.getItem('auth_fixed_v11')) {
-            console.log('🧼 Limpando dados corrompidos do localStorage...');
+        // Limpar localStorage corrompido (v12 - 2025-12-01)
+        if (!localStorage.getItem('auth_fixed_v12')) {
+            console.log('🧹 Limpando dados corrompidos do localStorage...');
             localStorage.removeItem('localUsers');
-            localStorage.removeItem('currentUser');
-            localStorage.setItem('auth_fixed_v11', 'true');
+            localStorage.removeItem('localCurrentUser');
+            localStorage.setItem('auth_fixed_v12', 'true');
             console.log('✅ Cache limpo com sucesso!');
         }
     </script>>
@@ -601,7 +601,7 @@
 
     <!-- JavaScript -->
     <!-- MODO LOCAL/DEMO (ativado) -->
-    <script src="/static/js/local-auth.js?v=10"></script>
+    <script src="/static/js/local-auth.js?v=11"></script>
     <script src="/static/js/local-firestore.js?v=8"></script>
     
     <!-- MODO FIREBASE (descomentar essas 2 linhas quando configurar Firebase) -->

@@ -1,88 +1,19 @@
 // Modo Local/Demo - Autenticacao Simulada com Criptografia
 // Use este arquivo APENAS para testes locais sem Firebase
-console.log('🔐 local-auth.js v3.0 carregado (com criptografia bcrypt)');
+console.log('🔐 local-auth.js v4.0 carregado (com criptografia bcrypt)');
 
 let localUsers = [];
 let localCurrentUser = null;
 let localIsAdmin = false;
-// Senhas padrão pré-hasheadas (bcrypt)
-const DEFAULT_HASHED_PASSWORDS = {
-    // Hash de 'admin@2025'
-    superadmin: '$2a$10$N9qo8uLOickgx2ZMRZoMye.Br0ULOickgx2ZMRZoMye.Br0ULOickm',
-    // Hash de 'admin123'
-    admin: '$2a$10$8kqB3Y5xGZJXvQEKmJ3wKOYXZKGQZXvQEKmJ3wKOYXZKGQZXvQEKm'
-};
 
-// Migrar senhas antigas para bcrypt
-function migratePlainPasswordsToHash() {
-    if (typeof CryptoUtils === 'undefined') {
-        return false;
-    }
-
-    let migrated = false;
-    localUsers.forEach(user => {
-        if (user.senha && !CryptoUtils.isValidHash(user.senha)) {
-            console.log(`🔄 Migrando senha do usuário: ${user.email || user.loginUsuario}`);
-            const plainPassword = user.senha;
-            user.senha = CryptoUtils.hashPassword(plainPassword);
-            migrated = true;
-        }
-    });
-
-    if (migrated) {
-        saveLocalUsers();
-        console.log('✅ Senhas migradas para bcrypt!');
-    }
-
-    return migrated;
-}
-
-
-// Senhas padrão criptografadas (geradas uma vez)
 // Hashes bcrypt pré-gerados (VÁLIDOS - 60 caracteres)
 // Gerados com bcrypt.hashpw() usando salt rounds = 10
 const DEFAULT_PASSWORDS = {
     superadmin: '$2b$10$pyJ/v2.dBR6tTCiSJUBcLe0H5HEOchMDSJaqCwThjuzvyg6vxVDpS', // admin@2025
-    admin: '$2b$10$qLLXso8Lp6PdwrFrskwQk.AdCpAez.wj1hl6bOfLCIRBLlF1lzvz2'  // admin123
+    admin: '$2b$10$qLLXso8Lp6PdwrFrskwQk.AdCpAez.wj1hl6bOfLCIRBLlF1lzvz2',  // admin123
+    alice: '$2b$10$Hj/9LieeAMG7gAj2V/VICOxojv/XuMjEBBtjh6sfZjHG0pJ2amsQa',  // alice123
+    superacao: '$2b$10$3RQiGjLP0GxfT1UBQsAoPOPPT4jvKtdKyFMP7rn6hWLAU8rAZyR7G'  // super123
 };
-
-// Migrar senhas antigas para bcrypt (executado automaticamente)
-function migratePlainPasswordsToHash() {
-    if (typeof CryptoUtils === 'undefined') {
-        console.warn('⚠️ CryptoUtils não disponível. Migrando senhas após carregamento...');
-        return false;
-    }
-    
-    let migrated = false;
-    localUsers.forEach(user => {
-        // Verifica se a senha NÃO é um hash bcrypt
-        if (user.senha && !CryptoUtils.isValidHash(user.senha)) {
-            console.log(`🔄 Migrando senha do usuário: ${user.email || user.loginUsuario}`);
-            const plainPassword = String(user.senha || '').trim();
-            
-            // Validar senha antes de tentar hash
-            if (plainPassword.length >= 3 && plainPassword.length <= 100) {
-                try {
-                    user.senha = CryptoUtils.hashPassword(plainPassword);
-                    migrated = true;
-                    console.log(`✅ Senha migrada: ${user.email || user.loginUsuario}`);
-                } catch (error) {
-                    console.error(`❌ Erro ao migrar senha de ${user.email || user.loginUsuario}:`, error);
-                    // Manter senha original em caso de erro
-                }
-            } else {
-                console.warn(`⚠️ Senha inválida para ${user.email || user.loginUsuario}, pulando migração`);
-            }
-        }
-    });
-    
-    if (migrated) {
-        saveLocalUsers();
-        console.log('✅ Senhas migradas para bcrypt com sucesso!');
-    }
-    
-    return migrated;
-}
 
 // Carregar usuarios do localStorage
 function loadLocalUsers() {
@@ -154,7 +85,7 @@ function loadLocalUsers() {
                 nome: 'Super Administrador',
                 nomeEmpresa: 'Quatro Cantos - Administração',
                 email: 'superadmin@quatrocantos.com',
-                senha: DEFAULT_HASHED_PASSWORDS.superadmin, // Hash bcrypt
+                senha: DEFAULT_PASSWORDS.superadmin, // Hash bcrypt de 'admin@2025'
                 role: 'superadmin',
                 segmento: 'construcao',
                 companyId: 'superadmin-master',
@@ -168,7 +99,7 @@ function loadLocalUsers() {
                 email: 'admin@local.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'admin',
-                senha: DEFAULT_HASHED_PASSWORDS.admin, // Hash bcrypt
+                senha: DEFAULT_PASSWORDS.admin, // Hash bcrypt de 'admin123'
                 role: 'admin',
                 companyId: 'comp-default',
                 ativo: true,
@@ -405,7 +336,7 @@ function resetLocalStorage() {
                 nome: 'Super Administrador',
                 nomeEmpresa: 'Quatro Cantos - Administração',
                 email: 'superadmin@quatrocantos.com',
-                senha: DEFAULT_HASHED_PASSWORDS.superadmin, // Hash bcrypt
+                senha: DEFAULT_PASSWORDS.superadmin, // Hash bcrypt de 'admin@2025'
                 role: 'superadmin',
                 segmento: 'construcao',
                 companyId: 'superadmin-master',
@@ -418,7 +349,7 @@ function resetLocalStorage() {
                 email: 'admin@local.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'admin',
-                senha: DEFAULT_HASHED_PASSWORDS.admin, // Hash bcrypt
+                senha: DEFAULT_PASSWORDS.admin, // Hash bcrypt de 'admin123'
                 role: 'admin',
                 companyId: 'comp-default',
                 ativo: true,

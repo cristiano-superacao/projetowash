@@ -2,10 +2,10 @@
 // SERVICE WORKER - PWA OFFLINE SUPPORT
 // Arquivo: service-worker.js
 // Descrição: Gerencia cache e funcionamento offline do aplicativo
-// Versão: 14 (com senhas padrão pré-hasheadas)
+// Versão: 15 (corrigindo duplicidades e referências DEFAULT_PASSWORDS)
 // ============================================================================
 
-const CACHE_NAME = 'estoque-certo-v14';
+const CACHE_NAME = 'estoque-certo-v15';
 const CACHE_MAX_AGE_DAYS = 30; // Cache expira após 30 dias
 const CACHE_MAX_ITEMS = 50; // Máximo de itens no cache
 
