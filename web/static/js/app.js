@@ -306,6 +306,10 @@ function showApp() {
         ? localCurrentUser 
         : (typeof currentUser !== 'undefined' ? currentUser : null);
         
+    console.log('🔐 showApp() - Usuário logado:', user);
+    console.log('🏢 Nome da Empresa:', user?.nomeEmpresa);
+    console.log('🆔 ID da Empresa:', user?.companyId);
+        
     const userName = user ? (user.email || user.nome || user.displayName || 'Usuario') : 'Usuario';
     
     const userDisplayElement = document.getElementById('userEmail');
@@ -319,17 +323,34 @@ function showApp() {
         const companyIdEl = document.getElementById('companyId');
         const userCompanyInfoEl = document.getElementById('userCompanyInfo');
         
+        console.log('📋 Elementos encontrados:', {
+            companyNameEl: !!companyNameEl,
+            companyIdEl: !!companyIdEl,
+            userCompanyInfoEl: !!userCompanyInfoEl
+        });
+        
         if (companyNameEl) {
-            companyNameEl.textContent = user.nomeEmpresa || 'Sem empresa';
+            const nomeEmpresa = user.nomeEmpresa || 'Sem empresa';
+            companyNameEl.textContent = nomeEmpresa;
+            console.log('✅ Nome da empresa atualizado:', nomeEmpresa);
+        } else {
+            console.warn('⚠️ Elemento companyName não encontrado');
         }
         
         if (companyIdEl) {
             const companyId = user.companyId || 'N/A';
             companyIdEl.textContent = `ID: ${companyId}`;
+            console.log('✅ ID da empresa atualizado:', companyId);
+        } else {
+            console.warn('⚠️ Elemento companyId não encontrado');
         }
         
         if (userCompanyInfoEl) {
-            userCompanyInfoEl.textContent = user.nomeEmpresa || 'Empresa não informada';
+            const infoEmpresa = user.nomeEmpresa || 'Empresa não informada';
+            userCompanyInfoEl.textContent = infoEmpresa;
+            console.log('✅ Info da empresa atualizada:', infoEmpresa);
+        } else {
+            console.warn('⚠️ Elemento userCompanyInfo não encontrado');
         }
     }
     

@@ -140,6 +140,9 @@ function loadLocalCurrentUser() {
     if (stored) {
         localCurrentUser = JSON.parse(stored);
         localIsAdmin = localCurrentUser.role === 'admin' || localCurrentUser.role === 'superadmin';
+        console.log('👤 Usuário carregado do localStorage:', localCurrentUser.email);
+        console.log('🏢 Empresa:', localCurrentUser.nomeEmpresa);
+        console.log('🆔 CompanyId:', localCurrentUser.companyId);
         // updateUserInfoUI(); // Removido: app.js showApp() já faz isso
         showApp();
         loadDashboard();

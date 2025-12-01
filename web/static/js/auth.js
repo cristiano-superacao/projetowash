@@ -363,9 +363,11 @@ async function listarUsuarios() {
             : (currentUser || {});
         
         const currentCompanyId = currentUserData.companyId;
+        const isSuperAdmin = currentUserData.role === 'superadmin';
         
         console.log('🔍 Filtrando usuários para empresa:', currentCompanyId);
         console.log('👤 Usuário atual:', currentUserData.email || currentUserData.nome);
+        console.log('🛡️ É SuperAdmin?', isSuperAdmin);
         
         // Modo Firebase
         if (typeof listarUsuariosDaEmpresa !== 'undefined' && typeof firebaseInitialized !== 'undefined' && firebaseInitialized) {
@@ -378,8 +380,17 @@ async function listarUsuarios() {
         else if (typeof localUsers !== 'undefined') {
             // Fallback: filtrar pelo companyId manualmente
             if (currentCompanyId) {
-                users = localUsers.filter(u => u.companyId === currentCompanyId);
+                // REGRA: Admin comum só vê usuários da SUA empresa
+                // SuperAdmin pode ver todos (mas vamos manter restrito também por segurança)
+                users = localUsers.filter(u => {
+                    // Sempre mostrar usuários da mesma empresa
+                    if (u.companyId === currentCompanyId) return true;
+                    // SuperAdmin vê tudo (opcional - descomente se necessário)
+                    // if (isSuperAdmin) return true;
+                    return false;
+                });
                 console.log(`✅ Filtrado: ${users.length} usuários da empresa ${currentCompanyId}`);
+                console.log('📋 Usuários filtrados:', users.map(u => `${u.nome} (${u.email})`));
             } else {
                 console.warn('⚠️ CompanyId não encontrado. Acesso restrito.');
                 // SEGURANÇA: Se não tem companyId, não mostra nada (exceto talvez o próprio usuário se ele estivesse na lista)
