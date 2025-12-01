@@ -18,7 +18,7 @@ function migratePlainPasswordsToHash() {
     if (typeof CryptoUtils === 'undefined') {
         return false;
     }
-    
+
     let migrated = false;
     localUsers.forEach(user => {
         if (user.senha && !CryptoUtils.isValidHash(user.senha)) {
@@ -28,12 +28,12 @@ function migratePlainPasswordsToHash() {
             migrated = true;
         }
     });
-    
+
     if (migrated) {
         saveLocalUsers();
         console.log('✅ Senhas migradas para bcrypt!');
     }
-    
+
     return migrated;
 }
 
@@ -231,24 +231,24 @@ function saveLocalCurrentUser() {
 async function loginLocal(emailOrLogin, password) {
     console.log('🔐 Tentando login:', emailOrLogin);
     console.log('📊 Total de usuários:', localUsers.length);
-    
+
     // Migrar senhas antigas se necessário
     if (typeof CryptoUtils !== 'undefined') {
         migratePlainPasswordsToHash();
     }
-    
+
     // Buscar usuário por email ou login
     const user = localUsers.find(u => {
         const matchEmail = u.email && u.email.toLowerCase().trim() === emailOrLogin.toLowerCase().trim();
         const matchLogin = u.loginUsuario && u.loginUsuario.toLowerCase().trim() === emailOrLogin.toLowerCase().trim();
         return matchEmail || matchLogin;
     });
-    
+
     if (!user) {
         console.error('❌ Usuário não encontrado:', emailOrLogin);
         throw new Error('Usuário ou senha incorretos');
     }
-    
+
     // Verificar senha usando bcrypt
     let senhaCorreta = false;
     if (typeof CryptoUtils !== 'undefined' && CryptoUtils.isValidHash(user.senha)) {
@@ -257,26 +257,26 @@ async function loginLocal(emailOrLogin, password) {
         console.warn('⚠️ Senha sem hash bcrypt detectada!');
         senhaCorreta = user.senha === password;
     }
-    
+
     if (!senhaCorreta) {
         console.error('❌ Senha incorreta');
         throw new Error('Usuário ou senha incorretos');
     }
-    
+
     if (!user.ativo) {
         console.error('⛔ Usuário inativo');
         throw new Error('Usuário inativo');
     }
-    
+
     console.log('✅ Login bem-sucedido!');
     console.log('  - Email:', user.email || user.loginUsuario);
     console.log('  - Role:', user.role);
     console.log('  - Nome:', user.nome);
-    
+
     localCurrentUser = user;
     localIsAdmin = user.role === 'admin' || user.role === 'superadmin';
     saveLocalCurrentUser();
-    
+
     return user;
 }
 
@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('Modo Local/Demo ativado!');
     console.log('Usuario admin padrao: admin@local.com');
-    
+
     console.log('💡 Para ver senhas, clique em "Esqueci minha senha"');
     
     console.log('Usuários carregados:', localUsers.length);
