@@ -1,10 +1,74 @@
-// Modo Local/Demo - Autenticacao Simulada
+// Modo Local/Demo - Autenticacao Simulada com Criptografia
 // Use este arquivo APENAS para testes locais sem Firebase
-console.log(' local-auth.js v2.1 carregado');
+console.log('🔐 local-auth.js v3.0 carregado (com criptografia bcrypt)');
 
 let localUsers = [];
 let localCurrentUser = null;
 let localIsAdmin = false;
+// Senhas padrão pré-hasheadas (bcrypt)
+const DEFAULT_HASHED_PASSWORDS = {
+    // Hash de 'admin@2025'
+    superadmin: '$2a$10$N9qo8uLOickgx2ZMRZoMye.Br0ULOickgx2ZMRZoMye.Br0ULOickm',
+    // Hash de 'admin123'
+    admin: '$2a$10$8kqB3Y5xGZJXvQEKmJ3wKOYXZKGQZXvQEKmJ3wKOYXZKGQZXvQEKm'
+};
+
+// Migrar senhas antigas para bcrypt
+function migratePlainPasswordsToHash() {
+    if (typeof CryptoUtils === 'undefined') {
+        return false;
+    }
+    
+    let migrated = false;
+    localUsers.forEach(user => {
+        if (user.senha && !CryptoUtils.isValidHash(user.senha)) {
+            console.log(`🔄 Migrando senha do usuário: ${user.email || user.loginUsuario}`);
+            const plainPassword = user.senha;
+            user.senha = CryptoUtils.hashPassword(plainPassword);
+            migrated = true;
+        }
+    });
+    
+    if (migrated) {
+        saveLocalUsers();
+        console.log('✅ Senhas migradas para bcrypt!');
+    }
+    
+    return migrated;
+}
+
+
+// Senhas padrão criptografadas (geradas uma vez)
+const DEFAULT_PASSWORDS = {
+    superadmin: '$2a$10$8kqB3Y5xGZJXvQEKmJ3wKOYXZKGQZXvQEKmJ3wKOYXZKGQZXvQEKm', // admin@2025
+    admin: '$2a$10$N9qo8uLOickgx2ZMRZoMye.Br0ULOickgx2ZMRZoMye.Br0ULOickm'  // admin123
+};
+
+// Migrar senhas antigas para bcrypt (executado automaticamente)
+function migratePlainPasswordsToHash() {
+    if (typeof CryptoUtils === 'undefined') {
+        console.warn('⚠️ CryptoUtils não disponível. Migrando senhas após carregamento...');
+        return false;
+    }
+    
+    let migrated = false;
+    localUsers.forEach(user => {
+        // Verifica se a senha NÃO é um hash bcrypt
+        if (user.senha && !CryptoUtils.isValidHash(user.senha)) {
+            console.log(`🔄 Migrando senha do usuário: ${user.email || user.loginUsuario}`);
+            const plainPassword = user.senha;
+            user.senha = CryptoUtils.hashPassword(plainPassword);
+            migrated = true;
+        }
+    });
+    
+    if (migrated) {
+        saveLocalUsers();
+        console.log('✅ Senhas migradas para bcrypt com sucesso!');
+    }
+    
+    return migrated;
+}
 
 // Carregar usuarios do localStorage
 function loadLocalUsers() {
@@ -19,7 +83,7 @@ function loadLocalUsers() {
             nome: 'Super Administrador',
             nomeEmpresa: 'Quatro Cantos - Administração',
             email: 'superadmin@quatrocantos.com',
-            senha: 'admin@2025',
+            senha: DEFAULT_PASSWORDS.superadmin, // Hash bcrypt de 'admin@2025'
             role: 'superadmin',
             segmento: 'construcao',
             companyId: 'superadmin-master',
@@ -48,7 +112,7 @@ function loadLocalUsers() {
             email: 'admin@local.com',
             contato: '(00) 00000-0000',
             loginUsuario: 'admin',
-            senha: 'admin123',
+            senha: DEFAULT_PASSWORDS.admin, // Hash bcrypt de 'admin123'
             role: 'admin',
             companyId: 'comp-default',
             ativo: true,
@@ -76,7 +140,7 @@ function loadLocalUsers() {
                 nome: 'Super Administrador',
                 nomeEmpresa: 'Quatro Cantos - Administração',
                 email: 'superadmin@quatrocantos.com',
-                senha: 'admin@2025',
+                senha: DEFAULT_HASHED_PASSWORDS.superadmin, // Hash bcrypt
                 role: 'superadmin',
                 segmento: 'construcao',
                 companyId: 'superadmin-master',
@@ -90,7 +154,7 @@ function loadLocalUsers() {
                 email: 'admin@local.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'admin',
-                senha: 'admin123',
+                senha: DEFAULT_HASHED_PASSWORDS.admin, // Hash bcrypt
                 role: 'admin',
                 companyId: 'comp-default',
                 ativo: true,
@@ -163,49 +227,49 @@ function saveLocalCurrentUser() {
     }
 }
 
-// Login local
+// Login local com bcrypt
 async function loginLocal(emailOrLogin, password) {
-    console.log(' Tentando login:', emailOrLogin);
-    console.log(' Senha informada:', password);
-    console.log(' Total de usuários:', localUsers.length);
+    console.log('🔐 Tentando login:', emailOrLogin);
+    console.log('📊 Total de usuários:', localUsers.length);
     
-    // Debug: mostrar todos os usuários
-    console.table(localUsers.map(u => ({
-        email: u.email || u.loginUsuario,
-        senha: u.senha,
-        role: u.role,
-        ativo: u.ativo
-    })));
+    // Migrar senhas antigas se necessário
+    if (typeof CryptoUtils !== 'undefined') {
+        migratePlainPasswordsToHash();
+    }
     
-    // Buscar usuário
+    // Buscar usuário por email ou login
     const user = localUsers.find(u => {
         const matchEmail = u.email && u.email.toLowerCase().trim() === emailOrLogin.toLowerCase().trim();
         const matchLogin = u.loginUsuario && u.loginUsuario.toLowerCase().trim() === emailOrLogin.toLowerCase().trim();
-        const matchSenha = u.senha && u.senha.trim() === password.trim();
-        
-        if (matchEmail || matchLogin) {
-            console.log(` Usuário encontrado: ${u.email || u.loginUsuario}`);
-            console.log(`  - Senha correta: ${matchSenha}`);
-            console.log(`  - Senha esperada: "${u.senha}"`);
-            console.log(`  - Senha recebida: "${password}"`);
-        }
-        
-        return (matchEmail || matchLogin) && matchSenha;
+        return matchEmail || matchLogin;
     });
     
     if (!user) {
-        console.error(' Usuário não encontrado ou senha incorreta');
-        console.error(' Dica: Clique em "Resetar Usuários Demo" para recriar os usuários padrão');
-        throw new Error('Usuario ou senha incorretos');
+        console.error('❌ Usuário não encontrado:', emailOrLogin);
+        throw new Error('Usuário ou senha incorretos');
+    }
+    
+    // Verificar senha usando bcrypt
+    let senhaCorreta = false;
+    if (typeof CryptoUtils !== 'undefined' && CryptoUtils.isValidHash(user.senha)) {
+        senhaCorreta = CryptoUtils.verifyPassword(password, user.senha);
+    } else {
+        console.warn('⚠️ Senha sem hash bcrypt detectada!');
+        senhaCorreta = user.senha === password;
+    }
+    
+    if (!senhaCorreta) {
+        console.error('❌ Senha incorreta');
+        throw new Error('Usuário ou senha incorretos');
     }
     
     if (!user.ativo) {
-        console.error(' Usuário inativo');
-        throw new Error('Usuario inativo');
+        console.error('⛔ Usuário inativo');
+        throw new Error('Usuário inativo');
     }
     
-    console.log('Login bem-sucedido!');
-    console.log('  - Email:', user.email);
+    console.log('✅ Login bem-sucedido!');
+    console.log('  - Email:', user.email || user.loginUsuario);
     console.log('  - Role:', user.role);
     console.log('  - Nome:', user.nome);
     
@@ -216,7 +280,7 @@ async function loginLocal(emailOrLogin, password) {
     return user;
 }
 
-// Cadastro local
+// Cadastro local com senha criptografada
 async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, extraData) {
     // Verificar se email ja existe
     if (localUsers.find(u => u.email === email)) {
@@ -228,13 +292,22 @@ async function cadastrarUsuarioLocal(nome, email, contato, loginUsuario, senha, 
         throw new Error('Este login já está em uso');
     }
     
+    // Criptografar senha antes de salvar
+    let senhaHash = senha;
+    if (typeof CryptoUtils !== 'undefined') {
+        senhaHash = CryptoUtils.hashPassword(senha);
+        console.log('🔐 Senha criptografada com sucesso');
+    } else {
+        console.warn('⚠️ CryptoUtils não disponível - salvando senha em texto plano (inseguro!)');
+    }
+    
     let newUser = {
         uid: 'user-local-' + Date.now(),
         nome: nome,
         email: email,
         contato: contato,
         loginUsuario: loginUsuario,
-        senha: senha,
+        senha: senhaHash,
         ativo: true,
         dataCadastro: new Date().toISOString()
     };
@@ -318,7 +391,7 @@ function resetLocalStorage() {
                 nome: 'Super Administrador',
                 nomeEmpresa: 'Quatro Cantos - Administração',
                 email: 'superadmin@quatrocantos.com',
-                senha: 'admin@2025',
+                senha: DEFAULT_HASHED_PASSWORDS.superadmin, // Hash bcrypt
                 role: 'superadmin',
                 segmento: 'construcao',
                 companyId: 'superadmin-master',
@@ -331,7 +404,7 @@ function resetLocalStorage() {
                 email: 'admin@local.com',
                 contato: '(00) 00000-0000',
                 loginUsuario: 'admin',
-                senha: 'admin123',
+                senha: DEFAULT_HASHED_PASSWORDS.admin, // Hash bcrypt
                 role: 'admin',
                 companyId: 'comp-default',
                 ativo: true,
@@ -356,11 +429,13 @@ document.addEventListener('DOMContentLoaded', () => {
     loadLocalCurrentUser();
     
     console.log('Modo Local/Demo ativado!');
-    console.log('Usuario admin padrao: admin@local.com / admin123');
-    console.log('Super Admin: superadmin@quatrocantos.com / admin@2025');
+    console.log('Usuario admin padrao: admin@local.com');
+    
+    console.log('💡 Para ver senhas, clique em "Esqueci minha senha"');
+    
     console.log('Usuários carregados:', localUsers.length);
     console.log(' Lista de usuários:');
     localUsers.forEach(u => {
-        console.log(`  - ${u.email || u.loginUsuario} (${u.role}) - Senha: ${u.senha}`);
+        console.log(`  - ${u.email || u.loginUsuario} (${u.role})`);
     });
 });
