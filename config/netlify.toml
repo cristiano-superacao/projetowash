@@ -1,10 +1,14 @@
-# Configuracao Netlify - Deploy Automatico
+# ============================================================================
+# CONFIGURACAO NETLIFY - DEPLOY AUTOMATICO
+# Sistema Quatro Cantos - Gestão Empresarial
+# ============================================================================
+
 [build]
-  command = "echo 'Build concluido'"
+  command = "echo 'Build concluido - Frontend estatico pronto para deploy'"
   publish = "web"
   functions = "netlify/functions"
 
-# Redirecionar todas as rotas para index.html (SPA)
+# Redirecionar todas as rotas para index.html (SPA - Single Page Application)
 [[redirects]]
   from = "/*"
   to = "/index.html"
