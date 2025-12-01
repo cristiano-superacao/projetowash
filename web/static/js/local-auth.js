@@ -134,10 +134,40 @@ function loadLocalCurrentUser() {
     if (stored) {
         localCurrentUser = JSON.parse(stored);
         localIsAdmin = localCurrentUser.role === 'admin' || localCurrentUser.role === 'superadmin';
+        updateUserInfoUI();
         showApp();
         loadDashboard();
     } else {
         showAuth();
+    }
+}
+
+// Atualizar informações do usuário no UI
+function updateUserInfoUI() {
+    if (!localCurrentUser) return;
+    
+    // Atualizar email no header
+    const userEmailEl = document.getElementById('userEmail');
+    if (userEmailEl) {
+        userEmailEl.textContent = localCurrentUser.email || localCurrentUser.loginUsuario || 'Usuário';
+    }
+    
+    // Atualizar informações de empresa
+    const companyNameEl = document.getElementById('companyName');
+    const companyIdEl = document.getElementById('companyId');
+    const userCompanyInfoEl = document.getElementById('userCompanyInfo');
+    
+    if (companyNameEl) {
+        companyNameEl.textContent = localCurrentUser.nomeEmpresa || 'Sem empresa';
+    }
+    
+    if (companyIdEl) {
+        const companyId = localCurrentUser.companyId || 'N/A';
+        companyIdEl.textContent = `ID: ${companyId}`;
+    }
+    
+    if (userCompanyInfoEl) {
+        userCompanyInfoEl.textContent = localCurrentUser.nomeEmpresa || 'Empresa não informada';
     }
 }
 
